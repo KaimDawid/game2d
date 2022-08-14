@@ -2,17 +2,13 @@ package com.mygdx.game;
 
 import Data.Areas.BanditCamp;
 import Data.Areas.Forest;
-import Data.Quests;
 import Logic.Experience;
 import Logic.FightLogic.Fight;
 import Logic.FightLogic.FightLogic;
 import Logic.GameLogic;
 import Logic.Inventory;
 import Logic.Spawners.*;
-import Logic.Test;
 import Mobs.*;
-import Objects.Armor;
-import Objects.Items.Chests.ChestArmor;
 import Objects.Items.Item;
 import Objects.Items.Weapons.Weapon;
 import Objects.Ladder;
@@ -24,36 +20,48 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.ScreenUtils;
-import lombok.SneakyThrows;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.annotation.Target;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Vector;
 
+import static Logic.Experience.*;
 import static Logic.FightLogic.Fight.*;
 import static Mobs.Monster.eqNumber;
+import static com.mygdx.game.Assets.cleaveTXT;
+import static com.mygdx.game.Assets.healTXT;
 
 public class GameApp extends ApplicationAdapter {
+	public static int levelCap = 0;
 	static int checkSuccesful = 0;
+	private static Player player;
+	private static Monster monster;
 
 	int toxic = 0;
 
-
+	public static int fightON;
+public static int expScreen = 0;
 	int borderX = 16;
 	int borderY = 16;
 	static int ladderCheckUPSuccessful = 0;
 	static int ladderCheckDOWNSuccessful = 0;
-
+public static int statsscreen = 0;
 	Scanner scanner = new Scanner(System.in);
 	public static Monster[] monsterBase = new Monster[50];
 	public static Monster[] forestBase = new Monster[50];
@@ -67,7 +75,8 @@ public class GameApp extends ApplicationAdapter {
 	static Monster[] monsterBase5 = new Monster[50];
 
 	static Monster[] monsterBase6 = new Monster[50];
-
+	static FreeTypeFontGenerator fontGenerator;
+static FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
 	static Ladder[] ladders = new Ladder[10];
 
 	static Monster[] banditCampBase = new Monster[50];
@@ -76,15 +85,26 @@ public class GameApp extends ApplicationAdapter {
 
 	static int[] ladY = new int[10];
 
+	public static TextField stats;
+
 	static LadderDOWN[] ladderDOWNS = new LadderDOWN[10];
+	public static Vector3 touchPoint;
 
 	static LadderUP[] ladderUPS = new LadderUP[10];
 
 	double[] field = new double[100];
+
+	public static Player Dawid;
 	public static int spawnedMonsters = 1;
 	int spawnedMonstersFloor2 = 1;
 
 	double checkme[] = new double[500];
+	public static String enemyAttackText;
+	public static String bottomText;
+	public static String topText;
+	public static BitmapFont topTextBitmap;
+	public static String mobSpellText;
+	public static BitmapFont mobSpellBitmap;
 	//
 	//
 	//
@@ -98,15 +118,15 @@ public class GameApp extends ApplicationAdapter {
 	//	//
 	//	//
 	//	//
-	private static SpriteBatch batch;
+	public static SpriteBatch batch;
 	private static Texture texture;
-	private static Sprite sprite;
+	public static Sprite sprite;
 	private static Texture forestTexture;
 	private static Sprite forestSprite;
 	public static Texture playerTexture;
 	public static Sprite playerSprite;
-
-	private static Camera camera;
+public static String playerAttackText;
+	public static Camera camera;
 
 	private static Screen screen;
 	private static Target target;
@@ -115,14 +135,13 @@ public class GameApp extends ApplicationAdapter {
 	private static Minotaur minotaur;
 	private static Texture mapTexture;
 	private static Sprite mapSprite;
-	private static Player Dawid;
 	private static Texture inventoryTX;
 	private static Sprite inventorySP;
 
 	private static Texture fightscreenTX;
-	private static Sprite fightscreenSP;
-	private static int fightstart = 0;
-
+	public static Sprite fightscreenSP;
+	public static int fightstart = 0;
+public static Rectangle cursor;
 	static Monster currentTarget;
 //
 	//
@@ -138,250 +157,162 @@ public class GameApp extends ApplicationAdapter {
 	//	//
 	//	//
 
-
-
-	public void Game() throws InterruptedException {
-		/*  Monster[] monsterBase = new Monster[100];*/
-		final String SETTINGS = "9";
-		final String INFO = "8";
-
-		//
-		// Podstawowe potwory są wyłączone bo generują się automatycznie
-		//
-
-		Random random = new Random();
-		String input;
-		String exit = "0";
-		do {
-			input = scanner.nextLine().toUpperCase();
-			switch (input) {
-
-				case "HEAL":
-					double healvalue = 200;
-					Dawid.setHP(Dawid.getHP() + healvalue);
-					double overHeal = (Dawid.getHP() - Dawid.getMaxHP());
-					if (overHeal >= 0) {
-						Dawid.setHP(Dawid.getHP() - overHeal);
-					}
-					System.out.println("Uleczyłeś się za " + (healvalue - overHeal) + " punktów życia");
-					break;
-				case "TOWN":
-					if (Dawid.getX() < 6 && Dawid.getX() > 2 && Dawid.getY() < 6 && Dawid.getY() > 2) {
-						System.out.println("Gdzie chcesz pójść?");
-						System.out.println("Kowal");
-						System.out.println("Ratusz");
-						String input2 = scanner.nextLine().toUpperCase();
-						switch (input2) {
-							case "KOWAL":
-								Quests.QuestConvo(Dawid);
-								break;
-							case "RATUSZ":
-								Quests.Quest2Convo(Dawid);
-								break;
-						}
-					}
-					break;
-				case "PATCH":
-					break;
-				case "DMG":
-					System.out.println(Dawid.getDMG());
-					break;
-				case "XP":
-					System.out.println(Dawid.getXP());
-					break;
-				case "TP":
-					if (Dawid.getChosenSkill1() == Player.TP || Dawid.getChosenSkill2() == Player.TP ||
-							Dawid.getChosenSkill3() == Player.TP || Dawid.getChosenSkill4() == Player.TP ||
-							Dawid.getChosenSkill5() == Player.TP) {
-						System.out.println("Użyłeś teleportacji!");
-						Dawid.Teleport(Dawid);
-					} else {
-						System.out.println("Nie posiadasz tej umiejętności");
-					}
-					break;
-
-
-				case "LVLUP":
-
-					String attributes = "1";
-					do {
-
-						System.out.println("Masz " + Dawid.getAttributePoints() + " punktów umiejętności");
-						System.out.println("Wybierz którą statystykę chcesz podnieść: ");
-						System.out.println("1. Atak (+1)");
-						System.out.println("2. Moc zaklęć (+5)");
-						System.out.println("3. Punkty życia (+6)");
-						System.out.println("4. Szansa na cios krytyczny (+0,5%)");
-						System.out.println("5. Regeneracja many (+0,5 na turę)");
-						System.out.println("0. Wyjdź");
-
-						attributes = scanner.nextLine();
-						switch (attributes) {
-							case "1":
-								if (Dawid.getAttributePoints() > 0) {
-									Dawid.setDMG(Dawid.getDMG() + 1);
-									Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
-								} else {
-									System.out.println("Nie masz już punktów umiejętności");
-								}
-								break;
-							case "2":
-								if (Dawid.getAttributePoints() > 0) {
-									Dawid.setMagic(Dawid.getMagic() + 5);
-									Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
-								} else {
-									System.out.println("Nie masz już punktów umiejętności");
-								}
-								break;
-							case "3":
-								if (Dawid.getAttributePoints() > 0) {
-									Dawid.setMaxHP(Dawid.getMaxHP() + 6);
-									Dawid.setHP(Dawid.getHP() + 6);
-									Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
-								} else {
-									System.out.println("Nie masz już punktów umiejętności");
-								}
-								break;
-							case "4":
-								if (Dawid.getAttributePoints() > 0) {
-									Dawid.setCritChance(Dawid.getCritChance() + 0.5);
-									Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
-								} else {
-									System.out.println("Nie masz już punktów umiejętności");
-								}
-								break;
-							case "5":
-								if (Dawid.getAttributePoints() > 0) {
-									Dawid.setManaRegen(Dawid.getManaRegen() + 0.5);
-									Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
-								} else {
-									System.out.println("Nie masz już punktów umiejętności");
-								}
-								break;
-							case "0":
-								attributes = "0";
-								break;
-							default:
-								attributes = "0";
-						}
-
-
-					}
-					while (attributes != "0");
-
-
-					break;
-
-
-				case "EQ":
-					System.out.println("Twoje przedmioty: ");
-					System.out.println("Naciśnij numer przedmiotu aby go założyć lub zdjąć, wpisz OFF aby zdjąć wszystkie" +
-							" przedmioty lub 0 aby wyjść z ekwipunku");
-					for (int i = 0; i < 50; i++) {
-						try {
-							System.out.println((i) + ". " + eqNumber[i].getShortName() + " (" + eqNumber[i].getHP() + " HP, "
-									+ eqNumber[i].getDMG() + " DMG, " + eqNumber[i].getCrit() + "Crit, " + eqNumber[i].getMagic()
-									+ " Mocy zaklęć) ");
-							if (eqNumber[i].getEqValue() > 0) {
-								System.out.println("(Założony)");
-							}
-						} catch (NullPointerException a) {
-						}
-					}
-					Inventory.INVENTORY(Dawid);
-
-
-				case SETTINGS:
-					System.out.println("W: góra, S: dół, A: lewo, D: prawo,");
-					break;
-				case INFO:
-					Test.PlayerInfo(Dawid);
-					break;
-				case "EXIT":
-					input = exit;
-					break;
-				case "GIVEITEMS":
-
-
-					break;
-				case "MAP":
-					System.out.println("Sklep: X:" + shop.getX() + ", Y:" + shop.getY());
-					System.out.println("Drabina piętro 1: X:" + ladderDOWNS[1].getX() + " Y:" + ladderDOWNS[1].getY());
-					/*if (discoverForest == 1) {
-						System.out.println("Las: X: 1-8, Y: 8-16");
-					}
-					if (discoverCamp == 1) {
-						System.out.println("Obóz bandytów: X: 9-15, Y: 1-8");
-					}*/
-					break;
-				case "ABCDE":
-					Dawid.setHP(10000);
-					Dawid.setDMG(10000);
-					Dawid.setMaxHP(10000);
-
-
-					Dawid.setChosenSkill1(Player.ICE);
-					Dawid.setChosenSkill2(Player.FIREBALL);
-					Dawid.setChosenSkill3(Player.TP);
-
-					break;
-
-				case "MOREEXP":
-					Dawid.setXP(Dawid.getXP() + 100);
-					System.out.println("Dodałeś 100 expa, teraz masz " + Dawid.getXP());
-					break;
-			}
-
-			Dawid.setEscapeInvulnerability(0);
-			if (Dawid.getY() == 3 && Dawid.getX() == 5) {
-				Armor.pickArmor(Dawid);
-			}
-			if (Dawid.getHP() > 0) {
-				Experience.expCounter(Dawid);
-			}
-			if (Dawid.getHP() < 1) {
-				System.out.println("Odrodziłeś się w mieście, niestety utraciłeś całe doświadczenie zdobyte w walce");
-				Dawid.setXP(0);
-				Dawid.setX(4);
-				Dawid.setY(4);
-				Dawid.setHP(Dawid.getMaxHP());
-				/*input = exit;*/
-			}
-		}
-		while (!input.equals(exit));
-		scanner.close();
-	}
-
 private Stage stage;
 private Actor actor;
 private Event battle;
+public static Sprite statsSprite;
+public static BitmapFont font;
+public static TextField attackText;
+public static String inventoryString;
+public static TextField inventoryScreen[];
+public static BitmapFont inventoryScreenBitMap[];
+public static ActionListener fight;
+public static ActionEvent fightEvent;
+public static BitmapFont enemyAttackFont;
+public static Texture spiderTexture;
+public static Sprite spiderSprite;
+public static BitmapFont playerAttackFont;
+public static Spider spider;
+public static Mutant mutant;
+public static Monster defaltowy;
+public static Texture goblinTxt;
+public static Sprite goblinSprite;
+
+public static BitmapFont bottomBitMapFont;
+	public static Texture skeletonTxt;
+	public static Sprite skeletonSprite;
+	public static Texture shopTxt;
+	public static Sprite shopSprite;
+	public static String playerInfo;
+	public static BitmapFont playerInfoBitMap;
+	public static Rectangle buttonBounds;
+	public static String leftText;
+	public static BitmapFont leftBitMapFont;
+	public static Texture levelUpScreen;
+	public static SpriteTouchable levelUpSprite;
+	public static Texture iceBoltTXT;
+	public static SpriteTouchable iceBoltSPR;
+	public static Texture fireBallTXT;
+	public static SpriteTouchable fireBallSPR2;
+	public static SpriteTouchable getIceBoltSPR2;
+	public static SpriteTouchable getAdrenalineSPR2;
+	public static SpriteTouchable ironskinSPR2;
+	public static SpriteTouchable cleaveSPR2;
+	public static SpriteTouchable healSPR2;
+	public static SpriteTouchable fireBallSPR;
+	public static Texture adrenalineTXT;
+	public static SpriteTouchable adrenalineSPR;
+	public static Texture ironskinTXT;
+	public static SpriteTouchable ironskinSPR;
+	public static Texture dualWieldTXT;
+	public static SpriteTouchable dualWieldSPR;
 
 	@Override
 	public void create() {
+		touchPoint = new Vector3();
+		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("AGoblinAppears-o2aV.ttf"));
+		fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		fontParameter.size = 10;
+		fontParameter.borderColor = Color.BLACK;
+fontParameter.color = Color.RED;
+cursor = new Rectangle();
+cursor.setBounds(1,1,1,1);
+		Dawid = new Player(1,1,1,0,0,4,4,0,0,0,0);
+		int helmEQ = 0;
+		createBackEnd();
+		levelUpScreen = new Texture("skillscreen.png");
+		Assets.addAttributeSPR = new SpriteTouchable(levelUpScreen);
+		levelUpSprite = new SpriteTouchable(levelUpScreen);
+		buttonBounds = new Rectangle((int) Assets.attackSpr.getX(), (int) Assets.attackSpr.getY(), (int) Assets.attackSpr.getWidth(), (int) Assets.attackSpr.getHeight());
+		spider = new Spider(100,10,4,6,"pajonk",100,1,1);
+		mutant = new Mutant(100,10,5,6,"pajonk",100,1, 1, 1);
+		cleaveSPR2 = new SpriteTouchable(cleaveTXT);
+		getAdrenalineSPR2 = new SpriteTouchable(adrenalineTXT);
+		ironskinSPR2 = new SpriteTouchable(ironskinTXT);
+		healSPR2 = new SpriteTouchable(healTXT);
+		getIceBoltSPR2 = new SpriteTouchable(iceBoltTXT);
+		fireBallSPR2 = new SpriteTouchable(fireBallTXT);
+		playerAttackText = " ";
+		enemyAttackText = " ";
+		leftText = "Sterowanie: \n \n " +
+				"Chodzenie:  W, S, D, A \n \n Mapa: Tab \n \n Ekwipunek: F2 \n \n Atrybuty: P ";
+		topText = " ";
+		mobSpellText = " ";
+		bottomText = "Wyjdź z gry: 0, Sterowanie: WSAD     Ekwipunek: F2,       Atrybuty : P                Mapa : TAB ";
+		playerInfo = "Punkty zdrowia: " + Dawid.getHP() + "/" + Dawid.getMaxHP() + "         Mana: " +Dawid.getMana() +
+				"\n Doświadczenie: " + Dawid.getXP() + "/" + levelCap + "         Poziom: " + Dawid.getLevel() +
+				"\n Punkty obrażeń: " + Dawid.getDMG();
+		playerInfoBitMap = new BitmapFont();
+		mobSpellBitmap = new BitmapFont();
+		mobSpellBitmap.getData().setScale(2);
+		Assets.addATTACKBMP = fontGenerator.generateFont(fontParameter);
+		Assets.addCRITBMP = fontGenerator.generateFont(fontParameter);
+		Assets.addHPBMP = fontGenerator.generateFont(fontParameter);
+		Assets.addMANABMP = fontGenerator.generateFont(fontParameter);
+		Assets.addMAGICBMP = fontGenerator.generateFont(fontParameter);
+
+		leftBitMapFont = fontGenerator.generateFont(fontParameter);
+		bottomBitMapFont = fontGenerator.generateFont(fontParameter);
+		topTextBitmap = fontGenerator.generateFont(fontParameter);
+		playerAttackFont = fontGenerator.generateFont(fontParameter);
+		enemyAttackFont = fontGenerator.generateFont(fontParameter);
+		mobSpellBitmap = fontGenerator.generateFont(fontParameter);
+		leftBitMapFont.getData().setScale(2);
+		bottomBitMapFont.getData().setScale(1.5F);
+		enemyAttackFont.getData().setScale(2);
+		playerAttackFont.getData().setScale(2);
+		topTextBitmap.getData().setScale((float) 2.2);
+		topText = "1. zaatakuj, 2. użyj czaru, 3. użyj czaru";
+
+		fight = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		};
+		attackText = new TextField();
+		attackText.setText("Siema");
+
+
+		fight.actionPerformed(fightEvent);
+		attackText.addActionListener(fight);
+
 		battle = new Event();
 		actor = new Actor();
-		createBackEnd();
+
 		 stage = new Stage();
 		 stage.draw();
 		 stage.addActor(actor);
 
-		camera = new OrthographicCamera(1280, 720);
+		camera = new OrthographicCamera(1920, 1080);
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		batch = new SpriteBatch();
+		spiderTexture = new Texture("spider.png");
+		spiderSprite = new Sprite(spiderTexture);
+		spiderSprite.setSize(650,500);
+		shopTxt = new Texture("shop.png");
+		shopSprite = new Sprite(shopTxt);
+		shopSprite.setSize(1920,1080);
+		goblinTxt = new Texture("goblin.png");
+		goblinSprite = new Sprite(goblinTxt);
+		goblinSprite.setSize(650,500);
+		skeletonTxt = new Texture("skeleton.png");
+		skeletonSprite = new Sprite(skeletonTxt);
+		skeletonSprite.setSize(650,500);
 		texture = new Texture(Gdx.files.internal("mutant.png"));
 		sprite = new Sprite(texture);
-		sprite.setPosition(w / 2 - sprite.getWidth() / 2, h / 2 - sprite.getHeight() / 2);
+
 		inventoryTX = new Texture("Inventory.png");
 		inventorySP = new Sprite(inventoryTX);
 		inventorySP.setPosition((w / 2 - sprite.getWidth() / 2) - 300, h / 2 - sprite.getHeight() / 2);
-		mapTexture = new Texture("map.jpg");
+		mapTexture = new Texture("mymap.png");
 		mapSprite = new Sprite(mapTexture);
-		mapSprite.setPosition(w / 2 - mapSprite.getWidth() / 2, (h / 2 - mapSprite.getHeight() / 2) - 30);
+
 		forestTexture = new Texture(Gdx.files.internal("forest.jpg"));
 		forestSprite = new Sprite(forestTexture);
 		forestSprite.setPosition(w / 2 - sprite.getWidth() / 2, h / 2 - sprite.getHeight() / 2);
-		sprite.setSize(50, 80);
+		sprite.setSize(120, 150);
 		forestSprite.setSize(700, 500);
 		forestSprite.setPosition(forestSprite.getX() - 320, forestSprite.getY() - 230);
 		sprite.setPosition(sprite.getX(), sprite.getY() - 200);
@@ -389,16 +320,29 @@ private Event battle;
 		playerTexture = new Texture(Gdx.files.internal("player.png"));
 		playerSprite = new Sprite(playerTexture);
 		playerSprite.setPosition((w / 2 - sprite.getWidth() / 2) + 800, (h / 2 - sprite.getHeight() / 2) + 800);
-		playerSprite.setSize(50, 80);
-		mapSprite.setSize(mapSprite.getWidth() * 3, (mapSprite.getHeight() + 70) * 3);
-		Dawid = new Player(300, 300, 60, 0, 1, 4, 4, 0, 0, 0, 0);
+
+		playerSprite.setSize(120, 140);
+		spiderSprite.setPosition(playerSprite.getX() + 100, playerSprite.getY());
+
+		sprite.setPosition(playerSprite.getX() + 100,playerSprite.getY());
+		attackText.setLocation((int) (playerSprite.getX() - 100), (int) (playerSprite.getY() + 200));
+		stats = new TextField("Zadałeś 100 obrażeń!");
+		stats.setLocation((int) playerSprite.getX(), (int) playerSprite.getY());
+	font = new BitmapFont();
+		mapSprite.setPosition(playerSprite.getX() - 2040, playerSprite.getY() - 1730);
+		mapSprite.setSize(7680, 4320);
+		Dawid = new Player(100000, 100000, 100, 0, 0, 4, 4, 0, 0, 0, 0);
 		Dawid.setFloor(1);
 		Dawid.setClassNumber(1);
 		Dawid.setMana(100);
 		fightscreenTX = new Texture("battlescreen.png");
 		fightscreenSP = new Sprite(fightscreenTX);
 		fightscreenSP.setPosition(10000, 10000);
-		fightscreenSP.setSize(1280,720);
+		fightscreenSP.setSize(1920,1080);
+		levelUpSprite.setPosition(playerSprite.getX()-300,playerSprite.getY() - 200);
+		levelUpSprite.setSize(0,0);
+		camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
+		camera.update();
 	}
 
 	@Override
@@ -412,7 +356,6 @@ private Event battle;
 	public void render() {
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
-
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
 
@@ -446,129 +389,255 @@ private Event battle;
 
 
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.W) && Dawid.getY() < borderY && checkSuccesful == 0) {
-			playerSprite.setY(playerSprite.getY() + 60);
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.W) && Dawid.getY() < borderY && fightstart == 0) {
+			playerSprite.setY(playerSprite.getY() + 229);
 			if (Dawid.getY() < borderY) {
 				Dawid.setY(Dawid.getY() + 1);
+				System.out.println("Ruszyłeś się");
+				checkSuccesful = 1;
 			} else if (Dawid.getY() >= borderY) {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
-			try {
-				Battle(Dawid, monsterBase[1]);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+
 			camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
 			camera.update();
-			try {
-				MoveConclude();
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			Experience.expCounter(Dawid);
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.S) && Dawid.getY() > 1 && checkSuccesful == 0) {
-			playerSprite.setY(playerSprite.getY() - 60);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.S) && Dawid.getY() > 1 && fightstart == 0) {
+			playerSprite.setY(playerSprite.getY() - 229);
 			if (Dawid.getY() > 1) {
 				Dawid.setY(Dawid.getY() - 1);
+				System.out.println("Ruszyłeś się");
 			} else {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
 			camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
 			camera.update();
-			try {
-				MoveConclude();
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			Experience.expCounter(Dawid);
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.D) && Dawid.getX() < borderX && checkSuccesful == 0) {
-			playerSprite.setX(playerSprite.getX() + 60);
+
+		Experience.expCounter(Dawid);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.D) && Dawid.getX() < borderX && fightstart == 0) {
+			playerSprite.setX(playerSprite.getX() + 261);
 			if (Dawid.getX() < borderX) {
 				Dawid.setX(Dawid.getX() + 1);
+				System.out.println("Ruszyłeś się");
 			} else if (Dawid.getX() >= borderX) {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
 			camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
 			camera.update();
-			try {
-				MoveConclude();
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			Experience.expCounter(Dawid);
 
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.A) && Dawid.getX() > 1 && checkSuccesful == 0) {
-			playerSprite.setX(playerSprite.getX() - 60);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.A) && Dawid.getX() > 1 && fightstart == 0) {
+			playerSprite.setX(playerSprite.getX() - 261);
 			if (Dawid.getX() > 1) {
 				Dawid.setX(Dawid.getX() - 1);
+				System.out.println("Ruszyłeś się");
 			} else {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
 			camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
 			camera.update();
-			try {
-				MoveConclude();
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			Experience.expCounter(Dawid);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-			try {
-				Dawid.Attack(currentTarget, Dawid);
-			}catch (NullPointerException a){
-
-			}
-			}
+			Dawid.Attack(monsterBase[1], Dawid);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+			/*GameInterface.showSteering();*/
+		}
 		batch.setProjectionMatrix(camera.combined);
-		if (currentTarget != null){
-			try {
 
-				Battle(Dawid, currentTarget);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+		try {
+			MoveConclude();
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+			if (statsscreen == 0){
+				statsscreen = 1;
 			}
-	}
-		batch.begin();
-		mapSprite.draw(batch);
-
-		fightscreenSP.draw(batch);
-inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);
-		playerSprite.draw(batch);
-		sprite.draw(batch);
-		if (fightstart == 1){
-			try {
-				Fight.Turn(Dawid,monsterBase[1]);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+			else if (statsscreen == 1){
+				statsscreen = 0;
 			}
 		}
+		if (statsscreen == 1){
+			Assets.addAttributeSPR.setSize(300,600);
+
+			Assets.addATTACKTEXT = "ATAK     (" + Dawid.getDMG() +")      + 5";
+			Assets.addHPTEXT = "HP     (" + Dawid.getHP() +")      + 5";
+			Assets.addCRITTEXT = "CRIT       (" + Dawid.getCritChance() +")      + 5";
+			Assets.addMAGICTEXT ="MAGIA      (" + Dawid.getMagic() +")      + 5";
+			Assets.addMANATEXT = "MANA     (" + Dawid.getMana() +")     + 5";
+		}
+		else if (statsscreen == 0) {
+			Assets.addATTACKTEXT = " ";
+			Assets.addHPTEXT = " ";
+			Assets.addCRITTEXT = " ";
+			Assets.addMAGICTEXT =" ";
+			Assets.addMANATEXT = " ";
+			Assets.addAttributeSPR.setSize(0, 0);
+		}
+
+
+
+		/*try {
+			checker(Dawid,spider);
+			checker(Dawid,mutant);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
+		}*/
+		/*Gdx.input.setInputProcessor() {
+
+
+										public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+											return false;
+										}
+
+										public boolean touchDown(int x, int yy, int pointer, int button) {
+											int y = Gdx.graphics.getHeight() - yy;
+											// if sprite + 10 of px marge is touched
+											if(Assets.attackSpr.isPressing(10, x, y)) {
+												// sprite is touched down
+											}
+											return false;
+										}
+									}*/
+		Experience.expCounter(Dawid);
+		experienceCheck();
+		cursor.setBounds(Gdx.input.getX(),Gdx.input.getY(), 10, 10);
+showXP(Dawid);
+		batch.begin();
+		mapSprite.draw(batch);
+		Assets.attackSpr.setPosition(playerSprite.getX() - 600, playerSprite.getY() - 250);
+		Assets.runSpr.setPosition(playerSprite.getX() - 300, playerSprite.getY() - 250);
+		buttonBounds.setBounds((int) (playerSprite.getX() + 300), (int) (playerSprite.getY() - 250), 6000, 6000);
+
+
+
+		fightscreenSP.draw(batch);
+
+inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);
+		playerSprite.draw(batch);
+
+addStats();
+
+
+
+		levelUpSprite.setPosition(playerSprite.getX()-400,playerSprite.getY()-200);
+		sprite.draw(batch);
+		playerAttackFont.draw(batch, playerAttackText, playerSprite.getX()- 500, playerSprite.getY() + 100);
+		enemyAttackFont.draw(batch,enemyAttackText, playerSprite.getX(), playerSprite.getY() + 150);
+		topTextBitmap.draw(batch, topText, playerSprite.getX()- 300, playerSprite.getY() + 420);
+		mobSpellBitmap.draw(batch,mobSpellText, playerSprite.getX(), playerSprite.getY() + 100);
+		bottomBitMapFont.draw(batch,bottomText,playerSprite.getX()- 400,playerSprite.getY() - 400);
+		leftBitMapFont.draw(batch,leftText, playerSprite.getX()- 900,playerSprite.getY() + 100);
+
+		levelUpSprite.draw(batch);
+		iceBoltSPR.draw(batch);
+		fireBallSPR.draw(batch);
+		adrenalineSPR.draw(batch);
+		ironskinSPR.draw(batch);
+		getIceBoltSPR2.draw(batch);
+		fireBallSPR2.draw(batch);
+		getAdrenalineSPR2.draw(batch);
+		ironskinSPR2.draw(batch);
+        healSPR2.draw(batch);
+cleaveSPR2.draw(batch);
+
+Assets.addAttributeSPR.draw(batch);
+
+Assets.addAttributeSPR.setPosition(playerSprite.getX()+ 300,playerSprite.getY() - 300);
+		Assets.addHP.setPosition(playerSprite.getX() + 520,playerSprite.getY()+100);
+		Assets.addDMG.setPosition(playerSprite.getX() + 520,playerSprite.getY()+200);
+		Assets.addMANA.setPosition(playerSprite.getX() + 520,playerSprite.getY()-200);
+		Assets.addMAGIC.setPosition(playerSprite.getX() + 520,playerSprite.getY());
+		Assets.addCRIT.setPosition(playerSprite.getX() + 520,playerSprite.getY()-100);
+		Assets.addMAGIC.draw(batch);
+		Assets.addDMG.draw(batch);
+		Assets.addHP.draw(batch);
+		Assets.addMANA.draw(batch);
+		Assets.addCRIT.draw(batch);
+
+	Assets.addATTACKBMP.draw(batch, Assets.addATTACKTEXT, Assets.addDMG.getX() - 180, Assets.addDMG.getY() + 30);
+	Assets.addHPBMP.draw(batch, Assets.addHPTEXT, Assets.addHP.getX() - 180, Assets.addHP.getY() + 30);
+	Assets.addCRITBMP.draw(batch, Assets.addCRITTEXT, Assets.addDMG.getX() - 180, Assets.addCRIT.getY() + 30);
+	Assets.addMAGICBMP.draw(batch, Assets.addMAGICTEXT, Assets.addDMG.getX() - 180, Assets.addMAGIC.getY() + 30);
+	Assets.addMANABMP.draw(batch, Assets.addMANATEXT, Assets.addDMG.getX() - 180, Assets.addMANA.getY() + 30);
+
+		Assets.healSPR.draw(batch);
+
+		Assets.dualWieldSPR.draw(batch);
+		Assets.iceSpr.draw(batch);
+		Assets.attackSpr.draw(batch);
+		Assets.runSpr.draw(batch);
+
+
 		if (Gdx.input.isKeyPressed(Input.Keys.B)) {
+
+			/*for (int i = 0; i < 50; i++) {
+				try {
+					inventoryScreen[i].setText((i) + ". " + eqNumber[i].getShortName() + " (" + eqNumber[i].getHP() + " HP, "
+							+ eqNumber[i].getDMG() + " DMG, " + eqNumber[i].getCrit() + "Crit, " + eqNumber[i].getMagic()
+							+ " Mocy zaklęć) ");
+					inventoryScreenBitMap[i].draw((Batch) batch, (CharSequence) inventoryScreen[i], playerSprite.getX() - 200, playerSprite.getY() + 100);
+					inventoryScreenBitMap[i].getData().setScale(3);
+					if (eqNumber[i].getEqValue() > 0) {
+						System.out.println("(Założony)");
+					}
+				} catch (NullPointerException a) {
+				}
+			}*/
+
 
 			inventorySP.draw(batch);
 
-		}
-		/*if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
-			if (doubleStrike == 0) {
-				if (Dawid.getFreeze() < 1) {
-					Dawid.Attack(monsterBase[1], Dawid);
-					System.out.println("Zaatakowałeś");
-				} else if (Dawid.getFreeze() > 0) {
-					System.out.println("Zostałeś zamrożony, nie możesz się ruszać przez " + Dawid.getFreeze() + " tury");
-					Dawid.setFreeze(Dawid.getFreeze() - 1);
-				}
-				try {
-					EnemyAttack(Dawid, monsterBase[1]);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			} else if (doubleStrike == 1) {
-				FightLogic.WhoDoYouWantToAttack(monsterBase[1]);
-			}
 
-}*/
+
+		}
+
+
+
+
+		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
+			playerInfo = "Punkty zdrowia: " + Dawid.getHP() + "/" + Dawid.getMaxHP() + "         Mana: " +Dawid.getMana() +
+					"\n Doświadczenie: " + Dawid.getXP() + "/" + levelCap + "         Poziom: " + Dawid.getLevel() +
+					"\n Punkty obrażeń: " + Dawid.getDMG();
+			playerInfoBitMap.draw(batch, playerInfo, playerSprite.getX(), playerSprite.getY());
+
+
+		}
 
 		batch.end();
 
+	}
+
+	public static void showXP(Player gracz){
+		if (Dawid.getLevel() == 0) {
+			levelCap = 40;
+		}
+		if (Dawid.getLevel() == 1) {
+			levelCap = 100;
+		}
+		if (Dawid.getLevel() == 2) {
+			levelCap = 250;
+		}
+		if (Dawid.getLevel() == 3) {
+			levelCap = 400;
+		}
+		if (Dawid.getLevel() == 4) {
+			levelCap = 700;
+		}
+		if (Dawid.getLevel() == 5) {
+			levelCap = 1100;
+		}
+	}
+
+	public static void showLevel(Player gracz){
 
 	}
 
@@ -590,8 +659,51 @@ inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);
 	}
 
 	public void createBackEnd(){
-		Player Dawid = new Player(300,300,20,0,1,4,4,0,0,0,0);
-		int helmEQ = 0;
+		Assets.addATTACKTEXT = " ";
+		Assets.addHPTEXT = " ";
+		Assets.addCRITTEXT = " ";
+		Assets.addMAGICTEXT =" ";
+		Assets.addMANATEXT = " ";
+Assets.PLUS = new Texture("plus.png");
+Assets.addDMG = new SpriteTouchable(Assets.PLUS);
+		Assets.addCRIT = new SpriteTouchable(Assets.PLUS);
+		Assets.addHP = new SpriteTouchable(Assets.PLUS);
+		Assets.addMAGIC = new SpriteTouchable(Assets.PLUS);
+		Assets.addMANA = new SpriteTouchable(Assets.PLUS);
+		Assets.cleaveTXT = new Texture("cleavebutton.png");
+		Assets.cleaveSPR = new SpriteTouchable(Assets.cleaveTXT);
+		Assets.dualWieldTXT = new Texture("duealwieldbutton.png");
+		Assets.dualWieldSPR = new SpriteTouchable(Assets.dualWieldTXT);
+		healTXT = new Texture("healbutton.png");
+		Assets.healSPR = new SpriteTouchable(healTXT);
+Assets.attackTxt = new Texture("attackbutton.png");
+Assets.attackSpr = new SpriteTouchable(Assets.attackTxt);
+		Assets.runTxt = new Texture("runbutton.png");
+		Assets.runSpr = new Sprite(Assets.runTxt);
+		Assets.iceTxt = new Texture("iceboltbutton.png");
+		Assets.iceSpr = new Sprite(Assets.iceTxt);
+		Assets.addMANA.setSize(0,0);
+		Assets.addDMG.setSize(0,0);
+		Assets.addCRIT.setSize(0,0);
+		Assets.addHP.setSize(0,0);
+		Assets.addMAGIC.setSize(0,0);
+
+		iceBoltTXT = new Texture("iceboltbutt.png");
+		iceBoltSPR = new SpriteTouchable(iceBoltTXT);
+		fireBallTXT = new Texture("fireballbutt.png");
+		fireBallSPR= new SpriteTouchable(fireBallTXT);
+		adrenalineTXT = new Texture("adrenalinebutt.png");
+		adrenalineSPR = new SpriteTouchable(adrenalineTXT);
+		ironskinTXT = new Texture("ironskinbutton.png");
+		ironskinSPR = new SpriteTouchable(ironskinTXT);
+
+		Assets.iceSpr.setSize(0,0);
+		adrenalineSPR.setSize(0,0);
+		Assets.runSpr.setSize(0,0);
+		Assets.attackSpr.setSize(0,0);
+
+
+
 		int weaponEQ = 0;
 		int neckEQ = 0;
 		int handsEQ = 0;
@@ -625,13 +737,13 @@ inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);
 		createLadder(5);
 		createLadder(6);
 		spawn(27, monsterBase);
-		spawn(27, monsterBase2);
-		spawn(27, monsterBase3);
-		spawn(27, monsterBase4);
-		spawn(27, monsterBase5);
-		spawn(27, monsterBase6);
-		spawn(27, forestBase);
-		spawn(27,banditCampBase);
+		SpawnFloor2.SPAWN(27,monsterBase2);
+		SpawnFloor3.SPAWN(27, monsterBase3);
+		SpawnFloor4.SPAWN(27, monsterBase3);
+		SpawnFloor5.SPAWN(27, monsterBase3);
+		SpawnFloor6.SPAWN(27, monsterBase3);
+		Forest.SPAWN(27, forestBase);
+		BanditCamp.SPAWN(27, monsterBase3);
 	}
 	public void MoveConclude() throws InterruptedException {
 
@@ -670,17 +782,30 @@ inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);
 
 	}
 	public static void checker(Player player, Monster monster) throws InterruptedException {
-		try {
-			if (player.getX() == monster.getX() && player.getY() == monster.getY() && player.getFloor() == monster.getFloor() && monster.getHp() > 0) {
 
-				monster = currentTarget;
-				fightscreenSP.setPosition(playerSprite.getX() - 640, playerSprite.getY() - 360);
+
+		try {
+
+			if (player.getX() == monster.getX() && player.getY() == monster.getY() && player.getFloor() == monster.getFloor() && monster.getHp() > 0) {
+               fightON = 1;
+               fightstart = 1;
+				topText = "Walcz!";
+				leftText = " ";
+
+				Assets.attackSpr.setSize(200,80);
+				Assets.runSpr.setSize(200,80);
+				fightscreenSP.setPosition(playerSprite.getX() - 960, playerSprite.getY() - 540);
+				fightscreenSP.setSize(1920,1080);
 				sprite.setPosition(fightscreenSP.getX()+ 1000, fightscreenSP.getY() + 360);
 				sprite.setSize(200,200);
-
 				checkSuccesful = 1;
-				Fight.Turn(player, monster);
-             fightstart = 1;
+				if (fightON == 1) {
+					Fight.Turn(Dawid, monster);
+				}
+
+			}
+			else {
+				fightON = 0;
 			}
 		} catch (NullPointerException a) {
 
@@ -1023,4 +1148,97 @@ batch.end();
 
 		   }
 	   }
+
+	   public static void addStats(){
+		if (fightstart == 0){
+			cleaveSPR2.setSize(0,0);
+			getAdrenalineSPR2.setSize(0,0);
+			ironskinSPR2.setSize(0,0);
+			healSPR2.setSize(0,0);
+			getIceBoltSPR2.setSize(0,0);
+			fireBallSPR2.setSize(0,0);
+		}
+
+		if (Dawid.getAttributePoints() > 0){
+			Assets.addATTACKTEXT = "ATAK     (" + Dawid.getDMG() +")      + 5";
+			Assets.addHPTEXT = "HP     (" + Dawid.getHP() +")      + 5";
+			Assets.addCRITTEXT = "CRIT       (" + Dawid.getCritChance() +")      + 5";
+			Assets.addMAGICTEXT ="MAGIA      (" + Dawid.getMagic() +")      + 5";
+			Assets.addMANATEXT = "MANA REGEN  (" + Dawid.getManaRegen() +")     + 5";
+Assets.addAttributeSPR.setSize(300,600);
+			Assets.addMAGIC.setSize(50,50);
+
+			Assets.addHP.setSize(50,50);
+
+			Assets.addDMG.setSize(50,50);
+
+			Assets.addCRIT.setSize(50,50);
+
+			Assets.addMANA.setSize(50,50);
+
+		}
+		else  {
+
+			Assets.addMANA.setSize(0,0);
+			Assets.addDMG.setSize(0,0);
+			Assets.addCRIT.setSize(0,0);
+			Assets.addHP.setSize(0,0);
+			Assets.addMAGIC.setSize(0,0);
+
+		}
+		   if(Gdx.input.justTouched())
+
+		   {
+			   //unprojects the camera
+			   camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			   if (Assets.addDMG.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+				   Dawid.setDMG(Dawid.getDMG() + 1);
+				   Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
+
+
+			   }
+		   }
+		   if(Gdx.input.justTouched())
+
+		   {
+			   //unprojects the camera
+			   camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			   if (Assets.addHP.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+				   Dawid.setMaxHP(Dawid.getMaxHP() + 6);
+				   Dawid.setHP(Dawid.getHP() + 6);
+				   Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
+			   }
+		   }
+		   if(Gdx.input.justTouched())
+
+		   {
+			   //unprojects the camera
+			   camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			   if (Assets.addCRIT.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+				   Dawid.setCritChance(Dawid.getCritChance() + 0.5);
+				   Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
+			   }
+		   }
+		   if(Gdx.input.justTouched())
+
+		   {
+			   //unprojects the camera
+			   camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			   if (Assets.addMAGIC.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+				   Dawid.setMagic(Dawid.getMagic() + 5);
+				   Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
+			   }
+		   }
+		   if(Gdx.input.justTouched())
+
+		   {
+			   //unprojects the camera
+			   camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			   if (Assets.addMANA.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+				   Dawid.setManaRegen(Dawid.getManaRegen() + 0.5);
+				   Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
+			   }
+		   }
+	   }
+
 }
