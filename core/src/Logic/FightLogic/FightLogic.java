@@ -3,17 +3,22 @@ package Logic.FightLogic;
 import Logic.GameLogic;
 import Mobs.Monster;
 import Mobs.Player;
+import com.badlogic.gdx.Game;
+import com.mygdx.game.Assets;
+import com.mygdx.game.GameApp;
 
 import java.util.Random;
 
-import static Logic.FightLogic.Fight.PlayerStatusWearOff;
-import static Logic.FightLogic.Fight.joined;
+import static Logic.FightLogic.Fight.*;
+import static com.mygdx.game.GameApp.*;
 
 public class FightLogic {
 
-    public static void ConcludeBattle(Player player, Monster monster1, int joined){
+    public static void ConcludeBattle(Player player, Monster monster1, int joined) throws InterruptedException {
         if (Fight.doubleStrike == 1) {
             if (monster1.getHp() <= 0 && GameLogic.monsterBase[joined].getHp() <= 0) {
+                topText = "Pokonałeś obu wrogów!";
+                monster1.setFreeze(0);
                 System.out.println("Pokonałeś obu wrogów!");
                 GameLogic.monsterBase[joined].setX(100);
                 GameLogic.monsterBase[joined].setY(100);
@@ -23,28 +28,78 @@ public class FightLogic {
                 GameLogic.monsterBase[joined].Drop();
                 monster1.Drop();
                 player.setGold(player.getGold() + monster1.getGold() + GameLogic.monsterBase[joined].getGold());
+
                 Fight.joined = 1;
                 Fight.doubleStrike = 0;
                 PlayerStatusWearOff(player);
                 Fight.escape = 1;
+                Fight.fightON = 0;
+                Thread.sleep(1000);
+                GameApp.fightscreenSP.setSize(1, 1);
+                GameApp.fightstart = 0;
+                GameApp.enemyAttackText = " ";
+                GameApp.playerAttackText = " ";
+                GameApp.mobSpellText = " ";
+                GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+                GameApp.sprite.setPosition(100000,100000);
+                leftText = "Controls: \n \n " +
+                        "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
 
+                Assets.attackSpr.setSize(0,0);
+                Assets.iceSpr.setSize(0,0);
+               adrenalineSPR.setSize(0,0);
+                Assets.runSpr.setSize(0,0);
+                playerAttackText2 = " ";
             }
         } else if (Fight.doubleStrike == 0) {
+
             if (monster1.getHp() <= 0) {
+                monster1.setFreeze(0);
+                playerAttackText2 = " ";
+                topText = "Wygrałeś! ";
                 System.out.println("Wygrałeś!");
                 monster1.setX(100);
                 monster1.setY(100);
                 player.setXP(player.getXP() + monster1.getGiveXP());
                 Random random = new Random();
-
+                Assets.attackSpr.setSize(0,0);
+                Assets.iceSpr.setSize(0,0);
+                adrenalineSPR.setSize(0,0);
+                Assets.runSpr.setSize(0,0);
                 monster1.Drop();
                 Fight.joined = 1;
                 Fight.doubleStrike = 0;
                 player.setGold(player.getGold() + monster1.getGold());
                 PlayerStatusWearOff(player);
                 Fight.escape = 1;
-
+                Fight.fightON = 0;
+                Thread.sleep(1000);
+                GameApp.fightscreenSP.setSize(1, 1);
+                GameApp.fightstart = 0;
+                GameApp.sprite.setPosition(100000,100000);
+                GameApp.enemyAttackText = " ";
+                GameApp.playerAttackText = " ";
+                GameApp.mobSpellText = " ";
+                GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+                leftText = "Controls: \n \n " +
+                        "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
             }
+        }
+        else {
+            Assets.attackSpr.setSize(0,0);
+            Assets.iceSpr.setSize(0,0);
+            adrenalineSPR.setSize(0,0);
+            Assets.runSpr.setSize(0,0);
+            GameApp.sprite.setPosition(100000,100000);
+            GameApp.enemyAttackText = " ";
+            GameApp.playerAttackText = " ";
+            GameApp.mobSpellText = " ";
+            GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+            leftText = "Controls: \n \n " +
+                    "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+            PlayerStatusWearOff(player);
+            GameApp.fightscreenSP.setSize(1, 1);
+            GameApp.fightstart = 0;
         }
 
         if (player.getHP() < 1) {
@@ -60,11 +115,16 @@ public class FightLogic {
             player.setHP(player.getHP() - burnDMG);
             player.setBurn(player.getBurn() - 1);
         }
-        if (player.getPoison() > 0) {
+        if (player.getPoison() > 0 && player.getDecay() == 0) {
             int poisonDMG = 20;
             player.setHP(player.getHP() - poisonDMG);
             System.out.println("Otrzymałeś " + poisonDMG + " obrażeń od trucizny");
             player.setPoison(player.getPoison() - 1);
+        }
+        else if (player.getDecay() == 1){
+            int decayDMG = 50;
+            player.setHP(player.getHP() - 50);
+            playerAttackText2 = " You've received " + decayDMG + " damage from decay!";
         }
         if (monster.getPoison() > 0){
             int poisonDMG = 20;
@@ -74,6 +134,10 @@ public class FightLogic {
         }
         if (monster.getFreeze() > 0){
             monster.setFreeze(monster.getFreeze() - 1);
+        }
+        if (monster.getHp() < 1){
+            GameApp.fightON = 0;
+            GameApp.fightstart = 0;
         }
 
 

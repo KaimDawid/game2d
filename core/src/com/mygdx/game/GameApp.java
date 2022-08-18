@@ -19,6 +19,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -26,26 +29,32 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.Frontend.Eq.Equipment;
+import org.w3c.dom.Text;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.annotation.Target;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+import java.util.List;
 
 import static Logic.Experience.*;
 import static Logic.FightLogic.Fight.*;
 import static Mobs.Monster.eqNumber;
-import static com.mygdx.game.Assets.cleaveTXT;
-import static com.mygdx.game.Assets.healTXT;
+import static com.mygdx.game.Assets.*;
 
 public class GameApp extends ApplicationAdapter {
 	public static int levelCap = 0;
@@ -95,6 +104,9 @@ static FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
 	double[] field = new double[100];
 
 	public static Player Dawid;
+
+	public static Texture hbTXT;
+	public static Sprite hbSPR;
 	public static int spawnedMonsters = 1;
 	int spawnedMonstersFloor2 = 1;
 
@@ -123,9 +135,12 @@ static FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
 	public static Sprite sprite;
 	private static Texture forestTexture;
 	private static Sprite forestSprite;
+	public static int showequip = 0;
 	public static Texture playerTexture;
 	public static Sprite playerSprite;
 public static String playerAttackText;
+public static Texture hpbargreenTXT;
+public static Sprite hpbargreenSPR;
 	public static Camera camera;
 
 	private static Screen screen;
@@ -136,7 +151,7 @@ public static String playerAttackText;
 	private static Texture mapTexture;
 	private static Sprite mapSprite;
 	private static Texture inventoryTX;
-	private static Sprite inventorySP;
+	public static Sprite inventorySP;
 
 	private static Texture fightscreenTX;
 	public static Sprite fightscreenSP;
@@ -177,6 +192,7 @@ public static Mutant mutant;
 public static Monster defaltowy;
 public static Texture goblinTxt;
 public static Sprite goblinSprite;
+public static Monster currentMonster;
 
 public static BitmapFont bottomBitMapFont;
 	public static Texture skeletonTxt;
@@ -203,23 +219,89 @@ public static BitmapFont bottomBitMapFont;
 	public static Texture adrenalineTXT;
 	public static SpriteTouchable adrenalineSPR;
 	public static Texture ironskinTXT;
+	public static String itemDescription;
+	public static BitmapFont itemDescriptionBMP;
 	public static SpriteTouchable ironskinSPR;
 	public static Texture dualWieldTXT;
 	public static SpriteTouchable dualWieldSPR;
+public static TextButton description;
+	public static ClickListener hover;
+public static List<Sprite> eqList;
+public static Skin descSkin;
+public static Sprite enemybar;
+public static Sprite enemybargreen;
+public static Timer timer;
+public static String playerAttackText2;
+public static BitmapFont playerAttackBMP2;
+	public static String curseTEXT;
+	public static BitmapFont curseBMP;
 
 	@Override
 	public void create() {
+		curseTEXT = new String(" ");
+		curseBMP = new BitmapFont();
+playerAttackText2 = new String();
+playerAttackBMP2 = new BitmapFont();
+playerAttackText2 = " ";
+
+timer = new Timer();
+
+		texture = new Texture(Gdx.files.internal("mutant.png"));
+		sprite = new Sprite(texture);
+		playerTexture = new Texture(Gdx.files.internal("player.png"));
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
+		playerSprite = new Sprite(playerTexture);
+		playerSprite.setPosition((w / 2 - sprite.getWidth() / 2) + 800, (h / 2 - sprite.getHeight() / 2) + 800);
+
+		playerSprite.setSize(120, 140);
+
+		Equipment.itemDescription = " ";
+		itemDescription = new String();
+		itemDescriptionBMP = new BitmapFont();
+		itemDescriptionBMP.getData().setScale(3,3);
+
+		hover = new ClickListener();
+hbTXT = new Texture("healthbar.png");
+hbSPR = new Sprite(hbTXT);
+		hpbargreenTXT = new Texture("hpbargreen.png");
+		hpbargreenSPR = new Sprite(hpbargreenTXT);
+		enemybar = new Sprite(hbTXT);
+		enemybargreen = new Sprite(hpbargreenTXT);
+		eqList = new ArrayList<Sprite>();
+Assets.createAssets();
+		Assets.katanaTXT = new Texture("katana.jpg");
+		Assets.katanaSPR = new SpriteTouchable(katanaTXT);
 		touchPoint = new Vector3();
-		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("AGoblinAppears-o2aV.ttf"));
+
+		fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("BreatheFireIii-PKLOB.ttf"));
+		FreeTypeFontGenerator curseFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("GypsyCurse.ttf"));
 		fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		fontParameter.size = 10;
-		fontParameter.borderColor = Color.BLACK;
-fontParameter.color = Color.RED;
+		FreeTypeFontGenerator.FreeTypeFontParameter curseFont = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+		FreeTypeFontGenerator.FreeTypeFontParameter normalFont = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+
 cursor = new Rectangle();
 cursor.setBounds(1,1,1,1);
 		Dawid = new Player(1,1,1,0,0,4,4,0,0,0,0);
 		int helmEQ = 0;
 		createBackEnd();
+		curseFont.color.set(Color.RED);
+		curseFont.borderColor.set(Color.BLACK);
+		curseFont.borderWidth = 3;
+		curseFont.size = 80;
+		normalFont.color.set(Color.WHITE);
+		normalFont.size = 30;
+		normalFont.borderColor.set(Color.BLACK);
+		normalFont.borderWidth = 3;
+		leftBitMapFont = fontGenerator.generateFont(normalFont);
+		bottomBitMapFont = fontGenerator.generateFont(normalFont);
+		fontParameter.size = 40;
+		fontParameter.borderWidth = 2;
+		fontParameter.borderColor = Color.WHITE;
+
+		fontParameter.color = Color.BROWN;
 		levelUpScreen = new Texture("skillscreen.png");
 		Assets.addAttributeSPR = new SpriteTouchable(levelUpScreen);
 		levelUpSprite = new SpriteTouchable(levelUpScreen);
@@ -234,8 +316,12 @@ cursor.setBounds(1,1,1,1);
 		fireBallSPR2 = new SpriteTouchable(fireBallTXT);
 		playerAttackText = " ";
 		enemyAttackText = " ";
-		leftText = "Sterowanie: \n \n " +
-				"Chodzenie:  W, S, D, A \n \n Mapa: Tab \n \n Ekwipunek: F2 \n \n Atrybuty: P ";
+		hbSPR.setSize(200,60);
+		hbSPR.setSize(200,60);
+
+
+		leftText = "Controls: \n \n " +
+				"Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
 		topText = " ";
 		mobSpellText = " ";
 		bottomText = "Wyjdź z gry: 0, Sterowanie: WSAD     Ekwipunek: F2,       Atrybuty : P                Mapa : TAB ";
@@ -244,25 +330,36 @@ cursor.setBounds(1,1,1,1);
 				"\n Punkty obrażeń: " + Dawid.getDMG();
 		playerInfoBitMap = new BitmapFont();
 		mobSpellBitmap = new BitmapFont();
-		mobSpellBitmap.getData().setScale(2);
-		Assets.addATTACKBMP = fontGenerator.generateFont(fontParameter);
-		Assets.addCRITBMP = fontGenerator.generateFont(fontParameter);
-		Assets.addHPBMP = fontGenerator.generateFont(fontParameter);
-		Assets.addMANABMP = fontGenerator.generateFont(fontParameter);
-		Assets.addMAGICBMP = fontGenerator.generateFont(fontParameter);
+		mobSpellBitmap.getData().setScale(1);
+		Assets.addATTACKBMP = fontGenerator.generateFont(normalFont);
+		Assets.addCRITBMP = fontGenerator.generateFont(normalFont);
+		Assets.addHPBMP = fontGenerator.generateFont(normalFont);
+		Assets.addMANABMP = fontGenerator.generateFont(normalFont);
+		Assets.addMAGICBMP = fontGenerator.generateFont(normalFont);
+		Assets.addATTACKBMP.getData().setScale(0.5F);
+		Assets.addCRITBMP.getData().setScale(0.5F);
+		Assets.addHPBMP.getData().setScale(0.5F);
+		Assets.addMANABMP.getData().setScale(0.5F);
+		Assets.addMAGICBMP.getData().setScale(0.5F);
 
-		leftBitMapFont = fontGenerator.generateFont(fontParameter);
-		bottomBitMapFont = fontGenerator.generateFont(fontParameter);
 		topTextBitmap = fontGenerator.generateFont(fontParameter);
 		playerAttackFont = fontGenerator.generateFont(fontParameter);
 		enemyAttackFont = fontGenerator.generateFont(fontParameter);
 		mobSpellBitmap = fontGenerator.generateFont(fontParameter);
-		leftBitMapFont.getData().setScale(2);
-		bottomBitMapFont.getData().setScale(1.5F);
+		playerAttackBMP2 = fontGenerator.generateFont(fontParameter);
+		curseBMP = curseFontGenerator.generateFont(curseFont);
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.color.set(Color.GOLD);
+		parameter.borderColor.set(Color.BLACK);
+		parameter.borderWidth = 2;
+
+		Equipment.itemDescriptionBMP = fontGenerator.generateFont(parameter);
+	/*	leftBitMapFont.getData().setScale(1);
+		bottomBitMapFont.getData().setScale(1);
 		enemyAttackFont.getData().setScale(2);
 		playerAttackFont.getData().setScale(2);
-		topTextBitmap.getData().setScale((float) 2.2);
-		topText = "1. zaatakuj, 2. użyj czaru, 3. użyj czaru";
+		topTextBitmap.getData().setScale((float) 1.6);*/
+		topText = "1. Attack";
 
 		fight = new ActionListener() {
 			@Override
@@ -272,6 +369,7 @@ cursor.setBounds(1,1,1,1);
 		};
 		attackText = new TextField();
 		attackText.setText("Siema");
+
 
 
 		fight.actionPerformed(fightEvent);
@@ -285,11 +383,12 @@ cursor.setBounds(1,1,1,1);
 		 stage.addActor(actor);
 
 		camera = new OrthographicCamera(1920, 1080);
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
+
+
 		batch = new SpriteBatch();
 		spiderTexture = new Texture("spider.png");
 		spiderSprite = new Sprite(spiderTexture);
+
 		spiderSprite.setSize(650,500);
 		shopTxt = new Texture("shop.png");
 		shopSprite = new Sprite(shopTxt);
@@ -300,12 +399,11 @@ cursor.setBounds(1,1,1,1);
 		skeletonTxt = new Texture("skeleton.png");
 		skeletonSprite = new Sprite(skeletonTxt);
 		skeletonSprite.setSize(650,500);
-		texture = new Texture(Gdx.files.internal("mutant.png"));
-		sprite = new Sprite(texture);
+
 
 		inventoryTX = new Texture("Inventory.png");
 		inventorySP = new Sprite(inventoryTX);
-		inventorySP.setPosition((w / 2 - sprite.getWidth() / 2) - 300, h / 2 - sprite.getHeight() / 2);
+		/*inventorySP.setPosition((w / 2 - sprite.getWidth() / 2) - 300, h / 2 - sprite.getHeight() / 2);*/
 		mapTexture = new Texture("mymap.png");
 		mapSprite = new Sprite(mapTexture);
 
@@ -316,22 +414,22 @@ cursor.setBounds(1,1,1,1);
 		forestSprite.setSize(700, 500);
 		forestSprite.setPosition(forestSprite.getX() - 320, forestSprite.getY() - 230);
 		sprite.setPosition(sprite.getX(), sprite.getY() - 200);
-		inventorySP.setSize(600, 200);
-		playerTexture = new Texture(Gdx.files.internal("player.png"));
-		playerSprite = new Sprite(playerTexture);
-		playerSprite.setPosition((w / 2 - sprite.getWidth() / 2) + 800, (h / 2 - sprite.getHeight() / 2) + 800);
+		inventorySP.setSize(0, 0);
 
-		playerSprite.setSize(120, 140);
+
 		spiderSprite.setPosition(playerSprite.getX() + 100, playerSprite.getY());
-
+		Assets.banditSPR.setPosition(playerSprite.getX()+ 100, playerSprite.getY());
+		Assets.banditchiefSPR.setPosition(playerSprite.getX()+ 100, playerSprite.getY());
+		Assets.banditSPR.setSize(600,500);
+		Assets.banditchiefSPR.setSize(600,500);
 		sprite.setPosition(playerSprite.getX() + 100,playerSprite.getY());
 		attackText.setLocation((int) (playerSprite.getX() - 100), (int) (playerSprite.getY() + 200));
 		stats = new TextField("Zadałeś 100 obrażeń!");
 		stats.setLocation((int) playerSprite.getX(), (int) playerSprite.getY());
 	font = new BitmapFont();
-		mapSprite.setPosition(playerSprite.getX() - 2040, playerSprite.getY() - 1730);
-		mapSprite.setSize(7680, 4320);
-		Dawid = new Player(100000, 100000, 100, 0, 0, 4, 4, 0, 0, 0, 0);
+		mapSprite.setPosition(playerSprite.getX() -1384 , playerSprite.getY()-766);
+		mapSprite.setSize(38400, 21600);
+		Dawid = new Player(400, 400, 60, 0, 0, 4, 4, 0, 0, 0, 0);
 		Dawid.setFloor(1);
 		Dawid.setClassNumber(1);
 		Dawid.setMana(100);
@@ -343,6 +441,7 @@ cursor.setBounds(1,1,1,1);
 		levelUpSprite.setSize(0,0);
 		camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
 		camera.update();
+
 	}
 
 	@Override
@@ -350,10 +449,15 @@ cursor.setBounds(1,1,1,1);
 		batch.dispose();
 		texture.dispose();
 	}
-
+	public static int stepsLeft = 0;
 
 	@Override
 	public void render() {
+
+		fontParameter.borderColor = Color.WHITE;
+		if (fightstart == 0){
+			sprite.setSize(0,0);
+		}
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 
@@ -364,6 +468,7 @@ cursor.setBounds(1,1,1,1);
 
 
 		}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
 
 			sprite.setX(sprite.getX() + 60);
@@ -386,15 +491,19 @@ cursor.setBounds(1,1,1,1);
 			Dawid.setY(Dawid.getY() - 1);
 			camera.position.set(sprite.getX(), sprite.getY(), 0);
 			camera.update();
-
+if (Gdx.input.isKeyJustPressed(Input.Keys.K)){
+	Equipment.displayEQ();
+}
 
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.W) && Dawid.getY() < borderY && fightstart == 0) {
-			playerSprite.setY(playerSprite.getY() + 229);
+			playerSprite.setY(playerSprite.getY() + 108);
 			if (Dawid.getY() < borderY) {
 				Dawid.setY(Dawid.getY() + 1);
 				System.out.println("Ruszyłeś się");
+				Dawid.setEscapeInvulnerability(0);
+				Equipment.Y = Equipment.Y + 108;
 				checkSuccesful = 1;
 			} else if (Dawid.getY() >= borderY) {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
@@ -405,10 +514,12 @@ cursor.setBounds(1,1,1,1);
 			Experience.expCounter(Dawid);
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S) && Dawid.getY() > 1 && fightstart == 0) {
-			playerSprite.setY(playerSprite.getY() - 229);
+			playerSprite.setY(playerSprite.getY() - 108);
+			Equipment.Y = Equipment.Y - 108;
 			if (Dawid.getY() > 1) {
 				Dawid.setY(Dawid.getY() - 1);
 				System.out.println("Ruszyłeś się");
+				Dawid.setEscapeInvulnerability(0);
 			} else {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
@@ -419,10 +530,13 @@ cursor.setBounds(1,1,1,1);
 
 		Experience.expCounter(Dawid);
 		if (Gdx.input.isKeyJustPressed(Input.Keys.D) && Dawid.getX() < borderX && fightstart == 0) {
-			playerSprite.setX(playerSprite.getX() + 261);
+			playerSprite.setX(playerSprite.getX() + 192);
+
 			if (Dawid.getX() < borderX) {
 				Dawid.setX(Dawid.getX() + 1);
+				Equipment.X = Equipment.X + 192;
 				System.out.println("Ruszyłeś się");
+				Dawid.setEscapeInvulnerability(0);
 			} else if (Dawid.getX() >= borderX) {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
@@ -431,11 +545,15 @@ cursor.setBounds(1,1,1,1);
 			Experience.expCounter(Dawid);
 
 		}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.A) && Dawid.getX() > 1 && fightstart == 0) {
-			playerSprite.setX(playerSprite.getX() - 261);
+
+			playerSprite.setX(playerSprite.getX() - 192);
 			if (Dawid.getX() > 1) {
 				Dawid.setX(Dawid.getX() - 1);
+				Equipment.X = Equipment.X - 192;
 				System.out.println("Ruszyłeś się");
+				Dawid.setEscapeInvulnerability(0);
 			} else {
 				System.out.println("Natrafiłeś na ścianę, nie możesz już iść w tą stronę");
 			}
@@ -467,11 +585,12 @@ cursor.setBounds(1,1,1,1);
 		if (statsscreen == 1){
 			Assets.addAttributeSPR.setSize(300,600);
 
-			Assets.addATTACKTEXT = "ATAK     (" + Dawid.getDMG() +")      + 5";
-			Assets.addHPTEXT = "HP     (" + Dawid.getHP() +")      + 5";
-			Assets.addCRITTEXT = "CRIT       (" + Dawid.getCritChance() +")      + 5";
-			Assets.addMAGICTEXT ="MAGIA      (" + Dawid.getMagic() +")      + 5";
-			Assets.addMANATEXT = "MANA     (" + Dawid.getMana() +")     + 5";
+			Assets.addATTACKTEXT = "ATTACK   (" + Dawid.getDMG() +")      + 5";
+			Assets.addHPTEXT = "HP   (" + Dawid.getHP() +")      + 5";
+			Assets.addCRITTEXT = "CRIT     (" + Dawid.getCritChance() +")      + 5";
+			Assets.addMAGICTEXT ="MAGIA    (" + Dawid.getMagic() +")      + 5";
+			Assets.addMANATEXT = "MANA  REGEN (" + Dawid.getMana() +")  + 5";
+			addMANABMP.getData().setScale((float) 0.8);
 		}
 		else if (statsscreen == 0) {
 			Assets.addATTACKTEXT = " ";
@@ -481,6 +600,8 @@ cursor.setBounds(1,1,1,1);
 			Assets.addMANATEXT = " ";
 			Assets.addAttributeSPR.setSize(0, 0);
 		}
+
+
 
 
 
@@ -517,11 +638,11 @@ showXP(Dawid);
 		Assets.runSpr.setPosition(playerSprite.getX() - 300, playerSprite.getY() - 250);
 		buttonBounds.setBounds((int) (playerSprite.getX() + 300), (int) (playerSprite.getY() - 250), 6000, 6000);
 
-
-
+		Equipment.X = GameApp.playerSprite.getX() - 400;
+		Equipment.Y = GameApp.playerSprite.getY() + 300;
 		fightscreenSP.draw(batch);
 
-inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);
+/*inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);*/
 		playerSprite.draw(batch);
 
 addStats();
@@ -530,12 +651,15 @@ addStats();
 
 		levelUpSprite.setPosition(playerSprite.getX()-400,playerSprite.getY()-200);
 		sprite.draw(batch);
-		playerAttackFont.draw(batch, playerAttackText, playerSprite.getX()- 500, playerSprite.getY() + 100);
-		enemyAttackFont.draw(batch,enemyAttackText, playerSprite.getX(), playerSprite.getY() + 150);
+		playerAttackFont.draw(batch, playerAttackText, playerSprite.getX()- 600, playerSprite.getY() );
+		enemyAttackFont.draw(batch,enemyAttackText, playerSprite.getX(), playerSprite.getY() + 250);
 		topTextBitmap.draw(batch, topText, playerSprite.getX()- 300, playerSprite.getY() + 420);
-		mobSpellBitmap.draw(batch,mobSpellText, playerSprite.getX(), playerSprite.getY() + 100);
+
+		mobSpellBitmap.draw(batch,mobSpellText, playerSprite.getX(), playerSprite.getY() + 150);
 		bottomBitMapFont.draw(batch,bottomText,playerSprite.getX()- 400,playerSprite.getY() - 400);
 		leftBitMapFont.draw(batch,leftText, playerSprite.getX()- 900,playerSprite.getY() + 100);
+
+
 
 		levelUpSprite.draw(batch);
 		iceBoltSPR.draw(batch);
@@ -548,7 +672,7 @@ addStats();
 		ironskinSPR2.draw(batch);
         healSPR2.draw(batch);
 cleaveSPR2.draw(batch);
-
+/*Equipment.displayEQ();*/
 Assets.addAttributeSPR.draw(batch);
 
 Assets.addAttributeSPR.setPosition(playerSprite.getX()+ 300,playerSprite.getY() - 300);
@@ -570,38 +694,42 @@ Assets.addAttributeSPR.setPosition(playerSprite.getX()+ 300,playerSprite.getY() 
 	Assets.addMANABMP.draw(batch, Assets.addMANATEXT, Assets.addDMG.getX() - 180, Assets.addMANA.getY() + 30);
 
 		Assets.healSPR.draw(batch);
-
+cleaveSPR.draw(batch);
 		Assets.dualWieldSPR.draw(batch);
 		Assets.iceSpr.draw(batch);
 		Assets.attackSpr.draw(batch);
 		Assets.runSpr.draw(batch);
 
 
-		if (Gdx.input.isKeyPressed(Input.Keys.B)) {
 
-			/*for (int i = 0; i < 50; i++) {
-				try {
-					inventoryScreen[i].setText((i) + ". " + eqNumber[i].getShortName() + " (" + eqNumber[i].getHP() + " HP, "
-							+ eqNumber[i].getDMG() + " DMG, " + eqNumber[i].getCrit() + "Crit, " + eqNumber[i].getMagic()
-							+ " Mocy zaklęć) ");
-					inventoryScreenBitMap[i].draw((Batch) batch, (CharSequence) inventoryScreen[i], playerSprite.getX() - 200, playerSprite.getY() + 100);
-					inventoryScreenBitMap[i].getData().setScale(3);
-					if (eqNumber[i].getEqValue() > 0) {
-						System.out.println("(Założony)");
-					}
-				} catch (NullPointerException a) {
-				}
-			}*/
+		if (Gdx.input.isKeyJustPressed(Input.Keys.B) && fightstart == 0) {
+
+			if (showequip == 0){
+				showequip = 1;
+			}
+			else if (showequip == 1 && fightstart == 0){
+				showequip = 0;
+				Equipment.itemDescription = " ";
+			}
 
 
-			inventorySP.draw(batch);
+/*inventorySP.setPosition(playerSprite.getX() - 500, playerSprite.getY() - 220);
+            inventorySP.setSize(700,600);
+			inventorySP.draw(batch);*/
 
 
 
 		}
+		if (showequip == 1) {
 
+			Equipment.displayEQ();
+		}
+		else {
+			inventorySP.setSize(0,0);
+		}
 
-
+invbarSPR.draw(batch);
+		Equipment.itemDescriptionBMP.draw(batch, Equipment.itemDescription, Equipment.ix,Equipment.iy);
 
 		if (Gdx.input.isKeyPressed(Input.Keys.Q)) {
 			playerInfo = "Punkty zdrowia: " + Dawid.getHP() + "/" + Dawid.getMaxHP() + "         Mana: " +Dawid.getMana() +
@@ -612,6 +740,23 @@ Assets.addAttributeSPR.setPosition(playerSprite.getX()+ 300,playerSprite.getY() 
 
 		}
 
+		hpbargreenSPR.setPosition(playerSprite.getX() - 40,playerSprite.getY()-50);
+		hbSPR.setPosition(playerSprite.getX()-40,playerSprite.getY() - 50);
+		GameApp.hpbargreenSPR.setSize((float) (200*(Dawid.getHP()/Dawid.getMaxHP())), GameApp.hbSPR.getHeight());
+
+hbSPR.draw(batch);
+		hpbargreenSPR.draw(batch);
+		enemybar.setSize(200,60);
+
+		enemybar.setPosition(sprite.getX(),sprite.getY());
+		enemybargreen.setPosition(sprite.getX(),sprite.getY());
+		enemybar.draw(batch);
+		enemybargreen.draw(batch);
+		playerAttackBMP2.draw(batch, playerAttackText2, playerSprite.getX(), playerSprite.getY() + 50);
+		Assets.levelupSPR.setPosition(playerSprite.getX() - 300,playerSprite.getY()+ 250);
+		levelupSPR.draw(batch);
+		csBMP.draw(batch);
+		curseBMP.draw(batch,curseTEXT, playerSprite.getX()- 400,playerSprite.getY()  + 150);
 		batch.end();
 
 	}
@@ -659,6 +804,7 @@ Assets.addAttributeSPR.setPosition(playerSprite.getX()+ 300,playerSprite.getY() 
 	}
 
 	public void createBackEnd(){
+csBMP.setSize(0,0);
 		Assets.addATTACKTEXT = " ";
 		Assets.addHPTEXT = " ";
 		Assets.addCRITTEXT = " ";
@@ -687,7 +833,8 @@ Assets.attackSpr = new SpriteTouchable(Assets.attackTxt);
 		Assets.addCRIT.setSize(0,0);
 		Assets.addHP.setSize(0,0);
 		Assets.addMAGIC.setSize(0,0);
-
+Assets.levelupSPR.setSize(0,0);
+Assets.invbarSPR.setSize(0,0);
 		iceBoltTXT = new Texture("iceboltbutt.png");
 		iceBoltSPR = new SpriteTouchable(iceBoltTXT);
 		fireBallTXT = new Texture("fireballbutt.png");
@@ -710,19 +857,19 @@ Assets.attackSpr = new SpriteTouchable(Assets.attackTxt);
 		int chestEQ = 0;
 		Dawid.setEscapeInvulnerability(0);
 		int reminder = 0;
-		eqNumber[30] = new Weapon("Zardzewiały miecz", 0, 60, 5, 0, 1,1,1);
+		/*eqNumber[30] = new Weapon("Zardzewiały miecz", 0, 60, 5, 0, 1,1,1);
 		Inventory.equippedweapon = (Weapon) eqNumber[30];
-		eqNumber[30].eqON(Dawid);
+		eqNumber[30].eqON(Dawid);*/
 
-		Monster.weaponEQ++;
-		eqNumber[30].setIsON(1);
+		/*Monster.weaponEQ++;*/
+		/*eqNumber[30].setIsON(1);*/
 		int discoverForest = 0;
 		int discoverCamp = 0;
 		int discoverLadder = 0;
 
 
 
-		eqNumber[31] = new Weapon("Laska nowicjusza", 0, 10, 10, 60, 2, 0, 1);
+	/*	eqNumber[31] = new Weapon("Laska nowicjusza", 0, 10, 10, 60, 2, 0, 1);*/
 		Shop shop = new Shop(3, 4);
 		shop.setFloor(1);
 		try {
@@ -1160,11 +1307,11 @@ batch.end();
 		}
 
 		if (Dawid.getAttributePoints() > 0){
-			Assets.addATTACKTEXT = "ATAK     (" + Dawid.getDMG() +")      + 5";
-			Assets.addHPTEXT = "HP     (" + Dawid.getHP() +")      + 5";
-			Assets.addCRITTEXT = "CRIT       (" + Dawid.getCritChance() +")      + 5";
+			Assets.addATTACKTEXT = "ATAK     (" + Dawid.getDMG() +")      + 3";
+			Assets.addHPTEXT = "HP     (" + Dawid.getHP() +")      + 6";
+			Assets.addCRITTEXT = "CRIT       (" + Dawid.getCritChance() +")      + 0,5%";
 			Assets.addMAGICTEXT ="MAGIA      (" + Dawid.getMagic() +")      + 5";
-			Assets.addMANATEXT = "MANA REGEN  (" + Dawid.getManaRegen() +")     + 5";
+			Assets.addMANATEXT = "MANA REGEN  (" + Dawid.getManaRegen() +")     + 0,5";
 Assets.addAttributeSPR.setSize(300,600);
 			Assets.addMAGIC.setSize(50,50);
 
@@ -1192,7 +1339,7 @@ Assets.addAttributeSPR.setSize(300,600);
 			   //unprojects the camera
 			   camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 			   if (Assets.addDMG.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
-				   Dawid.setDMG(Dawid.getDMG() + 1);
+				   Dawid.setDMG(Dawid.getDMG() + 3);
 				   Dawid.setAttributePoints(Dawid.getAttributePoints() - 1);
 
 
@@ -1240,5 +1387,7 @@ Assets.addAttributeSPR.setSize(300,600);
 			   }
 		   }
 	   }
+
+
 
 }

@@ -148,6 +148,25 @@ public class Weapon extends Item {
     int DMG;
     int crit;
     int magic;
+    int isWeapon = 1;
+
+    int weaponslot = 0;
+
+    public int getWeaponslot() {
+        return weaponslot;
+    }
+
+    public void setWeaponslot(int weaponslot) {
+        this.weaponslot = weaponslot;
+    }
+
+    public int getIsWeapon() {
+        return isWeapon;
+    }
+
+    public void setIsWeapon(int isWeapon) {
+        this.isWeapon = isWeapon;
+    }
 
     int stock = 0;
     String shortName;

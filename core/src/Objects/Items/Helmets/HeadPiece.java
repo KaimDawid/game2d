@@ -8,6 +8,17 @@ import lombok.Setter;
 
 @Getter @Setter
 public class HeadPiece extends Item {
+
+    int isHelmet = 1;
+
+    public int getIsHelmet() {
+        return isHelmet;
+    }
+
+    public void setIsHelmet(int isHelmet) {
+        this.isHelmet = isHelmet;
+    }
+
     public int getHP() {
         return HP;
     }

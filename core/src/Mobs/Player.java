@@ -3,9 +3,12 @@ package Mobs;
 
 import Logic.Inventory;
 import Logic.Skills;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.mygdx.game.GameApp;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -14,6 +17,7 @@ import java.util.Scanner;
 public class Player {
     public static int ICE = 60;
 
+    public static int Rogue;
     public static int getICE() {
         return ICE;
     }
@@ -21,6 +25,7 @@ public class Player {
     public static void setICE(int ICE) {
         Player.ICE = ICE;
     }
+
 
     public double getHP() {
         return HP;
@@ -390,10 +395,28 @@ int toxify = 0;
 
 int weaponCapacity = 1;
 
+int decay = 0;
 
+
+    public int getDecay() {
+        return decay;
+    }
+
+    public void setDecay(int decay) {
+        this.decay = decay;
+    }
 
     int freeze = 0;
 
+int GC;
+
+    public int getGC() {
+        return GC;
+    }
+
+    public void setGC(int GC) {
+        this.GC = GC;
+    }
 
     double critChance;
 
@@ -422,19 +445,29 @@ int weaponCapacity = 1;
 
     public void Freeze(Monster target) {
         double iceDMG = 25 + (0.25 * magic);
+        double iceHeal = 25 - (0.25*magic);
+
         if (mana > 69) {
-            System.out.println(target.getName() + " został zamrożony na 2 tury i otrzymał " + iceDMG + " obrażeń");
-            target.setHp(target.getHp() - (DMG * 0.25));
+            if (magic > 0) {
+                GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and received " + iceDMG + " damage";
+
+                target.setHp(target.getHp() - (DMG * 0.25));
+            }
+            else {
+                target.setHp(target.getHp() + iceHeal);
+                GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and was healed for " + iceHeal + " HP";
+            }
             target.setFreeze(3);
             mana = mana - 70;
         } else {
-            System.out.println("Masz za mało many!");
+            GameApp.playerAttackText = "Not enough mana!";
         }
     }
 
     public void Teleport(Player player) {
         Scanner scanner = new Scanner(System.in);
 
+        GameApp.topText = "Wubierz gdzie chcesz się przeteleportować.";
         System.out.println("Wybierz gdzie chcesz się przeteleportować.");
         System.out.println("X :");
         int inputX = scanner.nextInt();
@@ -452,17 +485,25 @@ int weaponCapacity = 1;
         if (player.getChosenSkill1() == HEAL || player.getChosenSkill2() == HEAL || player.getChosenSkill3() == HEAL ||  player.getChosenSkill4() == HEAL ||
                 player.getChosenSkill5() == HEAL || player.getChosenSkill6() == HEAL || player.getChosenSkill7() == HEAL ||
                 player.getChosenSkill8() == HEAL || player.getChosenSkill9() == HEAL || player.getChosenSkill10() == HEAL) {
+
             if (player.getMana() >= 60) {
-                double healValue = 150 + (player.getMagic() * 0.6);
+
+                double healValue = 300 + (player.getMagic() * 0.3);
+                if (decay == 1){
+                    player.setHP(player.getHP() + 300);
+                }
+
                 player.setMana(player.getMana() - 60);
                 player.setHP(player.getHP() + healValue);
                 double overHeal = (player.getHP() - player.getMaxHP());
                 if (overHeal >= 0){
                     player.setHP(player.getHP() - overHeal);
                 }
-                System.out.println("Uleczyłeś się za " + healValue + " punktów życia");
+                GameApp.playerAttackText = "You've healed for "+ healValue;
+
             } else {
-                System.out.println("Masz za mało many!");
+                GameApp.playerAttackText = "Not enough mana!";
+
             }
         }
         else {
@@ -472,20 +513,28 @@ int weaponCapacity = 1;
 
     public void Fireball(Monster monster, Player player) {
         double fireDMG = 80 + magic;
+        double fireHeal = 80 - magic;
         if (mana >= 50) {
             mana = mana - 50;
-            monster.setHp(monster.getHp() - fireDMG);
-            System.out.println("Rzuciłeś kulą ognia za " + fireDMG + " obrażeń");
+            if (magic > 0) {
+                monster.setHp(monster.getHp() - fireDMG);
+                GameApp.playerAttackText = "You've tossed a fireball for " + fireDMG + " damage!";
+            }
+            else {
+                monster.setHp(monster.getHp() + fireHeal);
+                GameApp.playerAttackText = "Your fireball healed your enemy for " + fireHeal + " HP!";
+            }
         } else {
-            System.out.println("Masz za mało many!");
+            GameApp.playerAttackText = "Not enough mana!";
         }
     }
 
     public void IronSkin(Player player) {
-        String skillName = "Żelazna skóra";
+        String skillName = "Ironskin";
         int ironSkinValue = 30;
         if (player.getIronSkinValue() == 0) {
-            System.out.println("Użyłeś czaru " + skillName + " i otrzymałeś " + ironSkinValue + " punktów zbroi na 2 tury");
+            GameApp.playerAttackText = "You've used " + skillName + " and received " + ironSkinValue + " armor points for 2 turns";
+
             player.setArmor(player.getArmor() + ironSkinValue);
             player.setIronSkinValue(1);
         }
@@ -503,8 +552,8 @@ int weaponCapacity = 1;
 
             player.setDMG((int) adrenalineAttackValue);
             player.setArmor((int) adrenalineArmorValue);
+            GameApp.playerAttackText = "Użyłeś umiejętności " + skillName + ", zadajesz więcej obrażeń ale sam jesteś bardziej podatny na obrażenia";
 
-            System.out.println("Użyłeś umiejętności " + skillName + ", zadajesz więcej obrażeń ale sam jesteś bardziej podatny na obrażenia");
             player.setAdrenalineValue(1);
         }
 
@@ -515,8 +564,8 @@ int weaponCapacity = 1;
     public void Cleave(Player player, Monster monster, Monster monster2) {
 
         player.setDMG(player.getDMG() + 20);
-        System.out.println("Bierzesz zamach i atakujesz obu wrogów naraz ze zwiększoną siłą");
-        System.out.println("Zadajesz obu potworom " + player.getDMG() + " obrażeń");
+        GameApp.playerAttackText = "Bierzesz zamach i atakujesz obu wrogów naraz ze zwiększoną siłą \n Zadajesz obu potworom "+player.getDMG() + " obrażeń"  ;
+
         player.Attack(monster, player);
         player.Attack(monster2, player);
         player.setDMG(player.getDMG() - 20);
@@ -524,6 +573,13 @@ int weaponCapacity = 1;
 
     }
 
+    public static int getRogue() {
+        return Rogue;
+    }
+
+    public static void setRogue(int rogue) {
+        Rogue = rogue;
+    }
 
     public void Attack(Monster monster, Player player) {
         Random random = new Random();
@@ -533,21 +589,34 @@ int weaponCapacity = 1;
         if (roll > critRoll) {
             double dmgroll = (random.nextInt(20)+ (player.getDMG() * 1.2) - 10);
             monster.setHp(monster.getHp() - (dmgroll + monster.getArmor()));
-            System.out.println("Zadałeś cios krytyczny za " + dmgroll + " punktów obrażeń!");
+            GameApp.playerAttackText = "You landed a critical attack for " + dmgroll + " damage!";
             if (monster.getArmor() > 0) {
                 System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
+            }
+            if (Rogue == 1){
+                monster.setHp(monster.getHp() - (dmgroll + monster.getArmor()));
+                GameApp.playerAttackText2 = "You landed another critical attack for " + dmgroll + " damage!";
             }
             putToxin(player,monster);
         } else if (roll < critRoll && roll > missRoll) {
             double dmgRoll = (random.nextInt(20)+ player.getDMG() - 10);
             monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
-            System.out.println("Zadałeś " + dmgRoll + " obrażeń");
+            System.out.println("Zadales " + dmgRoll + " obrażeń");
+            GameApp.playerAttackText = "You've dealt " + dmgRoll + " damage";
+            if (Rogue == 1){
+                monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
+
+                GameApp.playerAttackText2 = "You've dealt another " + dmgRoll + " damage";
+            }
+
             if (monster.getArmor() > 0) {
                 System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
             }
+
             putToxin(player,monster);
         } else if (roll < missRoll) {
-            System.out.println("Chybiłeś!");
+            GameApp.playerAttackText = "You missed!";
+
         }
     }
 
@@ -559,7 +628,8 @@ public static void putToxin(Player player, Monster monster) {
             int chance = random.nextInt(100);
             if (chance > 80 && player.getToxify() > 0 && monster.getPoisonInvulnerability() == 0) {
                 monster.setPoison(3);
-                System.out.println("Zatrułeś swojego przeciwnika na 2 tury! Otrzymuje on 30 obrażeń co turę.");
+                GameApp.topText = "You've poisoned your enemy for 2 turns! He receives 30 damage each turn.";
+
                 monster.setHp(monster.getHp() - 30);
             }
         }

@@ -172,11 +172,21 @@ static Scanner scanner = new Scanner(System.in);
                 eqNumber[slotNumber].eqON(Dawid);
                 Monster.helmEQ = 1;
                 eqNumber[slotNumber].setIsON(1);
-            } else if (eqNumber[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && eqNumber[slotNumber].getIsON() < 1) {
+            } else if (eqNumber[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && eqNumber[slotNumber].getIsON() < 1
+             && Monster.weaponEQ == 0) {
                 equippedweapon = (Weapon) eqNumber[slotNumber];
                 eqNumber[slotNumber].eqON(Dawid);
                 Monster.weaponEQ++;
                 eqNumber[slotNumber].setIsON(1);
+                eqNumber[slotNumber].setWeaponslot(1);
+            }
+                else if (eqNumber[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && eqNumber[slotNumber].getIsON() < 1
+                && Monster.weaponEQ == 1) {
+                    equippedweapon = (Weapon) eqNumber[slotNumber];
+                    eqNumber[slotNumber].eqON(Dawid);
+                    Monster.weaponEQ++;
+                    eqNumber[slotNumber].setIsON(1);
+                    eqNumber[slotNumber].setWeaponslot(2);
             } else if (eqNumber[slotNumber].getNeckEquip() > 0 && Monster.neckEQ < 1 && eqNumber[slotNumber].getIsON() < 1) {
                 eqNumber[slotNumber].eqON(Dawid);
                 Monster.neckEQ = 1;

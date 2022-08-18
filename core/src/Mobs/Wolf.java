@@ -1,5 +1,6 @@
 package Mobs;
 
+import com.mygdx.game.GameApp;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +23,24 @@ public class Wolf extends Monster{
     public void setGold() {
 
     }
+int wolv = 1;
 
+    public int getWolv() {
+        return wolv;
+    }
+
+    public void setWolv(int wolv) {
+        this.wolv = wolv;
+    }
+    double maxHP = hp;
+
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
     @Override
     public void setGold(int gold) {
 
@@ -32,16 +50,20 @@ public class Wolf extends Monster{
         double roll = random.nextDouble(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
-            player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
-            System.out.println("Wilk zadał Ci głęboką ranę "+ (monster.getDmg()*1.2 - player.getArmor()) + " punktów obrażeń!");
+
+            GameApp.enemyAttackText = "The wolf wounded you deeply for "+ (monster.getDmg()*1.2 - player.getArmor()) + " damage!";
+            GameApp.hbSPR.setSize((float) (320*(player.getHP()/player.getMaxHP())), GameApp.hbSPR.getHeight());
         }
         else if (roll < 81 && roll > missRoll){
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
-            System.out.println("Wilołak ugryzł Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
+            System.out.println("Wilołak ugryzł Cię za " + (dmgRoll - player.getArmor()) + " damage");
+            GameApp.enemyAttackText = "The wolf bit you for " + (dmgRoll - player.getArmor()) + " damage";
+
+            GameApp.hbSPR.setSize((float) (320*(player.getHP()/player.getMaxHP())), GameApp.hbSPR.getHeight());
         }
         else if (roll < missRoll){
-            System.out.println("Wilk chybił!");
+            GameApp.enemyAttackText =  "The wolf missed!";
         }
     }
 }

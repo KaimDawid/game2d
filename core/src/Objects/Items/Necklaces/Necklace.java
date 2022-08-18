@@ -8,6 +8,17 @@ import lombok.Setter;
 @Getter @Setter
 
 public class Necklace extends Item {
+
+    int isNeck = 1;
+
+    public int getIsNeck() {
+        return isNeck;
+    }
+
+    public void setIsNeck(int isNeck) {
+        this.isNeck = isNeck;
+    }
+
     public int getHP() {
         return HP;
     }

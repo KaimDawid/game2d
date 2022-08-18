@@ -9,6 +9,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Gloves extends Item {
+
+    int isGloves = 1;
+
+    public int getIsGloves() {
+        return isGloves;
+    }
+
+    public void setIsGloves(int isGloves) {
+        this.isGloves = isGloves;
+    }
+
     public int getHP() {
         return HP;
     }

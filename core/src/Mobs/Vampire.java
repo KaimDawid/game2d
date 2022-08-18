@@ -1,5 +1,7 @@
 package Mobs;
 
+import com.mygdx.game.GameApp;
+
 import java.util.Random;
 
 public class Vampire extends Monster {
@@ -23,7 +25,36 @@ public class Vampire extends Monster {
     public void setGold() {
 
     }
+    int vamp = 1;
 
+    @Override
+    public double getLevel() {
+        return level;
+    }
+
+    @Override
+    public void setLevel(double level) {
+        this.level = level;
+    }
+
+    @Override
+    public int getVamp() {
+        return vamp;
+    }
+
+    @Override
+    public void setVamp(int vamp) {
+        this.vamp = vamp;
+    }
+    double maxHP = hp;
+
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
     @Override
     public void setGold(int gold) {
         this.gold = gold;
@@ -37,16 +68,18 @@ public class Vampire extends Monster {
         if (roll > 80){
             player.setHP(player.getHP() - monster.getDmg());
             monster.setHp(monster.getHp() + (monster.getDmg() * 0.4));
-            System.out.println("Wampir uderzył Cię za " + (monster.getDmg() - player.getArmor()) + " obrażeń i uleczył się za "
-                    + (monster.getDmg()*0.4) + " obrażeń");
+            GameApp.enemyAttackText = "The vampire bit you for " + (monster.getDmg() - player.getArmor()) + " points of damage thus healing himself for "
+                    + (monster.getDmg()*0.4) + " damage";
         }
         else if (roll < 81 && roll > missRoll){
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
-            System.out.println("Wampir uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
+            System.out.println("The vampire hit you for " + (dmgRoll - player.getArmor()) + " obrazen");
+            GameApp.enemyAttackText = "The vampire hit you for " + (dmgRoll - player.getArmor()) + " damage";
+
         }
         else if (roll < missRoll){
-            System.out.println("Wampir chybił!");
+            GameApp.enemyAttackText = "The vampire missed!";
         }
     }
 }

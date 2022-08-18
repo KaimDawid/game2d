@@ -1,5 +1,7 @@
 package Mobs;
 
+import com.mygdx.game.GameApp;
+
 import java.util.Random;
 
 public class Skeleton extends Monster{
@@ -32,7 +34,15 @@ public class Skeleton extends Monster{
     public void setGold() {
 
     }
+    double maxHP = hp;
 
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
     @Override
     public void setGold(int gold) {
         this.gold = gold;
@@ -45,13 +55,17 @@ public class Skeleton extends Monster{
         int armorUP = 20;
         if (roll > 80) {
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
-            System.out.println("Przeciwnik zadał cios krytyczny za " + monster.getDmg() * 1.2 + " punktów obrażeń!");
-            System.out.println("Szkielet podniósł wartość swojej zbroi o " + armorUP + " punktów.");
+            GameApp.enemyAttackText = "Przeciwnik zadał cios krytyczny za " + monster.getDmg() * 1.2 + " punktów obrażeń!";
+            GameApp.mobSpellText = "Szkielet podniósł wartość swojej zbroi o " + armorUP + " punktów.";
+
         } else if (roll < 81 && roll > missRoll) {
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("Szkielet uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
+            GameApp.enemyAttackText = "Szkielet uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
+
         } else if (roll < missRoll) {
+            GameApp.enemyAttackText = "Szkielet chybił!";
             System.out.println("Szkielet chybił!");
         }
     }

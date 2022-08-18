@@ -16,6 +16,62 @@ public abstract class Item {
     int neckEquip;
     int isON = 0;
 
+    int isChest = 0;
+    int isWeapon = 0;
+    int isGloves = 0;
+    int isNeck = 0;
+    int isHelmet = 0;
+
+    int weaponslot = 0;
+
+    public int getWeaponslot() {
+        return weaponslot;
+    }
+
+    public void setWeaponslot(int weaponslot) {
+        this.weaponslot = weaponslot;
+    }
+
+    public int getIsChest() {
+        return isChest;
+    }
+
+    public void setIsChest(int isChest) {
+        this.isChest = isChest;
+    }
+
+    public int getIsWeapon() {
+        return isWeapon;
+    }
+
+    public void setIsWeapon(int isWeapon) {
+        this.isWeapon = isWeapon;
+    }
+
+    public int getIsGloves() {
+        return isGloves;
+    }
+
+    public void setIsGloves(int isGloves) {
+        this.isGloves = isGloves;
+    }
+
+    public int getIsNeck() {
+        return isNeck;
+    }
+
+    public void setIsNeck(int isNeck) {
+        this.isNeck = isNeck;
+    }
+
+    public int getIsHelmet() {
+        return isHelmet;
+    }
+
+    public void setIsHelmet(int isHelmet) {
+        this.isHelmet = isHelmet;
+    }
+
     public int getIsSharp() {
         return isSharp;
     }

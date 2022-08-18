@@ -1,6 +1,7 @@
 package Mobs;
 
 import Logic.Drop.Miscelanous;
+import com.mygdx.game.GameApp;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,23 @@ import java.util.Random;
 @Getter @Setter
 public class Bandit extends Monster{
     int gold;
+    int band = 1;
 
+    public int getBand() {
+        return band;
+    }
+    double maxHP = hp;
+
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
+    public void setBand(int band) {
+        this.band = band;
+    }
 
     public Bandit(int hp, int dmg, double x, double y, String name, int giveXP, int gold, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);
@@ -56,15 +73,16 @@ public class Bandit extends Monster{
             player.setHP(player.getHP() - critHit + player.getArmor());
             double critHit2 = (random.nextInt(20) + monster.getDmg()*1.2);
             player.setHP(player.getHP() - critHit + player.getArmor());
-            System.out.println("Bandyta dźgnął Cię sztyletem dwukrotnie i zadał cios krytyczny za " + critHit + " i " + critHit2 + " punktów obrażeń!");
+            GameApp.enemyAttackText = ("The thug stabbed you twice critically for " + critHit + " and " + critHit2 + " damage!");
         } else if (roll < 81 && roll > missRoll) {
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
             int dmgRoll2 = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
-            System.out.println("Bandyta dźgnął Cię sztyletem dwukrotnie za " + (dmgRoll - player.getArmor()) + " i " + (dmgRoll2 - player.getArmor())  + " obrażeń");
+            GameApp.enemyAttackText = ("The thug stabbed you twice for " + (dmgRoll - player.getArmor()) + " and " + (dmgRoll2 - player.getArmor())  + " damage");
+
         } else if (roll < missRoll) {
-            System.out.println("Bandyta chybił!");
+            GameApp.enemyAttackText = ("The thug missed!");
         }
     }
 }

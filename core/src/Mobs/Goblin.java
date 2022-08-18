@@ -1,6 +1,8 @@
 package Mobs;
 
 
+import com.mygdx.game.GameApp;
+
 import java.util.Random;
 
 public class Goblin extends Monster {
@@ -13,6 +15,17 @@ public class Goblin extends Monster {
         this.gold = gold;
 
     }
+int glb = 1;
+
+    @Override
+    public int getGlb() {
+        return glb;
+    }
+
+    @Override
+    public void setGlb(int glb) {
+        this.glb = glb;
+    }
 
     @Override
     public int getGold() {
@@ -23,7 +36,15 @@ public class Goblin extends Monster {
     public void setGold() {
 
     }
+    double maxHP = hp;
 
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
     @Override
     public void setGold(int gold) {
         this.gold = gold;
@@ -35,13 +56,14 @@ public class Goblin extends Monster {
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80) {
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
-            System.out.println("Goblin zadał cios krytyczny za " + monster.getDmg() * 1.2 + " punktów obrażeń!");
+            GameApp.enemyAttackText = ("The goblin stabbed you critically for " + monster.getDmg() * 1.2 + " damage!");
         } else if (roll < 81 && roll > missRoll) {
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
             System.out.println("Goblin uderzył Cię za " + (dmgRoll - player.getArmor())  + " obrażeń");
+            GameApp.enemyAttackText = "The goblin hit you for" + (dmgRoll - player.getArmor()) + " damage";
         } else if (roll < missRoll) {
-            System.out.println("Goblin chybił!");
+            GameApp.enemyAttackText = ("The goblin missed!");
         }
     }
 }

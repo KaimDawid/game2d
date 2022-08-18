@@ -1,5 +1,7 @@
 package Mobs;
 
+import com.mygdx.game.GameApp;
+
 import java.util.Random;
 
 public class Mutant extends Monster{
@@ -12,7 +14,33 @@ public class Mutant extends Monster{
 
     int activeSkill;
 
+ int mutant = 1;
+    double maxHP = hp;
 
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
+    public int getMutant() {
+        return mutant;
+    }
+
+    public void setMutant(int mutant) {
+        this.mutant = mutant;
+    }
+
+    @Override
+    public int getPoisonInvulnerability() {
+        return poisonInvulnerability;
+    }
+
+    @Override
+    public void setPoisonInvulnerability(int poisonInvulnerability) {
+        this.poisonInvulnerability = poisonInvulnerability;
+    }
 
     public int getActiveSkill() {
         return activeSkill;
@@ -41,7 +69,7 @@ public class Mutant extends Monster{
     public void Freeze(Player target){
         double iceDMG = 25;
 
-            System.out.println("Zostałeś zamrożony na 2 tury i otrzymałeś " + iceDMG + " obrażeń!");
+        GameApp.mobSpellText =   "Zostałeś zamrożony na 2 tury i otrzymałeś " + iceDMG + " obrażeń!";
             target.setHP(target.getHP() - 25);
             target.setFreeze(1);
 
@@ -51,7 +79,7 @@ public class Mutant extends Monster{
         double fireDMG = 80;
 
             player.setHP(player.getHP() - fireDMG);
-            System.out.println("Mutant skopiował Twój czar i rzucił w Ciebie kulą ognia za " + fireDMG + " obrażeń!");
+        GameApp.mobSpellText =   "Mutant skopiował Twój czar i rzucił w Ciebie kulą ognia za " + fireDMG + " obrażeń!";
 
 
     }
@@ -102,11 +130,11 @@ public class Mutant extends Monster{
             }
             else if (activeSkill == Player.TP){
                 player.setHP(player.getHP() - (monster.getDmg() * 1.4));
-                System.out.println("Mutant ukradł Twoją umiejętność teleportu, przeniósł się za Ciebie i zadał " +
-                        (monster.getDmg() * 1.4) + " obrażeń!");
+                GameApp.mobSpellText =   "Mutant ukradł Twoją umiejętność teleportu, przeniósł się za Ciebie i zadał " +
+                        (monster.getDmg() * 1.4) + " obrażeń!";
             }
             else {
-                System.out.println("Mutant próbował ukraść Twoją umiejętność, ale mu się nie udało");
+                GameApp.mobSpellText =  "Mutant próbował ukraść Twoją umiejętność, ale mu się nie udało";
             }
 
         }
@@ -114,9 +142,10 @@ public class Mutant extends Monster{
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             System.out.println("Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń!");
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
+            GameApp.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
         }
         else if (roll < missRoll){
-            System.out.println("Mutant chybił!");
+            GameApp.enemyAttackText = "Mutant chybił!";
         }
 
     }

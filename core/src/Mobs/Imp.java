@@ -2,6 +2,7 @@ package Mobs;
 
 
 import Logic.Status.Status;
+import com.mygdx.game.GameApp;
 
 import java.util.Random;
 
@@ -29,7 +30,15 @@ public class Imp extends Monster {
     public void setGold(int gold) {
         this.gold = gold;
     }
+    double maxHP = hp;
 
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
 
     public void Attack(Monster monster, Player player){
         Random random = new Random();
@@ -37,16 +46,17 @@ public class Imp extends Monster {
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
             Status.BURN(player);
-
+GameApp.mobSpellText = "The imp has set you ablaze!";
 
         }
         else if (roll < 81 && roll > missRoll){
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
-            System.out.println("Imp uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
+            System.out.println("The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage");
+            GameApp.enemyAttackText = "The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage";
         }
         else if (roll < missRoll){
-            System.out.println("Imp chybił!");
+            GameApp.enemyAttackText = "The imp missed!";
         }
     }
 

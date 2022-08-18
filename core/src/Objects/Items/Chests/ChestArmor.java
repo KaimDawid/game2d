@@ -9,8 +9,18 @@ import lombok.Setter;
 @Setter
 
 public class ChestArmor extends Item {
+
+    int isChest = 1;
     public int getHP() {
         return HP;
+    }
+
+    public int getIsChest() {
+        return isChest;
+    }
+
+    public void setIsChest(int isChest) {
+        this.isChest = isChest;
     }
 
     public void setHP(int HP) {

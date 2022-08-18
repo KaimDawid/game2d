@@ -37,9 +37,9 @@ public class Forest {
             if (valid < 1) {
                 spawnedMonstersFloor2++;
                 if (mobType < 80) {
-                    forestBase[i] = new Spider(150, 50, valueX, valueY, "pająk", 40, 3, 1);
+                    forestBase[i] = new Spider(350, 50, valueX, valueY, "pająk", 40, 3, 1);
                 } else{
-                    forestBase[i] = new Wolf(180, 50, valueX, valueY, "wilk", 60, 0, 4, 1);
+                    forestBase[i] = new Wolf(450, 50, valueX, valueY, "wilk", 60, 0, 4, 1);
                 }
 
                 int emptyslots = mobsNumber;

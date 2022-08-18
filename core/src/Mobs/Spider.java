@@ -3,6 +3,7 @@ package Mobs;
 
 import Logic.Drop.Miscelanous;
 import Logic.Status.Status;
+import com.mygdx.game.GameApp;
 
 import java.util.Random;
 
@@ -12,7 +13,15 @@ public class Spider extends Monster {
         super(hp, dmg, x, y, name, giveXP, level, floor);
 
     }
+    double maxHP = hp;
 
+    public double getMaxHP() {
+        return maxHP;
+    }
+
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
     @Override
     public int getGold() {
         return 0;
@@ -57,6 +66,17 @@ public class Spider extends Monster {
     }
 
     boolean spidey = true;
+int spid = 1;
+
+    @Override
+    public int getSpid() {
+        return spid;
+    }
+
+    @Override
+    public void setSpid(int spid) {
+        this.spid = spid;
+    }
 
     @Override
     public void setGold(int gold) {
@@ -90,14 +110,17 @@ public class Spider extends Monster {
        double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
        if (roll > 80){
            Status.POISON(player, monster);
+           GameApp.mobSpellText = " The spider has poisoned you! ";
        }
        else if (roll < 81 && roll > missRoll){
            int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
-           System.out.println("Pająk ukąsił Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
+           System.out.println("Pajak ukasil Cię za " + (dmgRoll - player.getArmor()) + " obrazen");
            player.setHP(player.getHP() -dmgRoll + player.getArmor());
+           GameApp.enemyAttackText = "The spider bit you for " + (dmgRoll - player.getArmor()) + " damage";
+
        }
        else if (roll < missRoll){
-           System.out.println("Pająk chybił!");
+           GameApp.enemyAttackText =  "The spider missed!";
        }
    }
 
