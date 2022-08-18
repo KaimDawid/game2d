@@ -1,5 +1,7 @@
-package Mobs;
+package Mobs.StartingZone;
 
+import Mobs.Monster;
+import Mobs.Player;
 import com.mygdx.game.GameApp;
 
 import java.util.Random;

@@ -1,21 +1,22 @@
 package Data.Areas;
 
-import Mobs.*;
+import Mobs.Monster;
 import Mobs.Spider;
+import Mobs.Wolf;
 
 import java.util.Random;
 
-public class Forest {
+public class Cemetery {
     static int spawnedMonstersFloor2 = 1;
 
     public static void SPAWN(int mobsNumber, Monster[] forestBase) {
-        
+
         double checkme[] = new double[1000];
         Random random = new Random();
 
 
         for (int i = 0; i < mobsNumber; i++) {
-            double valueX = random.nextInt(8) + 1;
+            double valueX = random.nextInt(8) + 9;
             double valueY = random.nextInt(8) + 9;
 
 
@@ -66,4 +67,12 @@ public class Forest {
 
         }
     }
+
+
+
+
+
+
+
+
 }

@@ -8,13 +8,15 @@ import com.mygdx.game.Assets;
 import com.mygdx.game.GameApp;
 
 import java.util.Random;
+import java.util.TimerTask;
 
 import static Logic.FightLogic.Fight.*;
 import static com.mygdx.game.GameApp.*;
+import static jdk.internal.org.jline.utils.Colors.h;
 
 public class FightLogic {
 
-    public static void ConcludeBattle(Player player, Monster monster1, int joined) throws InterruptedException {
+    public static void ConcludeBattle(final Player player, final Monster monster1, int joined) throws InterruptedException {
         if (Fight.doubleStrike == 1) {
             if (monster1.getHp() <= 0 && GameLogic.monsterBase[joined].getHp() <= 0) {
                 topText = "Pokonałeś obu wrogów!";
@@ -26,7 +28,7 @@ public class FightLogic {
                 monster1.setY(100);
                 player.setXP(player.getXP() + monster1.getGiveXP() + GameLogic.monsterBase[joined].getGiveXP());
                 GameLogic.monsterBase[joined].Drop();
-                monster1.Drop();
+                monster1.Drop();           Dawid.setFear(0);
                 player.setGold(player.getGold() + monster1.getGold() + GameLogic.monsterBase[joined].getGold());
 
                 Fight.joined = 1;
@@ -34,7 +36,7 @@ public class FightLogic {
                 PlayerStatusWearOff(player);
                 Fight.escape = 1;
                 Fight.fightON = 0;
-                Thread.sleep(1000);
+
                 GameApp.fightscreenSP.setSize(1, 1);
                 GameApp.fightstart = 0;
                 GameApp.enemyAttackText = " ";
@@ -54,38 +56,102 @@ public class FightLogic {
         } else if (Fight.doubleStrike == 0) {
 
             if (monster1.getHp() <= 0) {
-                monster1.setFreeze(0);
-                playerAttackText2 = " ";
-                topText = "Wygrałeś! ";
-                System.out.println("Wygrałeś!");
-                monster1.setX(100);
-                monster1.setY(100);
-                player.setXP(player.getXP() + monster1.getGiveXP());
-                Random random = new Random();
-                Assets.attackSpr.setSize(0,0);
-                Assets.iceSpr.setSize(0,0);
-                adrenalineSPR.setSize(0,0);
-                Assets.runSpr.setSize(0,0);
-                monster1.Drop();
-                Fight.joined = 1;
-                Fight.doubleStrike = 0;
-                player.setGold(player.getGold() + monster1.getGold());
-                PlayerStatusWearOff(player);
-                Fight.escape = 1;
-                Fight.fightON = 0;
-                Thread.sleep(1000);
-                GameApp.fightscreenSP.setSize(1, 1);
-                GameApp.fightstart = 0;
-                GameApp.sprite.setPosition(100000,100000);
-                GameApp.enemyAttackText = " ";
-                GameApp.playerAttackText = " ";
-                GameApp.mobSpellText = " ";
-                GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
-                leftText = "Controls: \n \n " +
-                        "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        monster1.setFreeze(0);
+                        playerAttackText2 = " ";
+                        topText = "Wygrałeś! ";
+                        System.out.println("Wygrałeś!");
+                        monster1.setX(100);
+                        monster1.setY(100);
+                        player.setXP(player.getXP() + monster1.getGiveXP());
+                        Random random = new Random();
+                        Assets.attackSpr.setSize(0,0);
+                        Assets.iceSpr.setSize(0,0);
+                        adrenalineSPR.setSize(0,0);
+                        Assets.runSpr.setSize(0,0);
+                        monster1.Drop();
+                        Fight.joined = 1;
+                        Fight.doubleStrike = 0;
+                        player.setGold(player.getGold() + monster1.getGold());
+                        PlayerStatusWearOff(player);
+                        Fight.escape = 1;
+                        Fight.fightON = 0;
+
+                        GameApp.fightscreenSP.setSize(1, 1);
+                        GameApp.fightstart = 0;
+                        GameApp.sprite.setPosition(100000,100000);
+                        GameApp.enemyAttackText = " ";
+                        GameApp.playerAttackText = " ";
+                        GameApp.mobSpellText = " ";           Dawid.setFear(0);
+                        GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+                        leftText = "Controls: \n \n " +
+                                "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                    }
+                },1000);
+
             }
         }
         else {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Assets.attackSpr.setSize(0,0);
+                    Assets.iceSpr.setSize(0,0);
+                    adrenalineSPR.setSize(0,0);
+                    Assets.runSpr.setSize(0,0);
+                    GameApp.sprite.setPosition(100000,100000);
+                    GameApp.enemyAttackText = " ";
+                    GameApp.playerAttackText = " ";
+                    GameApp.mobSpellText = " ";
+                    GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+                    leftText = "Controls: \n \n " +
+                            "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                    PlayerStatusWearOff(player);
+                    GameApp.fightscreenSP.setSize(1, 1);
+                    GameApp.fightstart = 0;           Dawid.setFear(0);
+                }
+            },1000);
+
+
+        }
+
+        if (player.getHP() < 1) {
+
+            GameApp.fightON = 0;
+            fightstart = 0;
+            escape = 1;
+            playerSprite.setPosition(1100,1030);
+            Dawid.setXP(0);
+            Dawid.setHP(Dawid.getMaxHP());
+            Dawid.setX(4);
+            Dawid.setY(4);
+            camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
+            camera.update();
+
+            Random random = new Random();
+            Assets.attackSpr.setSize(0,0);
+            Assets.iceSpr.setSize(0,0);
+            adrenalineSPR.setSize(0,0);
+            Assets.runSpr.setSize(0,0);
+
+            Fight.joined = 1;
+            Fight.doubleStrike = 0;
+
+            PlayerStatusWearOff(player);
+            Fight.escape = 1;
+            Fight.fightON = 0;
+
+            GameApp.fightscreenSP.setSize(1, 1);
+            GameApp.fightstart = 0;
+            GameApp.sprite.setPosition(100000,100000);
+            GameApp.enemyAttackText = " ";
+            GameApp.playerAttackText = " ";
+            GameApp.mobSpellText = " ";
+            GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+            leftText = "Controls: \n \n " +
+                    "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
             Assets.attackSpr.setSize(0,0);
             Assets.iceSpr.setSize(0,0);
             adrenalineSPR.setSize(0,0);
@@ -100,11 +166,8 @@ public class FightLogic {
             PlayerStatusWearOff(player);
             GameApp.fightscreenSP.setSize(1, 1);
             GameApp.fightstart = 0;
-        }
+            Dawid.setFear(0);
 
-        if (player.getHP() < 1) {
-            System.out.println("Twoje zdrowie spadło do 0");
-            System.out.println("poległeś");
         }
 
     }

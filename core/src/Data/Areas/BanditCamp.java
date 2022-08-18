@@ -1,6 +1,8 @@
 package Data.Areas;
 
 import Mobs.*;
+import Mobs.BanditCamp.Bandit;
+import Mobs.BanditCamp.BanditChief;
 
 import java.util.Random;
 

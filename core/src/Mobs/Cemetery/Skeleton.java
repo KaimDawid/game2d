@@ -1,10 +1,12 @@
-package Mobs;
+package Mobs.Cemetery;
 
+import Mobs.Monster;
+import Mobs.Player;
 import com.mygdx.game.GameApp;
 
 import java.util.Random;
 
-public class Skeleton extends Monster{
+public class Skeleton extends Monster {
 
     int gold;
 

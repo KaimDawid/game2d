@@ -1,7 +1,9 @@
-package Mobs;
+package Mobs.Dungeon;
 
 
 import Logic.Status.Status;
+import Mobs.Monster;
+import Mobs.Player;
 import com.mygdx.game.GameApp;
 
 import java.util.Random;

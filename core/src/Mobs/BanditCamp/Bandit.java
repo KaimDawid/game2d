@@ -1,27 +1,36 @@
-package Mobs;
+package Mobs.BanditCamp;
 
 import Logic.Drop.Miscelanous;
+import Mobs.Monster;
+import Mobs.Player;
 import com.mygdx.game.GameApp;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Random;
 
-@Setter @Getter
-public class BanditChief extends Monster {
+@Getter @Setter
+public class Bandit extends Monster {
     int gold;
+    int band = 1;
 
-    int bandchief = 1;
+    public int getBand() {
+        return band;
+    }
+    double maxHP = hp;
 
-    public int getBandchief() {
-        return bandchief;
+    public double getMaxHP() {
+        return maxHP;
     }
 
-    public void setBandchief(int bandchief) {
-        this.bandchief = bandchief;
+    public void setMaxHP(double maxHP) {
+        this.maxHP = maxHP;
+    }
+    public void setBand(int band) {
+        this.band = band;
     }
 
-    public BanditChief(int hp, int dmg, double x, double y, String name, int giveXP, int gold, double level, int floor) {
+    public Bandit(int hp, int dmg, double x, double y, String name, int giveXP, int gold, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);
         this.gold = gold;
 
@@ -30,8 +39,10 @@ public class BanditChief extends Monster {
     @Override
     public void Drop(){
 
-        Miscelanous.banditsKilled++;
-        GameApp.topText = "You've slain a thief for a total of " + Miscelanous.banditsKilled + "/" + Miscelanous.bkRequirement;
+
+
+            Miscelanous.banditsKilled++;
+            System.out.println("Udało Ci się zgładzić bandytę, zabiłeś ich już " + Miscelanous.banditsKilled + "/" + Miscelanous.bkRequirement);
 
         dropNeck();
         dropWeapon();
@@ -49,15 +60,7 @@ public class BanditChief extends Monster {
     public void setGold() {
 
     }
-    double maxHP = hp;
 
-    public double getMaxHP() {
-        return maxHP;
-    }
-
-    public void setMaxHP(double maxHP) {
-        this.maxHP = maxHP;
-    }
     @Override
     public void setGold(int gold) {
         this.gold = gold;
@@ -70,16 +73,18 @@ public class BanditChief extends Monster {
         if (roll > 80) {
             double critHit = (random.nextInt(20) + monster.getDmg()*1.2);
             player.setHP(player.getHP() - critHit + player.getArmor());
-            GameApp.enemyAttackText = ("The bandit chief sliced you critically for " + critHit + " damage!");
+            double critHit2 = (random.nextInt(20) + monster.getDmg()*1.2);
+            player.setHP(player.getHP() - critHit + player.getArmor());
+            GameApp.enemyAttackText = ("The thug stabbed you twice critically for " + critHit + " and " + critHit2 + " damage!");
         } else if (roll < 81 && roll > missRoll) {
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
-            System.out.println("The bandit chief hit you for " + (dmgRoll - player.getArmor())  + " damage");
-            GameApp.enemyAttackText = "The bandit chief hit you for " + (dmgRoll - player.getArmor()) + " damage";
+            int dmgRoll2 = (random.nextInt(20) + monster.getDmg() - 10);
+            player.setHP(player.getHP() -dmgRoll + player.getArmor());
+            GameApp.enemyAttackText = ("The thug stabbed you twice for " + (dmgRoll - player.getArmor()) + " and " + (dmgRoll2 - player.getArmor())  + " damage");
+
         } else if (roll < missRoll) {
             GameApp.enemyAttackText = ("The thug missed!");
         }
     }
-
-
 }

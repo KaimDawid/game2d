@@ -3,6 +3,8 @@ package Mobs;
 
 import Logic.Drop.Miscelanous;
 import Logic.Status.Status;
+import Mobs.Monster;
+import Mobs.Player;
 import com.mygdx.game.GameApp;
 
 import java.util.Random;

@@ -1,6 +1,10 @@
 package Logic.Spawners;
 
 import Mobs.*;
+import Mobs.Cemetery.Skeleton;
+import Mobs.Dungeon.Imp;
+import Mobs.StartingZone.Mutant;
+import Mobs.StartingZone.Vampire;
 
 import java.util.Random;
 

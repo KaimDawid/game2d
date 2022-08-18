@@ -5,12 +5,18 @@ import Logic.Inventory;
 import Logic.Skills;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.mygdx.game.GameApp;
+
 import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static com.mygdx.game.GameApp.Dawid;
+import static com.mygdx.game.GameApp.playerAttackText;
 
 @Getter @Setter
 
@@ -371,7 +377,15 @@ int toxify = 0;
 
     double manaRegen = 10;
 
+int fear;
 
+    public int getFear() {
+        return fear;
+    }
+
+    public void setFear(int fear) {
+        this.fear = fear;
+    }
 
     public int chosenSkill1 = 0;
     public int chosenSkill2 = 0;
@@ -446,21 +460,26 @@ int GC;
     public void Freeze(Monster target) {
         double iceDMG = 25 + (0.25 * magic);
         double iceHeal = 25 - (0.25*magic);
+        Random random = new Random();
+        int fearValue = random.nextInt(100)*fear;
+        if (fearValue < 51) {
+            if (mana > 69) {
+                if (magic > 0) {
+                    GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and received " + iceDMG + " damage";
 
-        if (mana > 69) {
-            if (magic > 0) {
-                GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and received " + iceDMG + " damage";
-
-                target.setHp(target.getHp() - (DMG * 0.25));
+                    target.setHp(target.getHp() - (DMG * 0.25));
+                } else {
+                    target.setHp(target.getHp() + iceHeal);
+                    GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and was healed for " + iceHeal + " HP";
+                }
+                target.setFreeze(3);
+                mana = mana - 70;
+            } else {
+                GameApp.playerAttackText = "Not enough mana!";
             }
-            else {
-                target.setHp(target.getHp() + iceHeal);
-                GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and was healed for " + iceHeal + " HP";
-            }
-            target.setFreeze(3);
-            mana = mana - 70;
-        } else {
-            GameApp.playerAttackText = "Not enough mana!";
+        }
+        else {
+            playerAttackText = "You couldn't deliver a hit out of fear!";
         }
     }
 
@@ -514,18 +533,23 @@ int GC;
     public void Fireball(Monster monster, Player player) {
         double fireDMG = 80 + magic;
         double fireHeal = 80 - magic;
-        if (mana >= 50) {
-            mana = mana - 50;
-            if (magic > 0) {
-                monster.setHp(monster.getHp() - fireDMG);
-                GameApp.playerAttackText = "You've tossed a fireball for " + fireDMG + " damage!";
-            }
-            else {
-                monster.setHp(monster.getHp() + fireHeal);
-                GameApp.playerAttackText = "Your fireball healed your enemy for " + fireHeal + " HP!";
+        Random random = new Random();
+        int fearValue = random.nextInt(100)*fear;
+        if (fearValue < 51) {
+            if (mana >= 50) {
+                mana = mana - 50;
+                if (magic > 0) {
+                    monster.setHp(monster.getHp() - fireDMG);
+                    GameApp.playerAttackText = "You've tossed a fireball for " + fireDMG + " damage!";
+                } else {
+                    monster.setHp(monster.getHp() + fireHeal);
+                    GameApp.playerAttackText = "Your fireball healed your enemy for " + fireHeal + " HP!";
+                }
+            } else {
+                GameApp.playerAttackText = "Not enough mana!";
             }
         } else {
-            GameApp.playerAttackText = "Not enough mana!";
+            playerAttackText = "You couldn't deliver a hit out of fear!";
         }
     }
 
@@ -563,13 +587,19 @@ int GC;
 
     public void Cleave(Player player, Monster monster, Monster monster2) {
 
-        player.setDMG(player.getDMG() + 20);
-        GameApp.playerAttackText = "Bierzesz zamach i atakujesz obu wrogów naraz ze zwiększoną siłą \n Zadajesz obu potworom "+player.getDMG() + " obrażeń"  ;
+        Random random = new Random();
+        int fearValue = random.nextInt(100)*fear;
+        if (fearValue < 51) {
+            player.setDMG(player.getDMG() + 20);
+            GameApp.playerAttackText = "Bierzesz zamach i atakujesz obu wrogów naraz ze zwiększoną siłą \n Zadajesz obu potworom " + player.getDMG() + " obrażeń";
 
-        player.Attack(monster, player);
-        player.Attack(monster2, player);
-        player.setDMG(player.getDMG() - 20);
-
+            player.Attack(monster, player);
+            player.Attack(monster2, player);
+            player.setDMG(player.getDMG() - 20);
+        }
+        else {
+            playerAttackText = "You couldn't deliver a hit out of fear!";
+        }
 
     }
 
@@ -586,39 +616,48 @@ int GC;
         double missRoll = (20 - (player.getLevel() * 3) + (monster.getLevel() * 3));
         double roll = random.nextDouble(100);
         double critRoll = (80 - player.getCritChance());
-        if (roll > critRoll) {
-            double dmgroll = (random.nextInt(20)+ (player.getDMG() * 1.2) - 10);
-            monster.setHp(monster.getHp() - (dmgroll + monster.getArmor()));
-            GameApp.playerAttackText = "You landed a critical attack for " + dmgroll + " damage!";
-            if (monster.getArmor() > 0) {
-                System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
-            }
-            if (Rogue == 1){
+
+        int fearValue = random.nextInt(100)*fear;
+        if (fearValue < 51) {
+            if (roll > critRoll) {
+                double dmgroll = (random.nextInt(20) + (player.getDMG() * 1.2) - 10);
                 monster.setHp(monster.getHp() - (dmgroll + monster.getArmor()));
-                GameApp.playerAttackText2 = "You landed another critical attack for " + dmgroll + " damage!";
-            }
-            putToxin(player,monster);
-        } else if (roll < critRoll && roll > missRoll) {
-            double dmgRoll = (random.nextInt(20)+ player.getDMG() - 10);
-            monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
-            System.out.println("Zadales " + dmgRoll + " obrażeń");
-            GameApp.playerAttackText = "You've dealt " + dmgRoll + " damage";
-            if (Rogue == 1){
+                GameApp.playerAttackText = "You landed a critical attack for " + dmgroll + " damage!";
+                if (monster.getArmor() > 0) {
+                    System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
+                }
+                if (Rogue == 1) {
+                    monster.setHp(monster.getHp() - (dmgroll + monster.getArmor()));
+                    GameApp.playerAttackText2 = "You landed another critical attack for " + dmgroll + " damage!";
+                }
+                putToxin(player, monster);
+            } else if (roll < critRoll && roll > missRoll) {
+                double dmgRoll = (random.nextInt(20) + player.getDMG() - 10);
                 monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
+                System.out.println("Zadales " + dmgRoll + " obrażeń");
+                GameApp.playerAttackText = "You've dealt " + dmgRoll + " damage";
+                if (Rogue == 1) {
+                    monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
 
-                GameApp.playerAttackText2 = "You've dealt another " + dmgRoll + " damage";
+                    GameApp.playerAttackText2 = "You've dealt another " + dmgRoll + " damage";
+                }
+
+                if (monster.getArmor() > 0) {
+                    System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
+                }
+
+                putToxin(player, monster);
+            } else if (roll < missRoll) {
+                GameApp.playerAttackText = "You missed!";
+
             }
-
-            if (monster.getArmor() > 0) {
-                System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
-            }
-
-            putToxin(player,monster);
-        } else if (roll < missRoll) {
-            GameApp.playerAttackText = "You missed!";
-
+        }
+        else {
+            playerAttackText = "You couldn't deliver a hit out of fear!";
         }
     }
+
+
 
 public static void putToxin(Player player, Monster monster) {
 

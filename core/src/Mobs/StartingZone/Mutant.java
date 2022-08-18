@@ -1,10 +1,12 @@
-package Mobs;
+package Mobs.StartingZone;
 
+import Mobs.Monster;
+import Mobs.Player;
 import com.mygdx.game.GameApp;
 
 import java.util.Random;
 
-public class Mutant extends Monster{
+public class Mutant extends Monster {
     int gold;
     public Mutant(int hp, int dmg, double x, double y, String name, int giveXP, int gold, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);

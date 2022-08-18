@@ -1,14 +1,10 @@
 package Logic.FightLogic;
 
-import Logic.Experience;
 import Logic.GameLogic;
-import Mobs.Goblin;
 import Mobs.Monster;
 import Mobs.Player;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Assets;
 import com.mygdx.game.GameApp;
 
@@ -145,7 +141,54 @@ batch.end();
             batch.end();
         }
         int toxic = 0;
+if (Dawid.getHP() <=0){
+    fightON = 0;
+    fightstart = 0;
+    escape = 1;
+    playerSprite.setPosition(1000,1000);
+    Dawid.setXP(0);
+    Dawid.setHP(Dawid.getMaxHP());
+Dawid.setX(4);
+Dawid.setY(4);
 
+
+    Random random = new Random();
+    Assets.attackSpr.setSize(0,0);
+    Assets.iceSpr.setSize(0,0);
+    adrenalineSPR.setSize(0,0);
+    Assets.runSpr.setSize(0,0);
+
+    Fight.joined = 1;
+    Fight.doubleStrike = 0;
+
+    PlayerStatusWearOff(player);
+    Fight.escape = 1;
+    Fight.fightON = 0;
+
+    GameApp.fightscreenSP.setSize(1, 1);
+    GameApp.fightstart = 0;
+    GameApp.sprite.setPosition(100000,100000);
+    GameApp.enemyAttackText = " ";
+    GameApp.playerAttackText = " ";
+    GameApp.mobSpellText = " ";
+    GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+    leftText = "Controls: \n \n " +
+            "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+    Assets.attackSpr.setSize(0,0);
+    Assets.iceSpr.setSize(0,0);
+    adrenalineSPR.setSize(0,0);
+    Assets.runSpr.setSize(0,0);
+    GameApp.sprite.setPosition(100000,100000);
+    GameApp.enemyAttackText = " ";
+    GameApp.playerAttackText = " ";
+    GameApp.mobSpellText = " ";
+    GameApp.topText = "1. zaatakuj, 2. Użyj czaru";
+    leftText = "Controls: \n \n " +
+            "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+    PlayerStatusWearOff(player);
+    GameApp.fightscreenSP.setSize(1, 1);
+    GameApp.fightstart = 0;
+}
         int burnDMG = 40;
 
             /* do {
@@ -615,10 +658,10 @@ fightstart = 0;
                     GameLogic.monsterBase[joined].getFreeze() + " tury.");
             GameLogic.monsterBase[joined].setFreeze(GameLogic.monsterBase[joined].getFreeze() - 1);
         }*/
-        Thread.sleep(500);
+        Thread.sleep(200);
         if (monster1.getHp() > 0 && monster1.getFreeze() == 0) {
             monster1.Attack(monster1, player);
-            Thread.sleep(500);
+
         } else if (monster1.getFreeze() > 0) {
             System.out.println(monster1.getName() + " jest zamrożony, nie może się ruszać przez " + monster1.getFreeze()
                     + " tury");
