@@ -138,15 +138,15 @@ fireBallSPR.setSize(0,0);
 		createLadder(5);
 		createLadder(6);*/
         CastleSpawner.spawn(24, Spawner.castleBase);
-        Spawner.spawn(1, Spawner.monsterBase);
+        Spawner.spawn(22, Spawner.monsterBase);
         SpawnFloor2.SPAWN(27, Spawner.monsterBase2);
         SpawnFloor3.SPAWN(27, Spawner.monsterBase3);
         SpawnFloor4.SPAWN(27, Spawner.monsterBase3);
         SpawnFloor5.SPAWN(27, Spawner.monsterBase3);
         SpawnFloor6.SPAWN(27, Spawner.monsterBase3);
-        Forest.SPAWN(1, Spawner.forestBase);
+        Forest.SPAWN(27, Spawner.forestBase);
         BanditCamp.SPAWN(27, Spawner.monsterBase3);
-        Cemetery.SPAWN(1, Cemetery.cemeteryBase);
+        Cemetery.SPAWN(27, Cemetery.cemeteryBase);
         Beach.spawn(16, Spawner.beachBase);
     }
 

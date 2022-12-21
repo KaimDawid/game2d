@@ -1,6 +1,7 @@
 package Data.Quests;
 
 import Logic.Drop.Miscelanous;
+import Mobs.Monster;
 import Objects.Items.Item;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -37,6 +38,8 @@ cysiuSPR = new Sprite(cysiuTXT);
 cysiuSPR.setRegion(0,0,1000,1000);
 cysiuSPR.setPosition(playerSprite.getX()+1820, playerSprite.getY()+500);
 cysiuSPR.setSize(350,280);
+    Monster.minotaurSPR.setPosition(cysiuSPR.getX()+2200, cysiuSPR.getY()+200);
+
 dialogueChoice41SPR = new Sprite(dialogueChoice4TXT);
 dialogueChoice42SPR = new Sprite(dialogueChoice4TXT);
 cysiuQuestSPR = new Sprite(cysiuQuestTXT);

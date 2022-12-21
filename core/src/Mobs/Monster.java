@@ -35,8 +35,8 @@ public abstract class Monster {
 
     public int mobType = 0;
 
-    public static Texture whiteKnightTXT;
-    public static Sprite whiteKnightSPR;
+    public static Texture whiteKnightTXT, minotaurTXT;
+    public static Sprite whiteKnightSPR, minotaurSPR;
     public static ArrayList<Sprite> monsterSprites;
 
     public double hp;
@@ -105,6 +105,8 @@ public static void create1(){
     Assets.banditchiefSPR.setPosition(playerSprite.getX() + 100, playerSprite.getY());
     Assets.banditSPR.setSize(0, 0);
     Assets.banditchiefSPR.setSize(0, 0);
+    minotaurTXT = new Texture("minotaur.png");
+    minotaurSPR = new Sprite(minotaurTXT);
 }
 
 public static void create(){
