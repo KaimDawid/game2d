@@ -7,6 +7,19 @@ import java.util.Date;
 public class CheckViablity {
     public static boolean viable = false;
     public static void Check(int X, int Y){
+        if (X == 17 && Y != 4){
+            viable = false;
+        }
+        if (X == 199 || Y == 199 || X ==209 || Y == 209){
+            viable = false;
+
+        }
+        if ( X == 205 && (Y == 200 || Y == 202 || Y == 203 || Y == 204)){
+            viable = false;
+        }
+        if (Y == 205 && X != 207){
+            viable = false;
+        }
         if (X == 108 ){
             viable = false;
         }

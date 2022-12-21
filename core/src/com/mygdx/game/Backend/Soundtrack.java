@@ -48,7 +48,7 @@ questcomplete.setVolume(0.3F);
         music.setLooping(true);
        slon.setVolume(0.2F);
        slon.setLooping(true);
-        music.setVolume(0.2f);
+        music.setVolume(0.15f);
     }
 
     public static void render(){

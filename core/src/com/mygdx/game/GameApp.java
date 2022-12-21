@@ -474,6 +474,7 @@ batch.enableBlending();
         bottomBitMapFont.draw(batch, Fonts.bottomText, playerSprite.getX() + 520, playerSprite.getY() + 480);
         playerSprite.draw(batch);
         CysiuQuest.cysiuSPR.draw(batch);
+        Monster.minotaurSPR.draw(batch);
         fightscreenSP.draw(batch);
         battleStance.draw(batch);
 

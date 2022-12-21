@@ -79,7 +79,7 @@ public class Spawner {
                     //        Tu ustawiasz szansę na pojawienie się danego typu przeciwnika
                     //
                     else if (mobType < 61 && mobType > 40) {
-                        monsterBase[i] = new Werewolf(200, 70, valueX, valueY, "wilkołak", 60, 60, 4, 1);
+                        monsterBase[i] = new Werewolf(300, 60, valueX, valueY, "wilkołak", 60, 60, 4, 1);
                     } else if (mobType < 81 && mobType > 60) {
                         monsterBase[i] = new Vampire(210, 70, valueX, valueY, "wampir", 50, 80, 3, 1);
                     } else if (mobType > 80) {

@@ -57,7 +57,7 @@ public class CastleSpawner {
 
                 if (valid < 1 && properSpot) {
                     spawnedMonsters++;
-                    castleBase[i] = new WhiteKnight(500, 60, valueX, valueY, "White Knight", 100, 5, 1);
+                    castleBase[i] = new WhiteKnight(700, 80, valueX, valueY, "White Knight", 100, 5, 1);
 
                     int emptyslots = mobsNumber;
 
