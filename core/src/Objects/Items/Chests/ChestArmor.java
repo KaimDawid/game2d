@@ -1,14 +1,27 @@
 package Objects.Items.Chests;
 
 import Mobs.Player;
-import Objects.Items.Item;
+import Objects.Items.Gear;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 
-public class ChestArmor extends Item {
+public class ChestArmor extends Gear {
+
+    public static Texture fishScaleTXT;
+    public static Sprite fishScaleSPR;
+
+    public static void create(){
+        fishScaleTXT = new Texture("fishscalearmor.png");
+        fishScaleSPR = new Sprite(fishScaleTXT);
+
+    }
+
+
 
     int isChest = 1;
     public int getHP() {
@@ -219,6 +232,11 @@ public class ChestArmor extends Item {
             eqValue = 0;
             isON = 0;
         }
+    }
+
+    @Override
+    public void Use(Player player) {
+
     }
 
     @Override

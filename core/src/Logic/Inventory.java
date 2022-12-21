@@ -2,12 +2,12 @@ package Logic;
 
 import Mobs.Monster;
 import Mobs.Player;
-import Objects.Items.Item;
 import Objects.Items.Weapons.Weapon;
+import com.mygdx.game.Frontend.Eq.Equipment;
 
 import java.util.Scanner;
 
-import static Mobs.Monster.eqNumber;
+import static Objects.Items.Item.gearPiece;
 
 public class Inventory {
 
@@ -148,7 +148,7 @@ static Scanner scanner = new Scanner(System.in);
             case "OFF":
                 for (int i = 0; i < 50; i++) {
                     try {
-                        eqNumber[i].eqOFF(Dawid);
+                        gearPiece[i].eqOFF(Dawid);
                     } catch (NullPointerException a) {
 
                     }
@@ -168,62 +168,64 @@ static Scanner scanner = new Scanner(System.in);
     public static void Slot(int slotNumber, Player Dawid) {
 
         try {
-            if (eqNumber[slotNumber].getHelmEquip() > 0 && Monster.helmEQ < 1 && eqNumber[slotNumber].getIsON() < 1) {
-                eqNumber[slotNumber].eqON(Dawid);
+            if (gearPiece[slotNumber].getHelmEquip() > 0 && Monster.helmEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                gearPiece[slotNumber].
+                gearPiece[slotNumber].eqON(Dawid);
                 Monster.helmEQ = 1;
-                eqNumber[slotNumber].setIsON(1);
-            } else if (eqNumber[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && eqNumber[slotNumber].getIsON() < 1
+                gearPiece[slotNumber].setIsON(1);
+            } else if (gearPiece[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && gearPiece[slotNumber].getIsON() < 1
              && Monster.weaponEQ == 0) {
-                equippedweapon = (Weapon) eqNumber[slotNumber];
-                eqNumber[slotNumber].eqON(Dawid);
+                equippedweapon = (Weapon) gearPiece[slotNumber];
+                Equipment.currentWeapon = gearPiece[slotNumber];
+                gearPiece[slotNumber].eqON(Dawid);
                 Monster.weaponEQ++;
-                eqNumber[slotNumber].setIsON(1);
-                eqNumber[slotNumber].setWeaponslot(1);
+                gearPiece[slotNumber].setIsON(1);
+                gearPiece[slotNumber].setWeaponslot(1);
             }
-                else if (eqNumber[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && eqNumber[slotNumber].getIsON() < 1
+                else if (gearPiece[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && gearPiece[slotNumber].getIsON() < 1
                 && Monster.weaponEQ == 1) {
-                    equippedweapon = (Weapon) eqNumber[slotNumber];
-                    eqNumber[slotNumber].eqON(Dawid);
+                    equippedweapon = (Weapon) gearPiece[slotNumber];
+                    gearPiece[slotNumber].eqON(Dawid);
                     Monster.weaponEQ++;
-                    eqNumber[slotNumber].setIsON(1);
-                    eqNumber[slotNumber].setWeaponslot(2);
-            } else if (eqNumber[slotNumber].getNeckEquip() > 0 && Monster.neckEQ < 1 && eqNumber[slotNumber].getIsON() < 1) {
-                eqNumber[slotNumber].eqON(Dawid);
+                    gearPiece[slotNumber].setIsON(1);
+                    gearPiece[slotNumber].setWeaponslot(2);
+            } else if (gearPiece[slotNumber].getNeckEquip() > 0 && Monster.neckEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                gearPiece[slotNumber].eqON(Dawid);
                 Monster.neckEQ = 1;
-                eqNumber[slotNumber].setIsON(1);
-            } else if (eqNumber[slotNumber].getChestEquip() > 0 && Monster.chestEQ < 1 && eqNumber[slotNumber].getIsON() < 1) {
-                eqNumber[slotNumber].eqON(Dawid);
+                gearPiece[slotNumber].setIsON(1);
+            } else if (gearPiece[slotNumber].getChestEquip() > 0 && Monster.chestEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                gearPiece[slotNumber].eqON(Dawid);
                 Monster.chestEQ = 1;
-                eqNumber[slotNumber].setIsON(1);
-            } else if (eqNumber[slotNumber].getHandsEquip() > 0 && Monster.handsEQ < 1 && eqNumber[slotNumber].getIsON() < 1) {
-                eqNumber[slotNumber].eqON(Dawid);
+                gearPiece[slotNumber].setIsON(1);
+            } else if (gearPiece[slotNumber].getHandsEquip() > 0 && Monster.handsEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                gearPiece[slotNumber].eqON(Dawid);
                 Monster.handsEQ = 1;
-                eqNumber[slotNumber].setIsON(1);
-            } else if (eqNumber[slotNumber].getHelmEquip() > 0 && Monster.helmEQ > 0 && eqNumber[slotNumber].getIsON() > 0) {
-                eqNumber[slotNumber].eqOFF(Dawid);
+                gearPiece[slotNumber].setIsON(1);
+            } else if (gearPiece[slotNumber].getHelmEquip() > 0 && Monster.helmEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.helmEQ = 0;
-                eqNumber[slotNumber].setIsON(0);
+                gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
-            } else if (eqNumber[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ > 0 && eqNumber[slotNumber].getIsON() > 0) {
-                eqNumber[slotNumber].eqOFF(Dawid);
+            } else if (gearPiece[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                gearPiece[slotNumber].eqOFF(Dawid);
                 equippedweapon = null;
                 Monster.weaponEQ--;
-                eqNumber[slotNumber].setIsON(0);
+                gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
-            } else if (eqNumber[slotNumber].getNeckEquip() > 0 && Monster.neckEQ > 0 && eqNumber[slotNumber].getIsON() > 0) {
-                eqNumber[slotNumber].eqOFF(Dawid);
+            } else if (gearPiece[slotNumber].getNeckEquip() > 0 && Monster.neckEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.neckEQ = 0;
-                eqNumber[slotNumber].setIsON(0);
+                gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
-            } else if (eqNumber[slotNumber].getChestEquip() > 0 && Monster.chestEQ > 0 && eqNumber[slotNumber].getIsON() > 0) {
-                eqNumber[slotNumber].eqOFF(Dawid);
+            } else if (gearPiece[slotNumber].getChestEquip() > 0 && Monster.chestEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.chestEQ = 0;
-                eqNumber[slotNumber].setIsON(0);
+                gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
-            } else if (eqNumber[slotNumber].getHandsEquip() > 0 && Monster.handsEQ > 0 && eqNumber[slotNumber].getIsON() > 0) {
-                eqNumber[slotNumber].eqOFF(Dawid);
+            } else if (gearPiece[slotNumber].getHandsEquip() > 0 && Monster.handsEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.handsEQ = 0;
-                eqNumber[slotNumber].setIsON(0);
+                gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
             } else {
                 System.out.println("Najpierw zdejmij ekwipunek!");

@@ -2,11 +2,41 @@ package Objects.Items;
 
 import Mobs.Player;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 @Getter @Setter
 public abstract class Item {
+    public static boolean success;
+    public static int twojastara;
+
+    public static Item[] gearPiece = new Item[100];
+    public static int currentSlot = 0;
+    public static ArrayList<Item> edible = new ArrayList<>();
+    public static int edibleSlot;
+
+    public int maxStock;
+
+
+    public static Item[] edible2 = new Item[100];
+    public static int edibleslot2;
+    int sellPrice;
+    int buyPrice;
+
+    public Sprite getImage() {
+        return image;
+    }
+
+    public void setImage(Sprite image) {
+        this.image = image;
+    }
+
+    public Sprite image;
+
+
     int isSharp;
     int isToxic;
     int helmEquip;
@@ -15,6 +45,10 @@ public abstract class Item {
     int weaponEquip;
     int neckEquip;
     int isON = 0;
+    boolean isGear = false;
+    boolean isUsable = false;
+    int stock;
+    String name;
 
     int isChest = 0;
     int isWeapon = 0;
@@ -24,77 +58,7 @@ public abstract class Item {
 
     int weaponslot = 0;
 
-    public int getWeaponslot() {
-        return weaponslot;
-    }
 
-    public void setWeaponslot(int weaponslot) {
-        this.weaponslot = weaponslot;
-    }
-
-    public int getIsChest() {
-        return isChest;
-    }
-
-    public void setIsChest(int isChest) {
-        this.isChest = isChest;
-    }
-
-    public int getIsWeapon() {
-        return isWeapon;
-    }
-
-    public void setIsWeapon(int isWeapon) {
-        this.isWeapon = isWeapon;
-    }
-
-    public int getIsGloves() {
-        return isGloves;
-    }
-
-    public void setIsGloves(int isGloves) {
-        this.isGloves = isGloves;
-    }
-
-    public int getIsNeck() {
-        return isNeck;
-    }
-
-    public void setIsNeck(int isNeck) {
-        this.isNeck = isNeck;
-    }
-
-    public int getIsHelmet() {
-        return isHelmet;
-    }
-
-    public void setIsHelmet(int isHelmet) {
-        this.isHelmet = isHelmet;
-    }
-
-    public int getIsSharp() {
-        return isSharp;
-    }
-
-    public void setIsSharp(int isSharp) {
-        this.isSharp = isSharp;
-    }
-
-    public int getIsToxic() {
-        return isToxic;
-    }
-
-    public void setIsToxic(int isToxic) {
-        this.isToxic = isToxic;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
 /*public static void NewItem(String shortName, double hp, double DMG, double crit, int mana, int magic, Player player ){
         public static void eqON(Player player) {
             if (chestEquip < 2) {
@@ -130,31 +94,7 @@ public abstract class Item {
         }
     }*/
 
-    public abstract int getHelmEquip();
 
-    public abstract void setHelmEquip(int helmEquip);
-
-    public abstract int getChestEquip();
-
-    public abstract void setChestEquip(int chestEquip);
-
-    public abstract int getHandsEquip();
-
-    public abstract void setHandsEquip(int handsEquip);
-
-    public abstract int getWeaponEquip();
-
-    public abstract void setWeaponEquip(int weaponEquip);
-
-    public abstract int getNeckEquip();
-
-    public abstract void setNeckEquip(int neckEquip);
-
-    boolean equip = false;
-
-    public abstract boolean isEquip();
-
-    public abstract void setEquip(boolean equip);
 
     int HP;
     int DMG;
@@ -163,37 +103,15 @@ public abstract class Item {
     String shortName;
     int eqValue;
 
-    public abstract int getEqValue();
 
-    public abstract void setEqValue(int eqValue);
 
-    public abstract int getHP();
-
-    public abstract void setHP(int HP);
-
-    public abstract int getDMG();
-
-    public abstract void setDMG(int DMG);
-
-    public abstract int getCrit();
-
-    public abstract void setCrit(int crit);
-
-    public abstract int getMagic();
-
-    public abstract void setMagic(int magic);
-
-    public abstract String getName();
-
-    public int getIsON() {
-        return isON;
+    public static boolean isSuccess() {
+        return success;
     }
 
-    public void setIsON(int isON) {
-        this.isON = isON;
+    public static void setSuccess(boolean success) {
+        Item.success = success;
     }
-
-    public abstract void setName(String name);
 
     public abstract void eqON(Player player);
 
@@ -203,4 +121,7 @@ public abstract class Item {
         return shortName + " (" +HP +"HP, " + DMG + "DMG, +" + crit +"% szans na crit, " + magic + " siły zaklęć)";
         /*System.out.println(shortName + " (" +HP +"HP, " + DMG + "DMG, +" + crit +"% szans na crit, " + magic + " siły zaklęć)");*/
     }
+
+    public abstract void Use(Player player);
+
 }

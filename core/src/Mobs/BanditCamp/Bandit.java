@@ -3,7 +3,8 @@ package Mobs.BanditCamp;
 import Logic.Drop.Miscelanous;
 import Mobs.Monster;
 import Mobs.Player;
-import com.mygdx.game.GameApp;
+import com.mygdx.game.Backend.Soundtrack;
+import com.mygdx.game.Frontend.Fonts;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,12 +14,12 @@ import java.util.Random;
 public class Bandit extends Monster {
     int gold;
     int band = 1;
-
+    public int statusAmount;
     public int getBand() {
         return band;
     }
     double maxHP = hp;
-
+    public int mobType = 7;
     public double getMaxHP() {
         return maxHP;
     }
@@ -34,6 +35,15 @@ public class Bandit extends Monster {
         super(hp, dmg, x, y, name, giveXP, level, floor);
         this.gold = gold;
 
+    }
+    public  int dropable = 1;
+
+    public int getDropable() {
+        return dropable;
+    }
+
+    public void setDropable(int dropable) {
+        this.dropable = dropable;
     }
 
     @Override
@@ -71,20 +81,22 @@ public class Bandit extends Monster {
         double roll = random.nextDouble(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80) {
+            Soundtrack.banditswing.play();
             double critHit = (random.nextInt(20) + monster.getDmg()*1.2);
             player.setHP(player.getHP() - critHit + player.getArmor());
             double critHit2 = (random.nextInt(20) + monster.getDmg()*1.2);
             player.setHP(player.getHP() - critHit + player.getArmor());
-            GameApp.enemyAttackText = ("The thug stabbed you twice critically for " + critHit + " and " + critHit2 + " damage!");
+            Fonts.enemyAttackText = ("The thug stabbed you twice critically for " + critHit + " and " + critHit2 + " damage!");
         } else if (roll < 81 && roll > missRoll) {
+            Soundtrack.banditswing.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
             int dmgRoll2 = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
-            GameApp.enemyAttackText = ("The thug stabbed you twice for " + (dmgRoll - player.getArmor()) + " and " + (dmgRoll2 - player.getArmor())  + " damage");
+            Fonts.enemyAttackText = ("The thug stabbed you twice for " + (dmgRoll - player.getArmor()) + " and " + (dmgRoll2 - player.getArmor())  + " damage");
 
         } else if (roll < missRoll) {
-            GameApp.enemyAttackText = ("The thug missed!");
+            Fonts.enemyAttackText = ("The thug missed!");
         }
     }
 }

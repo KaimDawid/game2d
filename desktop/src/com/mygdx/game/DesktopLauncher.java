@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -16,10 +17,17 @@ import com.mygdx.game.GameApp;
 public class DesktopLauncher {
 	public static void main (String[] arg) throws InterruptedException {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setForegroundFPS(60);
-		config.setTitle("RPGKaim");
+		config.setForegroundFPS(65);
+
+		config.setInitialVisible(true);
+		config.setInitialBackgroundColor(Color.DARK_GRAY);
+
+		config.setWindowedMode(1460,840);
+		config.setWindowIcon("maptile.png");
+		config.setTitle("Ravens Guard This Kingdom");
 		new Lwjgl3Application(new GameApp(), config);
-		String gameVersion = "alpha v 0.5 ";
+
+		String gameVersion = "demo 0.85 ";
 		Batch batch = new SpriteBatch();
 		Texture mutant = new Texture("mutant.png");
 
@@ -29,43 +37,10 @@ public class DesktopLauncher {
 		pixmap.fillCircle( 32, 32, 32 );
 		Texture pixmaptext = new Texture( pixmap );
 		pixmap.dispose();
-		batch.draw(mutant2, 30, 30, 120, 180);
+
 			Gdx.gl.glClearColor(1, 1, 1, 1);
 
 
-			if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-				if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
-					mutant2.translateX(-1f);
-				else
-					mutant2.translateX(-10.0f);
-			}
-			if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-				if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
-					mutant2.translateX(1f);
-				else
-					mutant2.translateX(10.0f);
-			}
-			batch.begin();
-			mutant2.draw(batch);
-			batch.end();
-
-
-
-		System.out.println(gameVersion);
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-			if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)) {
-				mutant.draw(pixmap, 30, 30);
-				mutant2.translateX(-1f);
-			}
-			else
-				mutant2.translateX(-10.0f);
-		}
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
-			if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
-				mutant2.translateX(1f);
-			else
-				mutant2.translateX(10.0f);
-		}
 		GameLogic gameLogic = new GameLogic();
 		gameLogic.Game();
 

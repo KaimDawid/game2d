@@ -1,6 +1,7 @@
 package Objects.Items.Hands;
 
 import Mobs.Player;
+import Objects.Items.Gear;
 import Objects.Items.Item;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Gloves extends Item {
+public class Gloves extends Gear {
 
     int isGloves = 1;
 
@@ -220,6 +221,11 @@ public class Gloves extends Item {
             eqValue = 0;
             isON = 0;
         }
+    }
+
+    @Override
+    public void Use(Player player) {
+
     }
 
     @Override

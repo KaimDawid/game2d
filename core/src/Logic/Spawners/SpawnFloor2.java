@@ -38,9 +38,9 @@ int spawnedMonstersFloor2 = 1;
                 if (valid < 1) {
                     spawnedMonstersFloor2++;
                     if (mobType < 21) {
-                        monsterBase[i] = new Mutant(500, 70, valueX, valueY, "mutant", 120, 60, 6, 2);
+                        monsterBase[i] = new Mutant(500, 70, valueX, valueY, "mutant", 60, 80, 6, 2);
                     } else if (mobType < 41 && mobType > 20) {
-                        monsterBase[i] = new Imp(400, 80, valueX, valueY, "imp", 80, 20, 5, 2);
+                        monsterBase[i] = new Imp(400, 80, valueX, valueY, "imp", 50, 20, 5, 2);
                     }
                     //
                     //        Tu ustawiasz szansę na pojawienie się danego typu przeciwnika

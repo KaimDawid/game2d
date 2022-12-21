@@ -2,15 +2,22 @@ package Mobs.Cemetery;
 
 import Mobs.Monster;
 import Mobs.Player;
+import com.mygdx.game.Assets;
+import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.GameApp;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
 
+import static com.mygdx.game.GameApp.Dawid;
+@Getter
+@Setter
 public class LumpOfFlesh extends Monster {
     public LumpOfFlesh(int hp, int dmg, double x, double y, String name, int giveXP, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);
     }
-
+    public int statusAmount;
     @Override
     public int getGold() {
         return 0;
@@ -19,6 +26,17 @@ public class LumpOfFlesh extends Monster {
     @Override
     public void setGold() {
 
+    }
+    public int dropable = 1;
+    public int mobType = 14;
+    @Override
+    public int getDropable() {
+        return dropable;
+    }
+    double maxHP = hp;
+    @Override
+    public void setDropable(int dropable) {
+        this.dropable = dropable;
     }
 
     @Override
@@ -33,23 +51,35 @@ public class LumpOfFlesh extends Monster {
         double G = monster.getHp();
         double F = player.getHP();
         if (roll > 80) {
+            double difference = monster.getHp() - player.getMaxHP();
+
+
             player.setHP(G);
             monster.setHp(F);
             monster.setArmor(50);
-            player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
+            if (difference > 0){
+          player.setHP(player.getMaxHP() - difference);
+            }
 
-            GameApp.mobSpellText = "The lump of flesh swapped your health points with his and gained 50 armor";
+            if (Dawid.isHealthSwapped() == false) {
+                Dawid.setHealthSwapped(true);
+            } else {
+                Dawid.setHealthSwapped(false);
+            }
 
-        } else if (roll < 81 && roll > missRoll) {
+            Fonts.mobSpellText = "The lump of flesh swapped your health points with his and gained 50 armor";
+        }
+        else if (roll < 81 && roll > missRoll) {
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             monster.setHp(monster.getHp() + player.getArmor());
 
-            GameApp.enemyAttackText = "Your enemy licked you for " + (dmgRoll - player.getArmor()) + " damage \n and healed for " + player.getArmor() + " equivalent to your armor";
+            Fonts.enemyAttackText = "The lump of flesh licked you for " + (dmgRoll - player.getArmor()) + " damage \n and healed for " + player.getArmor() + " equivalent to your armor";
 
         } else if (roll < missRoll) {
-            GameApp.enemyAttackText = "He missed!";
-            System.out.println("He missed!");
+
+            Fonts.enemyAttackText = "The lump of flesh missed!";
+            System.out.println("The lump of flesh missed!");
         }
     }
 }

@@ -1,146 +1,22 @@
 package Objects.Items.Weapons;
 
 import Mobs.Player;
+import Objects.Items.Gear;
 import Objects.Items.Item;
+import com.mygdx.game.Assets;
+import com.mygdx.game.Frontend.Eq.Equipment;
+import com.mygdx.game.GameApp;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class Weapon extends Item {
-    public int getHands() {
-        return hands;
-    }
+public class Weapon extends Gear {
 
-    public void setHands(int hands) {
-        this.hands = hands;
-    }
-
-    public int getHP() {
-        return HP;
-    }
-
-    public void setHP(int HP) {
-        this.HP = HP;
-    }
-
-    public int getDMG() {
-        return DMG;
-    }
-
-    public void setDMG(int DMG) {
-        this.DMG = DMG;
-    }
-
-    public int getCrit() {
-        return crit;
-    }
-
-    public void setCrit(int crit) {
-        this.crit = crit;
-    }
-
-    public int getMagic() {
-        return magic;
-    }
-
-    public void setMagic(int magic) {
-        this.magic = magic;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public String getLongName() {
-        return longName;
-    }
-
-    public void setLongName(String longName) {
-        this.longName = longName;
-    }
-
-    public int getHelmEquip() {
-        return helmEquip;
-    }
-
-    public void setHelmEquip(int helmEquip) {
-        this.helmEquip = helmEquip;
-    }
-
-    public int getChestEquip() {
-        return chestEquip;
-    }
-
-    public void setChestEquip(int chestEquip) {
-        this.chestEquip = chestEquip;
-    }
-
-    public int getHandsEquip() {
-        return handsEquip;
-    }
-
-    public void setHandsEquip(int handsEquip) {
-        this.handsEquip = handsEquip;
-    }
-
-    public int getWeaponEquip() {
-        return weaponEquip;
-    }
-
-    public void setWeaponEquip(int weaponEquip) {
-        this.weaponEquip = weaponEquip;
-    }
-
-    public int getNeckEquip() {
-        return neckEquip;
-    }
-
-    public void setNeckEquip(int neckEquip) {
-        this.neckEquip = neckEquip;
-    }
-
-    public int getIsON() {
-        return isON;
-    }
-
-    public void setIsON(int isON) {
-        this.isON = isON;
-    }
-
-    public int getEqValue() {
-        return eqValue;
-    }
-
-    public void setEqValue(int eqValue) {
-        this.eqValue = eqValue;
-    }
-
-    public int getIsToxic() {
-        return isToxic;
-    }
-
-    public void setIsToxic(int isToxic) {
-        this.isToxic = isToxic;
-    }
-
-    public int getIsSharp() {
-        return isSharp;
-    }
-
-    public void setIsSharp(int isSharp) {
-        this.isSharp = isSharp;
+    public static void giveStartingWeapon(){
+        Item.gearPiece[Item.currentSlot] = new Weapon("Sztylet [WEAPON]", 0, 20, 7, 0, 1, 1, 1);
+        GameApp.eqList.add(Assets.daggerSPR);
+        Equipment.eqSlot++;
+        Item.currentSlot++;
     }
 
     int hands;
@@ -152,21 +28,7 @@ public class Weapon extends Item {
 
     int weaponslot = 0;
 
-    public int getWeaponslot() {
-        return weaponslot;
-    }
 
-    public void setWeaponslot(int weaponslot) {
-        this.weaponslot = weaponslot;
-    }
-
-    public int getIsWeapon() {
-        return isWeapon;
-    }
-
-    public void setIsWeapon(int isWeapon) {
-        this.isWeapon = isWeapon;
-    }
 
     int stock = 0;
     String shortName;
@@ -257,6 +119,12 @@ public class Weapon extends Item {
     }
 
     @Override
+    public void Use(Player player) {
+
+    }
+
+
+    @Override
     public boolean isEquip() {
         return false;
     }
@@ -266,14 +134,6 @@ public class Weapon extends Item {
 
     }
 
-    @Override
-    public String getName() {
-        return null;
-    }
 
-    @Override
-    public void setName(String name) {
-
-    }
 
 }

@@ -1,11 +1,22 @@
 package Objects.Shop;
 
 import Mobs.Player;
+import Objects.Items.Item;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Assets;
+import com.mygdx.game.Backend.Soundtrack;
+import com.mygdx.game.Frontend.Eq.Equipment;
+import com.mygdx.game.Frontend.Fonts;
+import com.mygdx.game.GameApp;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Shop {
 
+    public static Texture shopTxt;
+    public static Sprite shopSprite, sellHP, sellMANA, sellGW, sellAP, sellBOMB;
+    public static List<Sprite> shopList;
     int X;
     int Y;
 
@@ -40,7 +51,26 @@ public class Shop {
         Y = y;
     }
 
+
+    public static void create(){
+        sellAP = new Sprite(Assets.armorPotionTXT);
+        sellBOMB = new Sprite(Assets.bombTXT);
+        sellHP = new Sprite(Assets.healthPotionTXT);
+        sellGW = new Sprite(Assets.grindingWheelTXT);
+        sellMANA = new Sprite(Assets.manaPotionTXT);
+    }
+    public static void Display(){
+
+
+
+
+
+
+    }
+
+
     public static void purchase(Player player) {
+
         Scanner scanner = new Scanner(System.in);
 
         int bombPrice = 25;
@@ -66,6 +96,7 @@ do {
     System.out.println("Dostępne towary: wpisz 9");
     System.out.println("Wyjdź: wpisz 0");
     input = scanner.nextLine().toUpperCase();
+
     switch (input) {
         case "1":
             if (bombStock > 0) {
@@ -148,4 +179,274 @@ do {
     }
 } while (!input.equals("0"));
     }
+
+
+
+    public static void checkRequirement(int gold, Player player, Item item){
+
+        if (item.isGear()) {
+            if (gold > player.getGold()) {
+                Fonts.topText = "Not enough gold";
+            } else {
+                item = Item.gearPiece[Item.currentSlot];
+                Equipment.eqSlot++;
+                Item.currentSlot++;
+            }
+        }
+        else if (item.isUsable() && item.getMaxStock() > 0){
+            if (gold > player.getGold()) {
+                Fonts.topText = "Not enough gold";
+            } else {
+                Soundtrack.coin.play();
+                item.setStock(item.getStock() + 1);
+                item.setMaxStock(item.getMaxStock() - 1);
+                player.setGold(player.getGold() - item.getBuyPrice());
+                GameApp.usableList.add(item.getImage());
+                Item.edible.add(item);
+                Fonts.topText = "You've bought " + item.getName() + " for " + gold;
+
+            }
+        }
+        else if (item.getMaxStock() == 0){
+            Fonts.topText = "Out of stock";
+        }
+
+    }
+
+    public static void makeAShopList(){
+        shopList = new List<Sprite>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Sprite> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Sprite sprite) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Sprite> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Sprite> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Sprite get(int index) {
+                return null;
+            }
+
+            @Override
+            public Sprite set(int index, Sprite element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Sprite element) {
+
+            }
+
+            @Override
+            public Sprite remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Sprite> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Sprite> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Sprite> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+        GameApp.usableList = new List<Sprite>() {
+            @Override
+            public int size() {
+                return 0;
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public boolean contains(Object o) {
+                return false;
+            }
+
+            @Override
+            public Iterator<Sprite> iterator() {
+                return null;
+            }
+
+            @Override
+            public Object[] toArray() {
+                return new Object[0];
+            }
+
+            @Override
+            public <T> T[] toArray(T[] a) {
+                return null;
+            }
+
+            @Override
+            public boolean add(Sprite sprite) {
+                return false;
+            }
+
+            @Override
+            public boolean remove(Object o) {
+                return false;
+            }
+
+            @Override
+            public boolean containsAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(Collection<? extends Sprite> c) {
+                return false;
+            }
+
+            @Override
+            public boolean addAll(int index, Collection<? extends Sprite> c) {
+                return false;
+            }
+
+            @Override
+            public boolean removeAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public boolean retainAll(Collection<?> c) {
+                return false;
+            }
+
+            @Override
+            public void clear() {
+
+            }
+
+            @Override
+            public Sprite get(int index) {
+                return null;
+            }
+
+            @Override
+            public Sprite set(int index, Sprite element) {
+                return null;
+            }
+
+            @Override
+            public void add(int index, Sprite element) {
+
+            }
+
+            @Override
+            public Sprite remove(int index) {
+                return null;
+            }
+
+            @Override
+            public int indexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public int lastIndexOf(Object o) {
+                return 0;
+            }
+
+            @Override
+            public ListIterator<Sprite> listIterator() {
+                return null;
+            }
+
+            @Override
+            public ListIterator<Sprite> listIterator(int index) {
+                return null;
+            }
+
+            @Override
+            public List<Sprite> subList(int fromIndex, int toIndex) {
+                return null;
+            }
+        };
+    }
+
+
 }

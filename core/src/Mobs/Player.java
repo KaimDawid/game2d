@@ -1,333 +1,57 @@
 package Mobs;
 
 
+import Data.Quests.FlorekQuest;
+import Data.Quests.Quests;
+import Logic.FightLogic.Skills.*;
 import Logic.Inventory;
-import Logic.Skills;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Assets;
+import com.mygdx.game.Backend.Soundtrack;
+import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.GameApp;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.awt.*;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.mygdx.game.GameApp.Dawid;
-import static com.mygdx.game.GameApp.playerAttackText;
+import static com.mygdx.game.Backend.Soundtrack.*;
+import static com.mygdx.game.GameApp.*;
 
 @Getter @Setter
 
 public class Player {
+    public static int XPCap;
+
+    public static int HPSWITCHED = 0;
+
+
+   public static boolean healthSwapped;
+
+    public static int getHPSWITCHED() {
+        return HPSWITCHED;
+    }
+
+    public static void setHPSWITCHED(int HPSWITCHED) {
+        Player.HPSWITCHED = HPSWITCHED;
+    }
+
+    public static boolean isHealthSwapped() {
+        return healthSwapped;
+    }
+
+    public static void setHealthSwapped(boolean healthSwapped) {
+        Player.healthSwapped = healthSwapped;
+    }
+
     public static int ICE = 60;
 
     public static int Rogue;
-    public static int getICE() {
-        return ICE;
-    }
 
-    public static void setICE(int ICE) {
-        Player.ICE = ICE;
-    }
-
-
-    public double getHP() {
-        return HP;
-    }
-
-    public void setHP(double HP) {
-        this.HP = HP;
-    }
-
-    public double getMaxHP() {
-        return MaxHP;
-    }
-
-    public void setMaxHP(double maxHP) {
-        MaxHP = maxHP;
-    }
-
-    public int getDMG() {
-        return DMG;
-    }
-
-    public void setDMG(int DMG) {
-        this.DMG = DMG;
-    }
-
-    public int getXP() {
-        return XP;
-    }
-
-    public void setXP(int XP) {
-        this.XP = XP;
-    }
-
-    public double getLevel() {
-        return level;
-    }
-
-    public void setLevel(double level) {
-        this.level = level;
-    }
-
-    public int getEscapeInvulnerability() {
-        return escapeInvulnerability;
-    }
-
-    public void setEscapeInvulnerability(int escapeInvulnerability) {
-        this.escapeInvulnerability = escapeInvulnerability;
-    }
-
-    public int getX() {
-        return X;
-    }
-
-    public void setX(int x) {
-        X = x;
-    }
-
-    public int getY() {
-        return Y;
-    }
-
-    public void setY(int y) {
-        Y = y;
-    }
-
-    public int getFloor() {
-        return floor;
-    }
-
-    public void setFloor(int floor) {
-        this.floor = floor;
-    }
-
-    public int getToxify() {
-        return toxify;
-    }
-
-    public void setToxify(int toxify) {
-        this.toxify = toxify;
-    }
-
-    public int getGold() {
-        return gold;
-    }
-
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
-
-    public int getBombNumber() {
-        return bombNumber;
-    }
-
-    public void setBombNumber(int bombNumber) {
-        this.bombNumber = bombNumber;
-    }
-
-    public int getPotionNumber() {
-        return potionNumber;
-    }
-
-    public void setPotionNumber(int potionNumber) {
-        this.potionNumber = potionNumber;
-    }
-
-    public int getArmor() {
-        return armor;
-    }
-
-    public void setArmor(int armor) {
-        this.armor = armor;
-    }
-
-    public int getPoison() {
-        return poison;
-    }
-
-    public void setPoison(int poison) {
-        this.poison = poison;
-    }
-
-    public int getBurn() {
-        return burn;
-    }
-
-    public void setBurn(int burn) {
-        this.burn = burn;
-    }
-
-    public int getMaxMana() {
-        return maxMana;
-    }
-
-    public void setMaxMana(int maxMana) {
-        this.maxMana = maxMana;
-    }
-
-    public int getIronSkinValue() {
-        return ironSkinValue;
-    }
-
-    public void setIronSkinValue(int ironSkinValue) {
-        this.ironSkinValue = ironSkinValue;
-    }
-
-    public int getAdrenalineValue() {
-        return adrenalineValue;
-    }
-
-    public void setAdrenalineValue(int adrenalineValue) {
-        this.adrenalineValue = adrenalineValue;
-    }
-
-    public int getMagic() {
-        return magic;
-    }
-
-    public void setMagic(int magic) {
-        this.magic = magic;
-    }
-
-    public int getClassNumber() {
-        return classNumber;
-    }
-
-    public void setClassNumber(int classNumber) {
-        this.classNumber = classNumber;
-    }
-
-    public double getMana() {
-        return mana;
-    }
-
-    public void setMana(double mana) {
-        this.mana = mana;
-    }
-
-    public double getManaRegen() {
-        return manaRegen;
-    }
-
-    public void setManaRegen(double manaRegen) {
-        this.manaRegen = manaRegen;
-    }
-
-    public int getChosenSkill1() {
-        return chosenSkill1;
-    }
-
-    public void setChosenSkill1(int chosenSkill1) {
-        this.chosenSkill1 = chosenSkill1;
-    }
-
-    public int getChosenSkill2() {
-        return chosenSkill2;
-    }
-
-    public void setChosenSkill2(int chosenSkill2) {
-        this.chosenSkill2 = chosenSkill2;
-    }
-
-    public int getChosenSkill3() {
-        return chosenSkill3;
-    }
-
-    public void setChosenSkill3(int chosenSkill3) {
-        this.chosenSkill3 = chosenSkill3;
-    }
-
-    public int getChosenSkill4() {
-        return chosenSkill4;
-    }
-
-    public void setChosenSkill4(int chosenSkill4) {
-        this.chosenSkill4 = chosenSkill4;
-    }
-
-    public int getChosenSkill5() {
-        return chosenSkill5;
-    }
-
-    public void setChosenSkill5(int chosenSkill5) {
-        this.chosenSkill5 = chosenSkill5;
-    }
-
-    public int getChosenSkill6() {
-        return chosenSkill6;
-    }
-
-    public void setChosenSkill6(int chosenSkill6) {
-        this.chosenSkill6 = chosenSkill6;
-    }
-
-    public int getChosenSkill7() {
-        return chosenSkill7;
-    }
-
-    public void setChosenSkill7(int chosenSkill7) {
-        this.chosenSkill7 = chosenSkill7;
-    }
-
-    public int getChosenSkill8() {
-        return chosenSkill8;
-    }
-
-    public void setChosenSkill8(int chosenSkill8) {
-        this.chosenSkill8 = chosenSkill8;
-    }
-
-    public int getChosenSkill9() {
-        return chosenSkill9;
-    }
-
-    public void setChosenSkill9(int chosenSkill9) {
-        this.chosenSkill9 = chosenSkill9;
-    }
-
-    public int getChosenSkill10() {
-        return chosenSkill10;
-    }
-
-    public void setChosenSkill10(int chosenSkill10) {
-        this.chosenSkill10 = chosenSkill10;
-    }
-
-    public int getAttributePoints() {
-        return attributePoints;
-    }
-
-    public void setAttributePoints(int attributePoints) {
-        this.attributePoints = attributePoints;
-    }
-
-    public int getWeaponCapacity() {
-        return weaponCapacity;
-    }
-
-    public void setWeaponCapacity(int weaponCapacity) {
-        this.weaponCapacity = weaponCapacity;
-    }
-
-    public int getFreeze() {
-        return freeze;
-    }
-
-    public void setFreeze(int freeze) {
-        this.freeze = freeze;
-    }
-
-    public double getCritChance() {
-        return critChance;
-    }
-
-    public void setCritChance(double critChance) {
-        this.critChance = critChance;
-    }
 
     public final static int TP = 61;
     public final static int FIREBALL = 62;
@@ -399,6 +123,7 @@ int fear;
 
     public int chosenSkill8 = 0;
 
+
     public int chosenSkill9 = 0;
 
 
@@ -464,29 +189,31 @@ int GC;
         int fearValue = random.nextInt(100)*fear;
         if (fearValue < 51) {
             if (mana > 69) {
-                if (magic > 0) {
-                    GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and received " + iceDMG + " damage";
+                ice.play();
+                Icebolt.cooldown = 5;
+                if (magic >= 0) {
+                    Fonts.playerAttackText = target.getName() + " Has been frozen for 2 turns and received " + iceDMG + " damage";
 
                     target.setHp(target.getHp() - (DMG * 0.25));
                 } else {
                     target.setHp(target.getHp() + iceHeal);
-                    GameApp.playerAttackText = target.getName() + " Has been frozen for 2 turns and was healed for " + iceHeal + " HP";
+                    Fonts.playerAttackText = target.getName() + " Has been frozen for 2 turns and was healed for " + iceHeal + " HP";
                 }
                 target.setFreeze(3);
                 mana = mana - 70;
             } else {
-                GameApp.playerAttackText = "Not enough mana!";
+                Fonts.playerAttackText = "Not enough mana!";
             }
         }
         else {
-            playerAttackText = "You couldn't deliver a hit out of fear!";
+            Fonts.playerAttackText = "You couldn't deliver a hit out of fear!";
         }
     }
 
     public void Teleport(Player player) {
         Scanner scanner = new Scanner(System.in);
 
-        GameApp.topText = "Wubierz gdzie chcesz się przeteleportować.";
+        Fonts.topText = "Wubierz gdzie chcesz się przeteleportować.";
         System.out.println("Wybierz gdzie chcesz się przeteleportować.");
         System.out.println("X :");
         int inputX = scanner.nextInt();
@@ -501,33 +228,30 @@ int GC;
     }
 
     public void Heal(Player player){
-        if (player.getChosenSkill1() == HEAL || player.getChosenSkill2() == HEAL || player.getChosenSkill3() == HEAL ||  player.getChosenSkill4() == HEAL ||
-                player.getChosenSkill5() == HEAL || player.getChosenSkill6() == HEAL || player.getChosenSkill7() == HEAL ||
-                player.getChosenSkill8() == HEAL || player.getChosenSkill9() == HEAL || player.getChosenSkill10() == HEAL) {
+
 
             if (player.getMana() >= 60) {
-
+                heal.play();
                 double healValue = 300 + (player.getMagic() * 0.3);
+
                 if (decay == 1){
                     player.setHP(player.getHP() + 300);
                 }
 
                 player.setMana(player.getMana() - 60);
                 player.setHP(player.getHP() + healValue);
+                changeColor(battleStance, Color.GREEN, 1500);
                 double overHeal = (player.getHP() - player.getMaxHP());
                 if (overHeal >= 0){
                     player.setHP(player.getHP() - overHeal);
                 }
-                GameApp.playerAttackText = "You've healed for "+ healValue;
-
+                Fonts.playerAttackText = "You've healed for "+ healValue;
+                Heal.cooldown = 4;
             } else {
-                GameApp.playerAttackText = "Not enough mana!";
+                Fonts.playerAttackText = "Not enough mana!";
 
             }
-        }
-        else {
-            System.out.println("Nie masz tej umiejętności.");
-        }
+
     }
 
     public void Fireball(Monster monster, Player player) {
@@ -537,19 +261,21 @@ int GC;
         int fearValue = random.nextInt(100)*fear;
         if (fearValue < 51) {
             if (mana >= 50) {
+                Soundtrack.fire.play();
                 mana = mana - 50;
-                if (magic > 0) {
+                if (magic >= 0) {
                     monster.setHp(monster.getHp() - fireDMG);
-                    GameApp.playerAttackText = "You've tossed a fireball for " + fireDMG + " damage!";
+                    setRedScreen();
+                    Fonts.playerAttackText = "You've tossed a fireball for " + fireDMG + " damage!";
                 } else {
                     monster.setHp(monster.getHp() + fireHeal);
-                    GameApp.playerAttackText = "Your fireball healed your enemy for " + fireHeal + " HP!";
+                    Fonts.playerAttackText = "Your fireball healed your enemy for " + fireHeal + " HP!";
                 }
             } else {
-                GameApp.playerAttackText = "Not enough mana!";
+                Fonts.playerAttackText = "Not enough mana!";
             }
         } else {
-            playerAttackText = "You couldn't deliver a hit out of fear!";
+            Fonts.playerAttackText = "You couldn't deliver a hit out of fear!";
         }
     }
 
@@ -557,7 +283,8 @@ int GC;
         String skillName = "Ironskin";
         int ironSkinValue = 30;
         if (player.getIronSkinValue() == 0) {
-            GameApp.playerAttackText = "You've used " + skillName + " and received " + ironSkinValue + " armor points for 2 turns";
+            Ironskin.cooldown = 5;
+            Fonts.playerAttackText = "You've used " + skillName + " and received " + ironSkinValue + " armor points for 2 turns";
 
             player.setArmor(player.getArmor() + ironSkinValue);
             player.setIronSkinValue(1);
@@ -571,12 +298,13 @@ int GC;
         String skillName = "Adrenalina";
 
         if (player.getAdrenalineValue() == 0) {
+            Adrenaline.cooldown = 5;
             double adrenalineAttackValue = (player.getDMG() + 60);
             double adrenalineArmorValue = (player.getArmor() - 40);
 
             player.setDMG((int) adrenalineAttackValue);
             player.setArmor((int) adrenalineArmorValue);
-            GameApp.playerAttackText = "Użyłeś umiejętności " + skillName + ", zadajesz więcej obrażeń ale sam jesteś bardziej podatny na obrażenia";
+            Fonts.playerAttackText = "Użyłeś umiejętności " + skillName + ", zadajesz więcej obrażeń ale sam jesteś bardziej podatny na obrażenia";
 
             player.setAdrenalineValue(1);
         }
@@ -590,15 +318,17 @@ int GC;
         Random random = new Random();
         int fearValue = random.nextInt(100)*fear;
         if (fearValue < 51) {
+            Cleave.cooldown = 2;
+            setRedScreen();
             player.setDMG(player.getDMG() + 20);
-            GameApp.playerAttackText = "Bierzesz zamach i atakujesz obu wrogów naraz ze zwiększoną siłą \n Zadajesz obu potworom " + player.getDMG() + " obrażeń";
+            Fonts.playerAttackText = "Bierzesz zamach i atakujesz obu wrogów naraz ze zwiększoną siłą \n Zadajesz obu potworom " + player.getDMG() + " obrażeń";
 
             player.Attack(monster, player);
             player.Attack(monster2, player);
             player.setDMG(player.getDMG() - 20);
         }
         else {
-            playerAttackText = "You couldn't deliver a hit out of fear!";
+            Fonts.playerAttackText = "You couldn't deliver a hit out of fear!";
         }
 
     }
@@ -620,9 +350,26 @@ int GC;
         int fearValue = random.nextInt(100)*fear;
         if (fearValue < 51) {
             if (roll > critRoll) {
+                Fonts.missOrCritText = "CRIT!";
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Fonts.missOrCritText = "";
+                    }
+                },1200);
+                swing.play();
+                Autoattack.animAttack = true;
+                setRedScreen();
                 double dmgroll = (random.nextInt(20) + (player.getDMG() * 1.2) - 10);
                 monster.setHp(monster.getHp() - (dmgroll + monster.getArmor()));
-                GameApp.playerAttackText = "You landed a critical attack for " + dmgroll + " damage!";
+                Fonts.playerAttackText = "You landed a critical attack for " + dmgroll + " damage!";
+                Assets.critBMP.setSize(150,150);
+                GameApp.timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Assets.critBMP.setSize(0,0);
+                    }
+                },3000);
                 if (monster.getArmor() > 0) {
                     System.out.println("Potwór zanegował " + monster.getArmor() + " obrażeń");
                 }
@@ -632,10 +379,13 @@ int GC;
                 }
                 putToxin(player, monster);
             } else if (roll < critRoll && roll > missRoll) {
+                Autoattack.animAttack = true;
+                setRedScreen();
+                swing.play();
                 double dmgRoll = (random.nextInt(20) + player.getDMG() - 10);
                 monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
                 System.out.println("Zadales " + dmgRoll + " obrażeń");
-                GameApp.playerAttackText = "You've dealt " + dmgRoll + " damage";
+                Fonts.playerAttackText = "You've dealt " + dmgRoll + " damage";
                 if (Rogue == 1) {
                     monster.setHp(monster.getHp() - dmgRoll + monster.getArmor());
 
@@ -648,12 +398,18 @@ int GC;
 
                 putToxin(player, monster);
             } else if (roll < missRoll) {
-                GameApp.playerAttackText = "You missed!";
-
+                Fonts.playerAttackText = "You missed!";
+                Fonts.missOrCritText = "MISS!";
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        Fonts.missOrCritText = "";
+                    }
+                },1200);
             }
         }
         else {
-            playerAttackText = "You couldn't deliver a hit out of fear!";
+            Fonts.playerAttackText = "You couldn't deliver a hit out of fear!";
         }
     }
 
@@ -665,14 +421,81 @@ public static void putToxin(Player player, Monster monster) {
         if (Inventory.equippedweapon.getIsToxic() == 1) {
             Random random = new Random();
             int chance = random.nextInt(100);
-            if (chance > 80 && player.getToxify() > 0 && monster.getPoisonInvulnerability() == 0) {
+            if (chance > 25 && Inventory.equippedweapon.getIsToxic() > 0 && monster.getPoisonInvulnerability() == 0) {
                 monster.setPoison(3);
-                GameApp.topText = "You've poisoned your enemy for 2 turns! He receives 30 damage each turn.";
+                Fonts.topText = "You've poisoned your enemy for 2 turns! He receives 30 damage each turn.";
 
                 monster.setHp(monster.getHp() - 30);
             }
         }
 }
+
+private void setRedScreen(){
+
+    sprite.setColor(Color.RED);
+    Assets.mutantSPR.setColor(Color.RED);
+    spiderSprite.setColor(Color.RED);
+    Assets.wolfSPR.setColor(Color.RED);
+    Assets.vampireSPR.setColor(Color.RED);
+    goblinSprite.setColor(Color.RED);
+    Assets.werewolfSPR.setColor(Color.RED);
+    Monster.whiteKnightSPR.setColor(Color.RED);
+    Quests.gabiSPR.setColor(Color.RED);
+    FlorekQuest.crayfishSPR.setColor(Color.RED);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                FlorekQuest.crayfishSPR.setColor(originalColor);
+                sprite.setColor(originalColor);
+                Assets.mutantSPR.setColor(originalColor);
+                spiderSprite.setColor(originalColor);
+                Assets.wolfSPR.setColor(originalColor);
+                Assets.vampireSPR.setColor(originalColor);
+                goblinSprite.setColor(originalColor);
+                Assets.werewolfSPR.setColor(originalColor);
+                Monster.whiteKnightSPR.setColor(originalColor);
+                Quests.gabiSPR.setColor(originalColor);
+            }
+        },1500);
+}
+
+private void changeColor(final Sprite sprite, Color destinedColor, int duration){
+        sprite.setColor(destinedColor);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                sprite.setColor(GameApp.originalColor);
+            }
+        }, (long) duration);
+}
+
+public static void changeStatusColor(Sprite sprite, Color destinedColor, Color originalColor, int status){
+        if (status > 0){
+            sprite.setColor(destinedColor);
+        }
+        else if (status == 0){
+            sprite.setColor(originalColor);
+        }
+
+
+}
+    public static void changeEnemyStatusColor(Color destinedColor, Color originalColor, int status){
+        if (status > 0){
+            sprite.setColor(destinedColor);
+            Assets.mutantSPR.setColor(destinedColor);
+            spiderSprite.setColor(destinedColor);
+            Assets.wolfSPR.setColor(destinedColor);
+            Assets.vampireSPR.setColor(destinedColor);
+            goblinSprite.setColor(destinedColor);
+            Assets.werewolfSPR.setColor(destinedColor);
+        }
+        else if (status == 0){
+            sprite.setColor(GameApp.originalColor);
+        }
+
+
+    }
 
 /*public static void putToxin(Player player, Monster monster){
         Random random = new Random();

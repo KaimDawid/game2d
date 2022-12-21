@@ -2,16 +2,30 @@ package Mobs.StartingZone;
 
 import Mobs.Monster;
 import Mobs.Player;
-import com.mygdx.game.GameApp;
+import com.mygdx.game.Backend.Soundtrack;
+import com.mygdx.game.Frontend.Fonts;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
-
+@Getter@Setter
 public class Mutant extends Monster {
     int gold;
     public Mutant(int hp, int dmg, double x, double y, String name, int giveXP, int gold, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);
         this.gold = gold;
 
+    }
+    public  int dropable = 1;
+
+    @Override
+    public int getDropable() {
+        return dropable;
+    }
+
+    @Override
+    public void setDropable(int dropable) {
+        this.dropable = dropable;
     }
 
     int activeSkill;
@@ -43,7 +57,7 @@ public class Mutant extends Monster {
     public void setPoisonInvulnerability(int poisonInvulnerability) {
         this.poisonInvulnerability = poisonInvulnerability;
     }
-
+    public int mobType = 5;
     public int getActiveSkill() {
         return activeSkill;
     }
@@ -67,11 +81,11 @@ public class Mutant extends Monster {
         this.gold = gold;
     }
 
-
+    public int statusAmount;
     public void Freeze(Player target){
         double iceDMG = 25;
 
-        GameApp.mobSpellText =   "Zostałeś zamrożony na 2 tury i otrzymałeś " + iceDMG + " obrażeń!";
+        Fonts.mobSpellText =   "Zostałeś zamrożony na 2 tury i otrzymałeś " + iceDMG + " obrażeń!";
             target.setHP(target.getHP() - 25);
             target.setFreeze(1);
 
@@ -81,7 +95,7 @@ public class Mutant extends Monster {
         double fireDMG = 80;
 
             player.setHP(player.getHP() - fireDMG);
-        GameApp.mobSpellText =   "Mutant skopiował Twój czar i rzucił w Ciebie kulą ognia za " + fireDMG + " obrażeń!";
+        Fonts.mobSpellText =   "Mutant skopiował Twój czar i rzucił w Ciebie kulą ognia za " + fireDMG + " obrażeń!";
 
 
     }
@@ -132,22 +146,22 @@ public class Mutant extends Monster {
             }
             else if (activeSkill == Player.TP){
                 player.setHP(player.getHP() - (monster.getDmg() * 1.4));
-                GameApp.mobSpellText =   "Mutant ukradł Twoją umiejętność teleportu, przeniósł się za Ciebie i zadał " +
+                Fonts.mobSpellText =   "Mutant ukradł Twoją umiejętność teleportu, przeniósł się za Ciebie i zadał " +
                         (monster.getDmg() * 1.4) + " obrażeń!";
             }
             else {
-                GameApp.mobSpellText =  "Mutant próbował ukraść Twoją umiejętność, ale mu się nie udało";
+                Fonts.mobSpellText =  "Mutant próbował ukraść Twoją umiejętność, ale mu się nie udało";
             }
 
         }
-        else if (roll < 81 && roll > missRoll){
+        else if (roll < 81 && roll > missRoll){ Soundtrack.thump.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             System.out.println("Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń!");
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
-            GameApp.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
+            Fonts.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
         }
         else if (roll < missRoll){
-            GameApp.enemyAttackText = "Mutant chybił!";
+            Fonts.enemyAttackText = "Mutant chybił!";
         }
 
     }

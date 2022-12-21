@@ -2,10 +2,13 @@ package Mobs.StartingZone;
 
 import Mobs.Monster;
 import Mobs.Player;
-import com.mygdx.game.GameApp;
+import com.mygdx.game.Backend.Soundtrack;
+import com.mygdx.game.Frontend.Fonts;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
-
+@Getter@Setter
 public class Vampire extends Monster {
 
     int gold;
@@ -28,17 +31,20 @@ public class Vampire extends Monster {
 
     }
     int vamp = 1;
+    public int dropable = 1;
 
     @Override
-    public double getLevel() {
-        return level;
+    public int getDropable() {
+        return dropable;
     }
 
     @Override
-    public void setLevel(double level) {
-        this.level = level;
+    public void setDropable(int dropable) {
+        this.dropable = dropable;
     }
+    public int statusAmount;
 
+    public int mobType = 3;
     @Override
     public int getVamp() {
         return vamp;
@@ -67,21 +73,21 @@ public class Vampire extends Monster {
         Random random = new Random();
         double roll = random.nextDouble(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
-        if (roll > 80){
+        if (roll > 80){  Soundtrack.bite.play();
             player.setHP(player.getHP() - monster.getDmg());
             monster.setHp(monster.getHp() + (monster.getDmg() * 0.4));
-            GameApp.enemyAttackText = "The vampire bit you for " + (monster.getDmg() - player.getArmor()) + " points of damage thus healing himself for "
+            Fonts.enemyAttackText = "The vampire bit you for " + (monster.getDmg() - player.getArmor()) + " points of damage thus healing himself for "
                     + (monster.getDmg()*0.4) + " damage";
         }
-        else if (roll < 81 && roll > missRoll){
+        else if (roll < 81 && roll > missRoll){  Soundtrack.bite.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("The vampire hit you for " + (dmgRoll - player.getArmor()) + " obrazen");
-            GameApp.enemyAttackText = "The vampire hit you for " + (dmgRoll - player.getArmor()) + " damage";
+            Fonts.enemyAttackText = "The vampire hit you for " + (dmgRoll - player.getArmor()) + " damage";
 
         }
         else if (roll < missRoll){
-            GameApp.enemyAttackText = "The vampire missed!";
+            Fonts.enemyAttackText = "The vampire missed!";
         }
     }
 }

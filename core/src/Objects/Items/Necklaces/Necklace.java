@@ -1,13 +1,14 @@
 package Objects.Items.Necklaces;
 
 import Mobs.Player;
+import Objects.Items.Gear;
 import Objects.Items.Item;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 
-public class Necklace extends Item {
+public class Necklace extends Gear {
 
     int isNeck = 1;
 
@@ -218,6 +219,11 @@ public class Necklace extends Item {
             eqValue = 0;
             isON = 0;
         }
+    }
+
+    @Override
+    public void Use(Player player) {
+
     }
 
     @Override

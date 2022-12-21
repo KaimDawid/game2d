@@ -3,15 +3,18 @@ package Mobs.StartingZone;
 
 import Mobs.Monster;
 import Mobs.Player;
-import com.mygdx.game.GameApp;
+import com.mygdx.game.Backend.Soundtrack;
+import com.mygdx.game.Frontend.Fonts;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
-
+@Getter@Setter
 public class Goblin extends Monster {
 
     int gold;
 
-
+    public int statusAmount;
     public Goblin(int hp, int dmg, double x, double y, String name, int giveXP, int gold, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);
         this.gold = gold;
@@ -33,6 +36,17 @@ int glb = 1;
     public int getGold() {
         return gold;
     }
+    public  int dropable = 1;
+    public int mobType = 4;
+    @Override
+    public int getDropable() {
+        return dropable;
+    }
+
+    @Override
+    public void setDropable(int dropable) {
+        this.dropable = dropable;
+    }
 
     @Override
     public void setGold() {
@@ -53,19 +67,20 @@ int glb = 1;
     }
 
     public void Attack(Monster monster, Player player) {
+
         Random random = new Random();
         double roll = random.nextDouble(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
-        if (roll > 80) {
+        if (roll > 80) {Soundtrack.thump.play();
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
-            GameApp.enemyAttackText = ("The goblin stabbed you critically for " + monster.getDmg() * 1.2 + " damage!");
-        } else if (roll < 81 && roll > missRoll) {
+            Fonts.enemyAttackText = ("The goblin stabbed you critically for " + monster.getDmg() * 1.2 + " damage!");
+        } else if (roll < 81 && roll > missRoll) { Soundtrack.thump.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
             System.out.println("Goblin uderzył Cię za " + (dmgRoll - player.getArmor())  + " obrażeń");
-            GameApp.enemyAttackText = "The goblin hit you for" + (dmgRoll - player.getArmor()) + " damage";
+            Fonts.enemyAttackText = "The goblin hit you for" + (dmgRoll - player.getArmor()) + " damage";
         } else if (roll < missRoll) {
-            GameApp.enemyAttackText = ("The goblin missed!");
+            Fonts.enemyAttackText = ("The goblin missed!");
         }
     }
 }

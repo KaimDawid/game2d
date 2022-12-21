@@ -1,11 +1,18 @@
 package com.mygdx.game;
 
+import Data.Quests.Quests;
+import Mobs.Cemetery.CemeterySprites;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.*;
+import com.mygdx.game.Frontend.Eq.Equipment;
+import com.mygdx.game.Frontend.Fonts;
+import com.mygdx.game.Frontend.Statistics;
 
-import java.awt.*;
 import java.util.ArrayList;
+
+import static com.mygdx.game.GameApp.*;
 
 public class Assets {
 
@@ -39,8 +46,8 @@ public static BitmapFont addATTACKBMP;
 
     public static BitmapFont addHPBMP;
 
-    public static BitmapFont addMAGICBMP;
-    public static String addATTACKTEXT;
+    public static BitmapFont addMAGICBMP, addMAXMANABMP, armorBMP;
+    public static String addATTACKTEXT, addMAXMANATEXT, armorTEXT;
     public static String addMANATEXT;
 
 
@@ -144,12 +151,147 @@ public static Sprite leatherglovesSPR;
     public static Sprite invbarSPR;
     public static Texture csTXT;
     public static Sprite csBMP;
+    public static Texture poisonTXT;
+    public static Sprite poisonBMP;
+    public static Texture critTXT;
+    public static Sprite critBMP;
+    public static Texture stunTXT;
+    public static Sprite stunBMP;
+    public static Texture charstandingTXT;
+    public static Sprite charstandingSPR;
+    public static Texture faceDown1TXT;
+    public static Sprite faceDown1SPR;
+    public static Texture faceDown2TXT;
+    public static Sprite faceDown2SPR;
+    public static Texture faceUp1TXT;
+    public static Sprite faceUp1SPR;
+    public static Texture faceUp2TXT;
+    public static Sprite faceUp2SPR;
+    public static Texture faceLeft1TXT;
+    public static Sprite faceLeft1SPR;
+    public static Texture faceLeft2TXT;
+    public static Sprite faceLeft2SPR;
+    public static Texture faceRight1TXT;
+    public static Sprite faceRight1SPR;
+    public static Texture faceRight2TXT;
+    public static Sprite faceRight2SPR;
+    public static Texture quest1TXT;
+    public static Sprite quest1SPR;
+    public static Texture dialogueChoiceTXT;
+    public static Sprite dialogueChoice1SPR;
+    public static Sprite dialogueChoice2SPR;
+    public static Texture bombTXT;
+    public static Sprite bombSPR;
+    public static Texture healthPotionTXT;
+    public static Sprite healthPotionSPR;
+    public static Texture manaPotionTXT;
+    public static Sprite manaPotionSPR;
+    public static Texture armorPotionTXT;
+    public static Sprite armorPotionSPR;
+    public static Texture grindingWheelTXT;
+    public static Sprite grindingWheelSPR;
+
+    public static Texture shopTXT;
+    public static Sprite shopSPR;
+
+    public static String sellText;
+    public static BitmapFont sellBMP;
+    public static String buyText;
+    public static BitmapFont buyBMP;
+
+    public static Texture usBagTXT;
+    public static Sprite usBagSPR;
+
+    public static String shopNameText;
+    public static BitmapFont shopNameBMP;
+    public static Texture fireanimTXT;
+    public static Sprite fireanimSPR;
+    public static ArrayList<TextureRegion> fireRegion;
+    public  static Animation<TextureRegion> fireAnimation;
+public static TextureRegion[] fireFrames;
+public static TextureRegion[][] tmp;
+public static SpriteBatch spriteBatch;
+public static Texture fireBallAnimTexture;
+public static float stateTime;
+
+public static Texture interactTXT;
+public static Sprite interactSPR;
 
     public static void createAssets(){
+        fireBallAnimTexture = new Texture("charanim.png");
+
+        TextureRegion[][] tmp = TextureRegion.split(fireBallAnimTexture,
+                fireBallAnimTexture.getWidth() / 5,
+                fireBallAnimTexture.getHeight() / 1);
+        fireFrames = new TextureRegion[5*1];
+        int index = 0;
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < 5; j++) {
+                fireFrames[index++] = tmp[i][j];
+            }
+        }
+
+       fireAnimation = new Animation<TextureRegion>(0.025f, fireFrames);
+       fireAnimation.setFrameDuration(1f);
+       fireAnimation.setPlayMode(Animation.PlayMode.LOOP);
+                spriteBatch = new SpriteBatch();
+                stateTime = 0f;
+        sellText = new String();
+interactTXT = new Texture("interact.png");
+interactSPR = new Sprite(interactTXT);
+        sellText = " ";
+        buyText = new String();
+        sellBMP = new BitmapFont();
+        buyBMP = new BitmapFont();
+        shopNameText = new String();
+        shopNameBMP = new BitmapFont();
+        usBagTXT = new Texture("usablebag.png");
+        usBagSPR = new Sprite( usBagTXT);
+        bombTXT = new Texture("bomb.png");
+        bombSPR = new Sprite(bombTXT);
+        healthPotionTXT = new Texture("healthpotion.png");
+        healthPotionSPR = new Sprite(healthPotionTXT);
+        manaPotionTXT = new Texture("manapotion.png");
+        manaPotionSPR = new Sprite(manaPotionTXT);
+        armorPotionTXT = new Texture("armorpotion.png");
+        armorPotionSPR = new Sprite(armorPotionTXT);
+        grindingWheelTXT = new Texture("grindingwheel.png");
+        grindingWheelSPR = new Sprite(grindingWheelTXT);
+        quest1TXT = new Texture("quest1.png");
+        shopTXT = new Texture("shopframe.png");
+        shopSPR = new Sprite(shopTXT);
+        quest1SPR = new Sprite(quest1TXT);
+        dialogueChoiceTXT = new Texture("dialoguechoice.png");
+        dialogueChoice1SPR = new Sprite(dialogueChoiceTXT);
+        dialogueChoice2SPR = new Sprite(dialogueChoiceTXT);
         platearmorTXT = new Texture("platearmor.png");
         platearmorSPR = new SpriteTouchable(platearmorTXT);
+        charstandingTXT = new Texture("charstanding.png");
+        charstandingSPR = new Sprite(charstandingTXT);
+        faceDown1TXT = new Texture("facedown1.png");
+        faceDown1SPR = new Sprite(faceDown1TXT);
+        faceDown2TXT = new Texture("facedown2.png");
+        faceDown2SPR = new Sprite(faceDown2TXT);
+        faceLeft1TXT = new Texture("faceleft1.png");
+        faceLeft1SPR = new Sprite(faceLeft1TXT);
+        faceLeft2TXT = new Texture("faceleft2.png");
+        faceLeft2SPR = new Sprite(faceLeft2TXT);
+        faceUp1TXT = new Texture("faceup1.png");
+        faceUp1SPR = new Sprite(faceUp1TXT);
+        faceUp2TXT = new Texture("faceup2.png");
+        faceUp2SPR = new Sprite(faceUp2TXT);
+        faceRight1TXT = new Texture("faceright1.png");
+        faceRight1SPR = new Sprite(faceRight1TXT);
+        faceRight2TXT = new Texture("faceright2.png");
+        faceRight2SPR = new Sprite(faceRight2TXT);
 csTXT = new Texture("cursescreen.png");
 csBMP = new Sprite(csTXT);
+poisonTXT = new Texture("poisonstatus.png");
+poisonBMP = new Sprite(poisonTXT);
+critTXT = new Texture("critstatus.png");
+critBMP = new Sprite(critTXT);
+stunTXT = new Texture("stunstatus.png");
+stunBMP = new Sprite(stunTXT);
         coppernecklaceTXT = new Texture("coppernecklace.png");
         coppernecklaceSPR = new SpriteTouchable(coppernecklaceTXT);
 leatherhelmetTXT = new Texture("leatherhelmet.png");
@@ -216,6 +358,201 @@ levelupTXT = new Texture("levelup.png");
 levelupSPR = new Sprite(levelupTXT);
 invbarTXT = new Texture("inventorybar.png");
 invbarSPR = new Sprite(invbarTXT);
+
+        faceDown1SPR.setSize(120,140);
+        faceDown2SPR.setSize(120,140);
+        faceLeft1SPR.setSize(120,140);
+        faceLeft2SPR.setSize(120,140);
+        faceUp1SPR.setSize(120,140);
+        faceUp2SPR.setSize(120,140);
+        faceRight1SPR.setSize(120,140);
+        faceRight2SPR.setSize(120,140);
+        charstandingSPR.setSize(120,140);
+       dialogueChoice1SPR.setSize(0,0);
+       dialogueChoice2SPR.setSize(0,0);
+       grindingWheelSPR.setSize(50,50);
+       healthPotionSPR.setSize(50,50);
+       manaPotionSPR.setSize(50,50);
+       armorPotionSPR.setSize(50,50);
+       bombSPR.setSize(50,50);
+       shopSPR.setSize(480,800);
+       usBagSPR.setSize(480,800);
+       quest1SPR.setSize(0,0);
+
+    }
+    public static void RenderAssets(){
+        batch.begin();
+
+        mapSprite.draw(batch);
+	/*	faceDown1SPR.draw(batch);
+		faceDown2SPR.draw(batch);
+		faceLeft2SPR.draw(batch);
+
+		faceRight1SPR.draw(batch);
+		faceRight2SPR.draw(batch);
+		faceUp2SPR.draw(batch);
+		faceUp1SPR.draw(batch);
+*/
+
+		/*Assets.attackSpr.setPosition(playerSprite.getX() - 600, playerSprite.getY() - 250);
+		Assets.runSpr.setPosition(playerSprite.getX() - 300, playerSprite.getY() - 250);*/
+        buttonBounds.setBounds((int) (playerSprite.getX() + 300), (int) (playerSprite.getY() - 250), 6000, 6000);
+
+        Equipment.X = playerSprite.getX() - 400;
+        Equipment.Y = playerSprite.getY() + 300;
+
+        fightscreenSP.draw(batch);
+
+        /*   playerSprite.set(faceDown1SPR);*/
+        /*inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);*/
+        faceLeft2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceLeft1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceRight2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceRight1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceUp1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceUp2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceDown1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        faceDown2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
+        charstandingSPR.setPosition(playerSprite.getX(),playerSprite.getY());
+/*if (GameApp.moveDOWN == false && GameApp.moveUP == false && GameApp.moveLEFT == false && GameApp.moveRIGHT == false) {
+	timer.schedule(new TimerTask() {
+		@Override
+		public void run() {
+
+		}
+	},100);
+
+}*/
+        playerSprite.draw(batch);
+
+        Statistics.addStats();
+
+
+
+        Fonts.levelUpSprite.setPosition(playerSprite.getX()-400,playerSprite.getY()-200);
+        sprite.draw(batch);
+        Fonts.playerAttackFont.draw(batch, Fonts.playerAttackText, playerSprite.getX()- 600, playerSprite.getY() );
+        Fonts.enemyAttackFont.draw(batch, Fonts.enemyAttackText, playerSprite.getX(), playerSprite.getY() + 250);
+        Fonts.topTextBitmap.draw(batch, Fonts.topText, playerSprite.getX()- 300, playerSprite.getY() + 420);
+        Quests.questInfoBitMap.draw(batch, Quests.questInfo, playerSprite.getX()- 300, playerSprite.getY() + 320);
+        Fonts.mobSpellBitmap.draw(batch, Fonts.mobSpellText, playerSprite.getX(), playerSprite.getY() + 150);
+        Fonts.bottomBitMapFont.draw(batch, Fonts.bottomText,playerSprite.getX()- 400,playerSprite.getY() - 400);
+        Fonts.leftBitMapFont.draw(batch, Fonts.leftText, playerSprite.getX()- 900,playerSprite.getY() + 100);
+
+
+
+        Fonts.levelUpSprite.draw(batch);
+        iceBoltSPR.draw(batch);
+
+        adrenalineSPR.draw(batch);
+        ironskinSPR.draw(batch);
+        getIceBoltSPR2.draw(batch);
+
+        fireBallSPR2.draw(batch);
+        getAdrenalineSPR2.draw(batch);
+        ironskinSPR2.draw(batch);
+        healSPR2.draw(batch);
+        cleaveSPR2.draw(batch);
+        /*Equipment.displayEQ();*/
+        Assets.addAttributeSPR.draw(batch);
+
+        Assets.addAttributeSPR.setPosition(playerSprite.getX()+ 300,playerSprite.getY() - 300);
+        Assets.addHP.setPosition(playerSprite.getX() + 580,playerSprite.getY()+100);
+        Assets.addDMG.setPosition(playerSprite.getX() + 580,playerSprite.getY()+200);
+        Assets.addMANA.setPosition(playerSprite.getX() + 580,playerSprite.getY()-200);
+        Assets.addMAGIC.setPosition(playerSprite.getX() + 580,playerSprite.getY());
+        Assets.addCRIT.setPosition(playerSprite.getX() + 580,playerSprite.getY()-100);
+        Assets.addMAGIC.draw(batch);
+        Assets.addDMG.draw(batch);
+        Assets.addHP.draw(batch);
+        Assets.addMANA.draw(batch);
+        Assets.addCRIT.draw(batch);
+
+
+
+        Assets.addATTACKBMP.draw(batch, Assets.addATTACKTEXT, Assets.addDMG.getX() - 180, Assets.addDMG.getY() + 30);
+        Assets.addHPBMP.draw(batch, Assets.addHPTEXT, Assets.addHP.getX() - 180, Assets.addHP.getY() + 30);
+        Assets.addCRITBMP.draw(batch, Assets.addCRITTEXT, Assets.addDMG.getX() - 180, Assets.addCRIT.getY() + 30);
+        Assets.addMAGICBMP.draw(batch, Assets.addMAGICTEXT, Assets.addDMG.getX() - 180, Assets.addMAGIC.getY() + 30);
+        Assets.addMANABMP.draw(batch, Assets.addMANATEXT, Assets.addDMG.getX() - 180, Assets.addMANA.getY() + 30);
+
+        Assets.healSPR.draw(batch);
+        cleaveSPR.draw(batch);
+        Assets.dualWieldSPR.draw(batch);
+        Assets.iceSpr.draw(batch);
+
+        Assets.runSpr.draw(batch);
+
+
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.B) && fightstart == 0) {
+
+            if (showequip == 0){
+                showequip = 1;
+            }
+            else if (showequip == 1 && fightstart == 0){
+                showequip = 0;
+                Equipment.itemDescription = " ";
+            }
+
+
+/*inventorySP.setPosition(playerSprite.getX() - 500, playerSprite.getY() - 220);
+            inventorySP.setSize(700,600);
+			inventorySP.draw(batch);*/
+
+
+
+        }
+        if (showequip == 1) {
+
+            Equipment.displayEQ();
+        }
+        else {
+            inventorySP.setSize(0,0);
+        }
+
+        invbarSPR.draw(batch);
+        Equipment.itemDescriptionBMP.draw(batch, Equipment.itemDescription, Equipment.ix,Equipment.iy);
+
+
+        enemybar.setPosition(sprite.getX(),sprite.getY());
+        enemybargreen.setPosition(sprite.getX(),sprite.getY());
+        enemybar.draw(batch);
+        enemybargreen.draw(batch);
+
+        Assets.stunBMP.setPosition(playerSprite.getX()+ 450, playerSprite.getY() + 350);
+        stunBMP.draw(batch);
+
+        Assets.poisonBMP.setPosition(playerSprite.getX()+ 300, playerSprite.getY() + 350);
+
+
+        Assets.critBMP.setPosition(playerSprite.getX()- 250, playerSprite.getY() - 30);
+        Assets.critBMP.draw(batch);
+
+
+
+        Assets.critBMP.draw(batch);
+        Assets.poisonBMP.draw(batch);
+        playerAttackBMP2.draw(batch, playerAttackText2, playerSprite.getX(), playerSprite.getY() + 50);
+        Assets.levelupSPR.setPosition(playerSprite.getX() - 300,playerSprite.getY()+ 250);
+        levelupSPR.draw(batch);
+        csBMP.draw(batch);
+        Fonts.curseBMP.draw(batch, Fonts.curseTEXT, playerSprite.getX()- 400,playerSprite.getY()  + 150);
+        quest1SPR.draw(batch);
+        dialogueChoice1SPR.draw(batch);
+        dialogueChoice2SPR.draw(batch);
+        Quests.questStoryBitMap.draw(batch, Quests.questStory, playerSprite.getX() - 750, playerSprite.getY() + 400);
+        Quests.diaChoice1BitMap.draw(batch, Quests.diaChoice1, playerSprite.getX() - 700, playerSprite.getY() + 90);
+        Quests.diaChoice2BitmMap.draw(batch, Quests.diaChoice2, playerSprite.getX() - 700, playerSprite.getY() - 10);
+        testScreenSP.draw(batch);
+	/*	cursorSPR.draw(batch);
+		cursorSPR.setSize(50,50);
+cursorSPR.setPosition(playerSprite.getX(),playerSprite.getY());*/
+        batch.end();
+
+
+
+
     }
 
 }

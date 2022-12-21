@@ -4,10 +4,12 @@ package Mobs.Dungeon;
 import Logic.Status.Status;
 import Mobs.Monster;
 import Mobs.Player;
-import com.mygdx.game.GameApp;
+import com.mygdx.game.Frontend.Fonts;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
-
+@Getter@Setter
 public class Imp extends Monster {
 
     int gold;
@@ -26,6 +28,17 @@ public class Imp extends Monster {
     @Override
     public void setGold() {
 
+    }
+    public int dropable = 1;
+
+    @Override
+    public int getDropable() {
+        return dropable;
+    }
+
+    @Override
+    public void setDropable(int dropable) {
+        this.dropable = dropable;
     }
 
     @Override
@@ -48,17 +61,17 @@ public class Imp extends Monster {
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
             Status.BURN(player);
-GameApp.mobSpellText = "The imp has set you ablaze!";
+Fonts.mobSpellText = "The imp has set you ablaze!";
 
         }
         else if (roll < 81 && roll > missRoll){
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage");
-            GameApp.enemyAttackText = "The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage";
+            Fonts.enemyAttackText = "The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage";
         }
         else if (roll < missRoll){
-            GameApp.enemyAttackText = "The imp missed!";
+            Fonts.enemyAttackText = "The imp missed!";
         }
     }
 
