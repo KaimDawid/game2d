@@ -1,12 +1,21 @@
 package Mobs.Dungeon;
 
+import Data.Quests.RusakovQuest;
+import Logic.Camera;
+import Logic.FightLogic.Fight;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Frontend.Fonts;
+import com.mygdx.game.GameApp;
 
 import java.util.Random;
 
+import static com.mygdx.game.GameApp.*;
+import static com.mygdx.game.GameApp.minotaur;
+
 public class Minotaur extends Monster {
+
+    public int mobType = 16;
 
     public Minotaur(int hp, int dmg, double x, double y, String name, int giveXP, double level, int floor) {
         super(hp, dmg, x, y, name, giveXP, level, floor);
@@ -45,6 +54,17 @@ public class Minotaur extends Monster {
     public void setGold(int gold) {
 
     }
+    public void Drop(){
+
+        dropNeck();
+        dropWeapon();
+        dropGloves();
+        dropArmor();
+        dropHelmet();
+        if (RusakovQuest.questStage!=4){
+            RusakovQuest.questStage = 3;
+        }
+    }
     public void Attack(Monster monster, Player player){
         Random random = new Random();
         double roll = random.nextDouble(100);
@@ -63,6 +83,34 @@ public class Minotaur extends Monster {
             Fonts.enemyAttackText = "Minotaur chybił!";
         }
     }
+public static void FightMinotaur(){
+    if (GameApp.fightscreenSP.getHeight() < 1079) {
 
+        if (Camera.X == 0) {
+            Camera.X = 200;
+        }
+        GameApp.enemybar.setSize(0, 0);
+        GameApp.enemybargreen.setSize(0, 0);
+        GameApp.sprite.setSize(0, 0);
+        GameApp.transitionIn = true;
+    }
+
+    GameApp.fightON = 1;
+    GameApp.fightstart = 1;
+
+    Fonts.topText = "Fight!";
+    Fonts.leftText = " ";
+
+
+    if (GameApp.fightON == 1) {
+
+        try {
+            Fight.Turn(Dawid, minotaur);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        currentTarget = minotaur;
+    }
+}
 
 }

@@ -131,7 +131,7 @@ public static void create(){
     monsterSprites.add(13, CemeterySprites.headlessHorsemanSPR);
     monsterSprites.add(14, CemeterySprites.lumpOfFleshSPR);
     monsterSprites.add(15, CemeterySprites.skeletonSPR);
-
+    monsterSprites.add(16,minotaurSPR);
 
 /*    for (int i = 0; i < monsterSprites.size(); i++) {
         monsterSprites.get(i).setSize(600,600);

@@ -179,7 +179,7 @@ else if (Dawid.getX() < 9 && Dawid.getY() > 8){
                 GameApp.fightON = 1;
                 GameApp.fightstart = 1;
 
-                Fonts.topText = "Walcz!";
+                Fonts.topText = "Fight!";
                 Fonts.leftText = " ";
 
 			/*	Assets.attackSpr.setSize(190,95);

@@ -75,7 +75,7 @@ static TimerTask timerTask = new TimerTask() {
         movedTiles++;
     }
 };
-    public static void goUP(Player Dawid){
+    public static void goUP(final Player Dawid){
 
         if (Dawid.getY() > -20) {
 
@@ -105,7 +105,7 @@ static TimerTask timerTask = new TimerTask() {
                                 moveUP = false;
                                 movedTiles = 0;
                                 GameApp.Dawid.setY(GameApp.Dawid.getY() + 1);
-                                System.out.println("Ruszyłeś się");
+                                System.out.println(Dawid.getX() + Dawid.getY());
                                 GameApp.Dawid.setEscapeInvulnerability(0);
                                 Equipment.Y = Equipment.Y + 108;
                                 Backend.checkSuccesful = 1;
@@ -142,7 +142,7 @@ static TimerTask timerTask = new TimerTask() {
         }
     }
 
-    public static void goDOWN(Player Dawid){
+    public static void goDOWN(final Player Dawid){
 
         if (Dawid.getY() < 230) {
 
@@ -167,7 +167,7 @@ static TimerTask timerTask = new TimerTask() {
                                 moveDOWN = false;
                                 movedTiles = 0;
                                 GameApp.Dawid.setY(GameApp.Dawid.getY() - 1);
-                                System.out.println("Ruszyłeś się");
+                                System.out.println(Dawid.getX() + Dawid.getY());
                                 GameApp.Dawid.setEscapeInvulnerability(0);
                                 Equipment.Y = Equipment.Y - 108;
                                 Backend.checkSuccesful = 1;
@@ -236,7 +236,7 @@ static TimerTask timerTask = new TimerTask() {
                                     movedTiles = 0;
                                     GameApp.Dawid.setX(GameApp.Dawid.getX() + 1);
 
-                                    System.out.println("Ruszyłeś się");
+                                    System.out.println(Dawid.getX() + Dawid.getY());
                                     GameApp.Dawid.setEscapeInvulnerability(0);
                                     Equipment.X = Equipment.X + 192;
                                     Backend.checkSuccesful = 1;
@@ -298,7 +298,7 @@ static TimerTask timerTask = new TimerTask() {
                                 movedTiles = 0;
                                 GameApp.Dawid.setX(GameApp.Dawid.getX() - 1);
 
-                                System.out.println("Ruszyłeś się");
+                                System.out.println(Dawid.getX() + Dawid.getY());
                                 GameApp.Dawid.setEscapeInvulnerability(0);
                                 Equipment.X = Equipment.X - 192;
                                 Backend.checkSuccesful = 1;

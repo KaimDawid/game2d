@@ -13,6 +13,7 @@ import Mobs.*;
 import Mobs.Beach.Crayfish;
 import Mobs.Castle.Gabbie;
 import Mobs.Cemetery.CemeterySprites;
+import Mobs.Dungeon.Minotaur;
 import Mobs.StartingZone.*;
 import Objects.Items.Item;
 import Objects.Items.Usables.*;
@@ -125,6 +126,7 @@ public class GameApp extends ApplicationAdapter {
     public static List<Sprite> eqList;
     public static Timer timer;
     public static String playerAttackText2;
+    public static Minotaur minotaur;
     public static BitmapFont playerAttackBMP2;
     public static float xValue;
     public static float yValue;
@@ -287,7 +289,7 @@ Fonts.createFonts();
         inventorySP.setSize(0, 0);
 
 playerSprite.setRegion(0,0,40,100);
-
+minotaur = new Minotaur(5000,120,1000,1000,"Minotaur", 1000, 10,1);
         sprite.setPosition(playerSprite.getX() + 100, playerSprite.getY());
         Fonts.attackText.setLocation((int) (playerSprite.getX() - 100), (int) (playerSprite.getY() + 200));
         stats = new TextField("Zadałeś 100 obrażeń!");
@@ -459,7 +461,9 @@ batch.enableBlending();
         if (quest2Stage == 5) {
             quest2mapSPR.draw(batch);
         }
-
+        if (RenderInput.drawDungeon = true) {
+            RusakovQuest.dungeonMapSPR.draw(batch);
+        }
         RusakovQuest.dungeonMapSPR.draw(batch);
         gabiOverworldSPR.setSize(100,200);
         Quests.gabiOverworldSPR.setPosition(Quests.quest2mapSPR.getX()+3750, Quests.quest2mapSPR.getY()+2780);

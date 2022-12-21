@@ -22,6 +22,7 @@ import java.util.Random;
 import java.util.TimerTask;
 
 import static Logic.FightLogic.Fight.*;
+import static Mobs.Monster.minotaurSPR;
 import static com.mygdx.game.Assets.runSpr;
 import static com.mygdx.game.GameApp.*;
 
@@ -342,6 +343,8 @@ public class FightLogic {
         CemeterySprites.skeletonSPR.setSize(0,0);
         CemeterySprites.lumpOfFleshSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
         CemeterySprites.lumpOfFleshSPR.setSize(0,0);
+        minotaurSPR.setSize(0,0);
+        minotaurSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
         enemybargreen.setSize(0,0);
         enemybar.setSize(0,0);
         getIceBoltSPR2.setSize(0, 0);
@@ -392,6 +395,8 @@ public class FightLogic {
                 CemeterySprites.lumpOfFleshSPR.setSize(600,500);
                 Assets.mutantSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
                 Assets.mutantSPR.setSize(600,500);
+                minotaurSPR.setSize(600,500);
+                minotaurSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
             }
         },1000);
 

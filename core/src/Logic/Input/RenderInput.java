@@ -1,9 +1,12 @@
 package Logic.Input;
 
 import Data.Quests.*;
+import Logic.Camera;
 import Logic.Drop.Miscelanous;
 import Logic.Experience;
+import Logic.FightLogic.Fight;
 import Logic.Movement;
+import Mobs.Dungeon.Minotaur;
 import Mobs.Player;
 import Objects.Items.Item;
 import Objects.ObjectCreator;
@@ -18,6 +21,7 @@ import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Eq.Equipment;
 import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.Frontend.Interfejs.TownMenu;
+import com.mygdx.game.GameApp;
 
 import java.util.TimerTask;
 
@@ -51,19 +55,34 @@ public class RenderInput {
             Assets.interactSPR.setSize(200,100);
             Assets.interactSPR.draw(batch);
         }
-        if (Dawid.getX() == 8 && Dawid.getY() == 3){
+        else if (Dawid.getX() == 8 && Dawid.getY() == 3){
             Assets.interactSPR.setPosition(playerSprite.getX()-50, playerSprite.getY()-200);
             Assets.interactSPR.setSize(200,100);
             Assets.interactSPR.draw(batch);
         }
-        if (Dawid.getX() == 15 && Dawid.getY() == 15){
+        else if (Dawid.getX() == 15 && Dawid.getY() == 15){
             Assets.interactSPR.setPosition(playerSprite.getX()-50, playerSprite.getY()-200);
             Assets.interactSPR.setSize(200,100);
             Assets.interactSPR.draw(batch);
         }
-        if (Dawid.getX() == 200 && Dawid.getY() == 202){
+        else if (Dawid.getX() == 200 && Dawid.getY() == 202){
             Assets.interactSPR.setPosition(playerSprite.getX()-50, playerSprite.getY()-200);
             Assets.interactSPR.setSize(200,100);
+            Assets.interactSPR.draw(batch);
+        }
+        else if (Dawid.getX() == 201 && Dawid.getY() == 207){
+            Assets.interactSPR.setPosition(playerSprite.getX()-50, playerSprite.getY()-200);
+            Assets.interactSPR.setSize(200,100);
+            Assets.interactSPR.draw(batch);
+        }
+        else if (Dawid.getX() == 17 && Dawid.getY() == 4){
+            Assets.interactSPR.setPosition(playerSprite.getX()-50, playerSprite.getY()-200);
+            Assets.interactSPR.setSize(200,100);
+            Assets.interactSPR.draw(batch);
+        }
+        else {
+            Assets.interactSPR.setSize(0,0);
+            Assets.interactSPR.setPosition(-2000,-2000);
             Assets.interactSPR.draw(batch);
         }
 
@@ -261,18 +280,7 @@ playerSprite.setColor(originalColor);
         if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
             playerSprite.rotate(1f);
 
-           /* GameApp.batch.begin();
-            mapSprite.setColor(originalColor.r, originalColor.g, originalColor.b, 0.05f);
-            fightscreenSP.setColor(color2.r, color2.g, color2.b, 0.05f);
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    mapSprite.setColor(originalColor.r, originalColor.g, originalColor.b, 5);
-                    fightscreenSP.setColor(color2.r, color2.g, color2.b, 5);
-                }
-            },2000);
 
-            batch.end();*/
 
         }
 
@@ -287,7 +295,10 @@ playerSprite.setColor(originalColor);
             if (Dawid.getX() == 200 && Dawid.getY() == 202 && !enterBlocked){
                RusakovQuest.leaveDungeon();
             }
+         if (Dawid.getX() == 17 && Dawid.getY() == 4 && Miscelanous.magicFlute){
+             Minotaur.FightMinotaur();
 
+         }
             if (Dawid.getX() == 8 && Dawid.getY() == 3){
                 Soundtrack.door.play();
     CysiuQuest.window4Open = true;

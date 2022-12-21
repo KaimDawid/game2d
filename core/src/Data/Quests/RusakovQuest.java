@@ -33,6 +33,7 @@ public class RusakovQuest {
         dialogueChoice52SPR = new Sprite(dialogueChoice51TXT);
         quest5SPR = new Sprite(quest5TXT);
         dungeonMap2SPR = new Sprite(dungeonMap2TXT);
+        dungeonMap2SPR.setSize(5700,3420);
         dialogueChoice51SPR.setSize(1200,90);
         dialogueChoice52SPR.setSize(1200,90);
         quest5SPR.setSize(1500,900);
@@ -45,8 +46,9 @@ public class RusakovQuest {
 
     public static void enterDungeon() {
         dungeonMapSPR.setSize(5700, 3420);
+        dungeonMap2SPR.setSize(5700,3420);
         RusakovQuest.dungeonMapSPR.setPosition(playerSprite.getX() - 2104, playerSprite.getY() - 1410);
-
+         dungeonMap2SPR.setPosition(playerSprite.getX()-2104, playerSprite.getY() - 1410);
         Dawid.setX(200);
         Dawid.setY(202);
         RenderInput.drawDungeon = true;
@@ -66,7 +68,9 @@ public class RusakovQuest {
         RenderInput.drawDungeon = false;
         Dawid.setX(15);
         Dawid.setY(15);
-        playerSprite.setPosition(Gdx.graphics.getWidth() / 2 + 7152, Gdx.graphics.getHeight() / 2 + 3384);
+        dungeonMapSPR.setSize(0,0);
+        dungeonMap2SPR.setSize(0,0);
+        playerSprite.setPosition(Gdx.graphics.getWidth() / 2 + 9264, Gdx.graphics.getHeight() / 2 + 4572);
         RenderInput.enterBlocked = true;
         timer.schedule(new TimerTask() {
             @Override
@@ -80,13 +84,11 @@ public class RusakovQuest {
     public static void QuestConvo() {
         if (Miscelanous.magicFlute) {
             dungeonMapSPR.set(dungeonMap2SPR);
-            if (questStage!= 4){
-                questStage = 3;
+            if (questStage!= 4 && questStage != 3){
+                questStage = 2;
             }
         }
-        if (RenderInput.drawDungeon = true) {
-            dungeonMapSPR.draw(batch);
-        }
+
 
         if (windowOpen) {
             quest5SPR.setPosition(GameApp.playerSprite.getX()-900, GameApp.playerSprite.getY()-400);
