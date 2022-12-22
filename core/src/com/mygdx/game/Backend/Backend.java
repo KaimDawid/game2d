@@ -50,7 +50,8 @@ public class Backend {
     public static Texture banditcampTXT;
     public static  Texture forestTXT;
     public static Texture fieldsTXT;
-    public  static  Texture cemeteryTXT;
+    public  static  Texture cemeteryTXT, bridgeTXT;
+    public static Texture dungeonTXT;
 
     public static void createBackEnd() {
 
@@ -67,6 +68,7 @@ public class Backend {
         Assets.addHP = new SpriteTouchable(Assets.PLUS);
         Assets.addMAGIC = new SpriteTouchable(Assets.PLUS);
         Assets.addMANA = new SpriteTouchable(Assets.PLUS);
+        bridgeTXT = new Texture("bridge.png");
         Assets.cleaveTXT = new Texture("cleavebutton.png");
         Assets.cleaveSPR = new SpriteTouchable(Assets.cleaveTXT);
         dualWieldTXT = new Texture("duealwieldbutton.png");
@@ -79,6 +81,7 @@ public class Backend {
         Assets.runSpr = new Sprite(Assets.runTxt);
         Assets.iceTxt = new Texture("iceboltbutton.png");
         Assets.iceSpr = new Sprite(Assets.iceTxt);
+        dungeonTXT = new Texture("dungeon.png");
         Assets.addMANA.setSize(0, 0);
         Assets.addDMG.setSize(0, 0);
         Assets.addCRIT.setSize(0, 0);
@@ -160,6 +163,18 @@ else if (Dawid.getX() > 8 && Dawid.getY() < 9){
 else if (Dawid.getX() < 9 && Dawid.getY() > 8){
     fightscreenSP.setTexture(forestTXT);
 }
+else if (Dawid.getX() > 110 & Dawid.getX()<140){
+    fightscreenSP.setTexture(GameApp.castleTXT);
+}
+else if (Dawid.getX() > 8 && Dawid.getY() > 8){
+    fightscreenSP.setTexture(cemeteryTXT);
+}
+else if (Dawid.getX() == 17 && Dawid.getY() == 4){
+    fightscreenSP.setTexture(bridgeTXT);
+}
+else if (Dawid.getX()>= 200 && Dawid.getY() >= 200 && Dawid.getX() < 210 && Dawid.getY() < 210){
+    fightscreenSP.setTexture(dungeonTXT);
+}
 
         try {
 
@@ -181,11 +196,6 @@ else if (Dawid.getX() < 9 && Dawid.getY() > 8){
 
                 Fonts.topText = "Fight!";
                 Fonts.leftText = " ";
-
-			/*	Assets.attackSpr.setSize(190,95);
-				Assets.runSpr.setSize(190,95);*/
-			/*	fightscreenSP.setPosition(playerSprite.getX() - 960, playerSprite.getY() - 540);
-				fightscreenSP.setSize(1920,1080);*/
 
 
                 checkSuccesful = 1;

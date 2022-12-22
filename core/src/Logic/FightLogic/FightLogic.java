@@ -2,6 +2,8 @@ package Logic.FightLogic;
 
 import Data.Quests.FlorekQuest;
 import Data.Quests.Quests;
+import Data.Quests.RusakovQuest;
+import Data.Quests.RysiuQuest;
 import Logic.Camera;
 import Logic.Drop.Miscelanous;
 import Logic.FightLogic.Skills.Heal;
@@ -21,6 +23,9 @@ import com.mygdx.game.GameApp;
 import java.util.Random;
 import java.util.TimerTask;
 
+import static Data.Quests.CysiuQuest.cysiuSPR;
+import static Data.Quests.Quests.quest2Stage;
+import static Data.Quests.Quests.quest2mapSPR;
 import static Logic.FightLogic.Fight.*;
 import static Mobs.Monster.minotaurSPR;
 import static com.mygdx.game.Assets.runSpr;
@@ -170,11 +175,11 @@ public class FightLogic {
 
             Dawid.setXP(0);
             Dawid.setHP(Dawid.getMaxHP());
-            if (Quests.quest2Stage!=5) {
+            if (quest2Stage!=5) {
                 Dawid.setX(4);
                 Dawid.setY(4);
             }
-            else if (Quests.quest2Stage == 5){
+            else if (quest2Stage == 5){
                 Dawid.setX(110);
                 Dawid.setY(110);
             }
@@ -423,6 +428,17 @@ public class FightLogic {
         Fight.joined = 1;
         Fight.doubleStrike = 0;
 
+        if (quest2Stage == 5){
+            quest2mapSPR.setPosition(20000,20000);
+            quest2Stage = 1;
+
+            enemybar.setSize(0,0);
+            enemybargreen.setSize(0,0);
+        }
+      if (RusakovQuest.dungeonMapSPR.getHeight() > 10 || RusakovQuest.dungeonMap2SPR.getHeight() > 10){
+          RusakovQuest.dungeonMapSPR.setSize(0,0);
+          RusakovQuest.dungeonMap2SPR.setSize(0,0);
+      }
         PlayerStatusWearOff(player);
         Fight.escape = 1;
         Fight.fightON = 0;

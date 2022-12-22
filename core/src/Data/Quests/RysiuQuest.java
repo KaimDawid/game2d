@@ -10,6 +10,7 @@ import com.mygdx.game.GameApp;
 
 import java.util.TimerTask;
 
+import static Data.Quests.CysiuQuest.cysiuSPR;
 import static Data.Quests.Quests.quest2Stage;
 import static com.mygdx.game.Assets.healthPotionSPR;
 import static com.mygdx.game.GameApp.*;
@@ -68,11 +69,13 @@ Quests.blockscreen = true;
                 if (Quests.dialogueChoice21SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
                     quest2Stage = 3;
                    Quests.quest2SPR.setSize(0, 0);
-                   questActive = true;
 
-                    QuestLog.activeQuest.add(QuestLog.rysiuQuestSPR);
-                    QuestLog.questDescription.add(Quests.rysiuDescription);
-                    Quests.rysiuNumber = Quests.questNumber;
+ if (!questActive) {
+     QuestLog.activeQuest.add(QuestLog.rysiuQuestSPR);
+     QuestLog.questDescription.add(Quests.rysiuDescription);
+     Quests.rysiuNumber = Quests.questNumber;
+ }
+                    questActive = true;
 
              /*      Quests.questDescriptions.add(rysiuQuestString);
                     Quests.smallDescriptions.add(Fonts.rysiuInfoBMP);*/
@@ -151,7 +154,10 @@ Quests.blockscreen = true;
 
         }
         if (quest2Stage == 5){
-
+        cysiuSPR.setSize(0,0);
+        }
+        else {
+            cysiuSPR.setSize(350,280);
         }
 
         if (quest2Stage == 6 && Quests.window2Open){

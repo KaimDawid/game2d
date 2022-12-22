@@ -161,9 +161,6 @@ public static void create(){
     }
 
     int armor;
-
-
-
 abstract public int getGold();
     abstract public void setGold();
 
@@ -207,42 +204,27 @@ abstract public int getGold();
 
             if (helmetRandomize < 16) {
 
-                Item.gearPiece[Item.currentSlot] = new HeadPiece("Smoczy hełm [HEAD]", 50, 20, 3, 30, 1);
-                System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new HeadPiece("Drake helmet [HEAD]", 50, 20, 3, 30, 1);
                 GameApp.eqList.add(Assets.dragonhemletSPR);
 
             } else if (helmetRandomize > 15 && helmetRandomize < 26) {
 
-                Item.gearPiece[Item.currentSlot] = new HeadPiece("Hełm wysadzany diamentami [HEAD]", 60, 30, 5, 50, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new HeadPiece("Jewelled helmet [HEAD]", 60, 30, 5, 50, 1);
                 GameApp.eqList.add(Assets.diamondhelmetSPR);
 
             } else if (helmetRandomize > 25 && helmetRandomize < 51) {
 
-                Item.gearPiece[Item.currentSlot] = new HeadPiece("Skórzany hełm [HEAD]", 30, 20, 7, 0, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new HeadPiece("Leather helmet [HEAD]", 30, 20, 7, 0, 1);
                 GameApp.eqList.add(Assets.leatherhelmetSPR);
 
             } else if (helmetRandomize > 50 && helmetRandomize < 81) {
 
-                Item.gearPiece[Item.currentSlot] = new HeadPiece("Płytowy hełm [HEAD]", 70, 10, 0, 10, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new HeadPiece("Plate helmet [HEAD]", 70, 10, 0, 10, 1);
                 GameApp.eqList.add(Assets.platehelmetSPR);
 
             } else if (helmetRandomize > 80) {
 
-                Item.gearPiece[Item.currentSlot] = new HeadPiece("Kapelusz nowicjusza [HEAD]", 0, 10, 5, 60, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new HeadPiece("Novice hat [HEAD]", 0, 10, 5, 60, 1);
                 GameApp.eqList.add(Assets.novicehatSPR);
 
             }
@@ -260,45 +242,28 @@ abstract public int getGold();
 
             if (armorRandomize < 16) {
 
-                Item.gearPiece[Item.currentSlot] = new ChestArmor("Smocza zbroja [CHEST]", 100, 20, 3, 30, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new ChestArmor("Drake armor [CHEST]", 100, 20, 3, 30, 1);
                 GameApp.eqList.add(Assets.dragonarmorSPR);
 
             } else if (armorRandomize > 15 && armorRandomize < 26) {
 
-                Item.gearPiece[Item.currentSlot] = new ChestArmor("Zbroja łuskowa [CHEST]", 80, 10, 0, 0, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new ChestArmor("Mail armor [CHEST]", 80, 10, 0, 0, 1);
                 GameApp.eqList.add(Assets.mailshirtSPR);
 
             } else if (armorRandomize > 25 && armorRandomize < 51) {
 
-                Item.gearPiece[Item.currentSlot] = new ChestArmor("Skórzana zbroja [CHEST]", 60, 20, 7, 0, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new ChestArmor("Leather armor [CHEST]", 60, 20, 7, 0, 1);
                 GameApp.eqList.add(Assets.leatherarmorSPR);
 
             } else if (armorRandomize > 50 && armorRandomize < 81) {
 
-                Item.gearPiece[Item.currentSlot] = new ChestArmor("Zbroja płytowa [CHEST]", 120, 5, 3, 10, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new ChestArmor("Plate armor [CHEST]", 120, 5, 3, 10, 1);
                 GameApp.eqList.add(Assets.plateArmorSPR) ;
-
 
             } else if (armorRandomize > 80) {
 
-                Item.gearPiece[Item.currentSlot] = new ChestArmor("Szata nowicjusza [CHEST]", 30, 10, 3, 50, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new ChestArmor("Novice robes [CHEST]", 30, 10, 3, 50, 1);
                 GameApp.eqList.add(Assets.novicerobeSPR);
-
             }
             Equipment.eqSlot++;
             Item.currentSlot++;
@@ -324,44 +289,24 @@ abstract public int getGold();
 
             if (glovesRandomize < 16) {
 
-                Item.gearPiece[Item.currentSlot] = new Gloves("Rękawice bazyliszka [GLOVES]", 20, 20, 3, 20, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Gloves("Basilisk gloves [GLOVES]", 20, 20, 3, 20, 1);
                 GameApp.eqList.add(Assets.mailglovesSPR);
-
             } else if (glovesRandomize > 15 && glovesRandomize < 26) {
 
-                Item.gearPiece[Item.currentSlot] = new Gloves("Rękawice wysadzane diamentami [GLOVES]", 30, 25, 5, 30, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Gloves("Jewelled gloves [GLOVES]", 30, 25, 5, 30, 1);
                 GameApp.eqList.add(Assets.diamondglovesSPR);
-
             } else if (glovesRandomize > 25 && glovesRandomize < 51) {
 
-                Item.gearPiece[Item.currentSlot] = new Gloves("Skórzane rękawice [GLOVES]", 10, 15, 7, 0, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Gloves("Leather gloves [GLOVES]", 10, 15, 7, 0, 1);
                 GameApp.eqList.add(Assets.leatherglovesSPR);
-
             } else if (glovesRandomize > 50 && glovesRandomize < 81) {
 
-                Item.gearPiece[Item.currentSlot] = new Gloves("Płytowe rękawice [GLOVES]", 40, 7, 2, 10, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Gloves("Plate gloves [GLOVES]", 40, 7, 2, 10, 1);
                 GameApp.eqList.add(Assets.plateglovesSPR);
-
             } else if (glovesRandomize > 80) {
 
-                Item.gearPiece[Item.currentSlot] = new Gloves("Rękawice nowicjusza [GLOVES]", 10, 5, 3, 40, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Gloves("Novice gloves [GLOVES]", 10, 5, 3, 40, 1);
                 GameApp.eqList.add(Assets.noviceglovesSPR);
-
             }
             Equipment.eqSlot++;
             Item.currentSlot++;
@@ -379,44 +324,24 @@ abstract public int getGold();
 
             if (weaponRandomize < 16) {
 
-                Item.gearPiece[Item.currentSlot] = new Weapon("Katana [WEAPON]", 0, 90, 7, 10, 1, 1, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Weapon("Katana [WEAPON]", 0, 70, 7, 10, 1, 1, 1);
                  GameApp.eqList.add(Assets.katanaSPR);
-
             } else if (weaponRandomize > 15 && weaponRandomize < 26) {
 
-                Item.gearPiece[Item.currentSlot] = new Weapon("Miecz dwuręczny [WEAPON]", 0, 130, 3, 0, 2, 1, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Weapon("Two-handed sword [WEAPON]", 0, 80, 3, 0, 2, 1, 1);
                 GameApp.eqList.add(Assets.twohandedswordSPR);
-
             } else if (weaponRandomize > 25 && weaponRandomize < 51) {
 
-                Item.gearPiece[Item.currentSlot] = new Weapon("Sztylet [WEAPON]", 0, 60, 10, 0, 1, 1, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Weapon("Dagger [WEAPON]", 0, 50, 10, 0, 1, 1, 1);
                 GameApp.eqList.add(Assets.daggerSPR);
-
             } else if (weaponRandomize > 50 && weaponRandomize < 81) {
 
-                Item.gearPiece[Item.currentSlot] = new Weapon("Miecz i tarcza [WEAPON]", 120, 60, 3, 10, 2, 1, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Weapon("Sword and shield [WEAPON]", 120, 50, 3, 10, 2, 1, 1);
                 GameApp.eqList.add(Assets.swordswordandshieldSPR);
-
             } else if (weaponRandomize > 80) {
 
-                Item.gearPiece[Item.currentSlot] = new Weapon("Laska nowicjusza [WEAPON]", 0, 5, 0, 80, 2, 0, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Weapon("Novice staff [WEAPON]", 0, 5, 0, 80, 2, 0, 1);
                 GameApp.eqList.add(Assets.novicestaffSPR);
-
             }
             Equipment.eqSlot++;
             Item.currentSlot++;
@@ -433,28 +358,16 @@ abstract public int getGold();
 
             if (neckRandomize < 26) {
 
-                Item.gearPiece[Item.currentSlot] = new Necklace("Perłowy naszyjnik [NECK]", 5, 5, 3, 40, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Necklace("Pearl Necklace [NECK]", 5, 5, 3, 40, 1);
                 GameApp.eqList.add(Assets.diamondnecklaceSPR);
-
             } else if (neckRandomize > 25 && neckRandomize < 71) {
 
-                Item.gearPiece[Item.currentSlot] = new Necklace("Miedziany naszyjnik [NECK]", 0, 5, 0, 10, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Necklace("Copper necklace [NECK]", 0, 5, 0, 10, 1);
                 GameApp.eqList.add(Assets.coppernecklaceSPR);
-
             } else if (neckRandomize > 70) {
 
-                Item.gearPiece[Item.currentSlot] = new Necklace("Srebrny naszyjnik [NECK]", 15, 5, 0, 30, 1);
-                 System.out.println("Znalazłeś " + Item.gearPiece[Item.currentSlot].getShortName() + " (" + Item.gearPiece[Item.currentSlot].getHP() + " HP, "
-                        + Item.gearPiece[Item.currentSlot].getDMG() + " DMG, " + Item.gearPiece[Item.currentSlot].getCrit() + "Crit, " + Item.gearPiece[Item.currentSlot].getMagic()
-                        + " Mocy zaklęć) !");
+                Item.gearPiece[Item.currentSlot] = new Necklace("Silver necklace [NECK]", 15, 5, 0, 30, 1);
                 GameApp.eqList.add(Assets.silvernecklaceSPR);
-
             }
             Equipment.eqSlot++;
             Item.currentSlot++;

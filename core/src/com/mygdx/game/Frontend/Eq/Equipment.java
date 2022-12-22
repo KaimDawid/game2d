@@ -1,6 +1,7 @@
 package com.mygdx.game.Frontend.Eq;
 
 import Logic.FightLogic.Fight;
+import Logic.FightLogic.FightLogic;
 import Logic.Inventory;
 import Objects.Items.Item;
 import Objects.Items.Usables.HealthPotion;
@@ -137,11 +138,9 @@ usableBagSPR.setPosition(inventorySP.getX()-300, inventorySP.getY());
                         Soundtrack.potion.play();
                        Item.edible.get(i).Use(Dawid);
                        if (fightstart == 1){
-                           try {
-                               Fight.EnemyAttack(Dawid,currentTarget);
-                           } catch (InterruptedException e) {
-                               throw new RuntimeException(e);
-                           }
+
+                               Fight.attackConclude(Dawid, currentTarget);
+
                        }
 
                        usableList.remove(i);

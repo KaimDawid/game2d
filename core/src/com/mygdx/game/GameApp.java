@@ -56,6 +56,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
+import static Data.Quests.CysiuQuest.cysiuSPR;
 import static Data.Quests.FlorekQuest.*;
 import static Data.Quests.Quests.*;
 import static Logic.Experience.*;
@@ -108,6 +109,7 @@ public class GameApp extends ApplicationAdapter {
     public static ActionListener fight;
     public static ActionEvent fightEvent;
     private static Texture texture;
+    public static Texture castleTXT;
     public static Sprite sprite;
     public static int showequip = 0;
     public static Color originalColor;
@@ -310,6 +312,7 @@ minotaur = new Minotaur(5000,120,1000,1000,"Minotaur", 1000, 10,1);
         Backend.banditcampTXT = new Texture("banditcamp.jpg");
         Backend.fieldsTXT = new Texture("field.png");
         Backend.cemeteryTXT = new Texture("cemetery.png");
+        castleTXT = new Texture("castle.png");
         testScreenSP = new Sprite(fightscreenTX);
         testScreenSP.setSize(0, 0);
         /*	testScreenSP.setSize(1920,1080);*/
@@ -479,6 +482,8 @@ batch.enableBlending();
         playerSprite.draw(batch);
         CysiuQuest.cysiuSPR.draw(batch);
         Monster.minotaurSPR.draw(batch);
+        Monster.minotaurSPR.setSize(300,300);
+        Monster.minotaurSPR.setPosition(cysiuSPR.getX()+1890, cysiuSPR.getY()+160);
         fightscreenSP.draw(batch);
         battleStance.draw(batch);
 
