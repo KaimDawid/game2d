@@ -198,6 +198,7 @@ public class RusakovQuest {
                 if (Gdx.input.justTouched()) {
                     camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                     if (dialogueChoice51SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+                        Dawid.setXP(Dawid.getXP() + 250);
                         quest5SPR.setSize(0, 0);
                         dialogueChoice51SPR.setSize(0, 0);
                         dialogueChoice52SPR.setSize(0, 0);

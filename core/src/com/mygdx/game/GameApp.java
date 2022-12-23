@@ -8,6 +8,7 @@ import Logic.FightLogic.Skills.Fireball;
 import Logic.Experience;
 import Logic.FightLogic.Skills.Spells;
 import Logic.Input.RenderInput;
+import Logic.Inventory;
 import Logic.Movement;
 import Mobs.*;
 import Mobs.Beach.Crayfish;
@@ -177,6 +178,7 @@ spriteBatch = new SpriteBatch();
         dupa.setCipajas(1);
         usableList = new ArrayList<Sprite>();
         Item.edible = new ArrayList<Item>();
+        Item.gear = new ArrayList<Item>();
     /*  shop.makeAShopList();*/
  healthPotion = new HealthPotion(0,"Health potion + 300 HP",false,false,false,false,true,80,40,0,200,0,0, 0, 0, 0);
         manaPotion = new ManaPotion(0,"Mana potion + 100 mana",false,false,false,false,true,50,25,160,0,0,0, 0, 0, 0);
@@ -235,10 +237,11 @@ Movement.createMovement();
         Shop.shopList = new ArrayList<Sprite>();
         eqList = new ArrayList<Sprite>();
         Assets.createAssets();
-        Assets.katanaTXT = new Texture("katana.jpg");
+        Assets.katanaTXT = new Texture("katana.png");
         Assets.katanaSPR = new SpriteTouchable(katanaTXT);
         touchPoint = new Vector3();
-
+        crayfishTXT = new Texture("crayfish.png");
+        crayfishSPR = new Sprite(crayfishTXT);
         cursor = new Rectangle();
 
         Dawid = new Player(1, 1, 1, 0, 0, 4, 4, 0, 0, 0, 0);
@@ -272,7 +275,7 @@ Fonts.createFonts();
         Shop.shopSprite.setSize(360, 600);
         usBagSPR.setSize(480,800);
       Monster.create1();
-        inventoryTX = new Texture("Inventory.png");
+        inventoryTX = new Texture("inventory.png");
         inventorySP = new Sprite(inventoryTX);
         /*inventorySP.setPosition((w / 2 - sprite.getWidth() / 2) - 300, h / 2 - sprite.getHeight() / 2);*/
         mapTexture = new Texture("mymap2.png");
@@ -291,7 +294,7 @@ Fonts.createFonts();
         inventorySP.setSize(0, 0);
 
 playerSprite.setRegion(0,0,40,100);
-minotaur = new Minotaur(5000,120,1000,1000,"Minotaur", 1000, 10,1);
+minotaur = new Minotaur(5000,120,20,2,"Minotaur", 1000, 10,1);
         sprite.setPosition(playerSprite.getX() + 100, playerSprite.getY());
         Fonts.attackText.setLocation((int) (playerSprite.getX() - 100), (int) (playerSprite.getY() + 200));
         stats = new TextField("Zadałeś 100 obrażeń!");
@@ -361,6 +364,7 @@ Equipment.create();
     @Override
     public void render() {
         Soundtrack.render();
+
         camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
 camera.update();
         //
@@ -482,8 +486,10 @@ batch.enableBlending();
         playerSprite.draw(batch);
         CysiuQuest.cysiuSPR.draw(batch);
         Monster.minotaurSPR.draw(batch);
-        Monster.minotaurSPR.setSize(300,300);
-        Monster.minotaurSPR.setPosition(cysiuSPR.getX()+1890, cysiuSPR.getY()+160);
+        if (fightstart == 0) {
+            Monster.minotaurSPR.setSize(300, 300);
+            Monster.minotaurSPR.setPosition(cysiuSPR.getX() + 1890, cysiuSPR.getY() + 160);
+        }
         fightscreenSP.draw(batch);
         battleStance.draw(batch);
 
@@ -603,6 +609,7 @@ Fonts.missOrCritBMP.draw(batch, Fonts.missOrCritText, battleStance.getX()+700, b
 batch.disableBlending();
         spriteBatch.draw(fireBallTXT, playerSprite.getX(),playerSprite.getY(),800,800);
         spriteBatch.end();
+
         stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
 
         // Get current frame of animation for the current stateTime

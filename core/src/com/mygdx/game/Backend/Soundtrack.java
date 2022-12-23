@@ -14,11 +14,16 @@ public class Soundtrack {
     public static Sound door;
     public static Sound ui, steps, success, coin, potion, battle, equip, mob, thump, bite, banditswing;
 
-public static Music slon, questcomplete, fire, smallbite, heal, ice;
+public static Music slon;
+    public static Music fire, minotaursound;
+    public static Music smallbite;
+    public static Music heal;
+    public static Music ice;
 
 public static Music music;
 
     public static void create(){
+        minotaursound = Gdx.audio.newMusic(Gdx.files.internal("minotaur.mp3"));
         ice = Gdx.audio.newMusic(Gdx.files.internal("ice.mp3"));
         heal = Gdx.audio.newMusic(Gdx.files.internal("heal.mp3"));
         fire = Gdx.audio.newMusic(Gdx.files.internal("fire.mp3"));
@@ -27,7 +32,7 @@ smallbite = Gdx.audio.newMusic(Gdx.files.internal("smallbite.mp3"));
         steps = Gdx.audio.newSound(Gdx.files.internal("steps.mp3"));
         success = Gdx.audio.newSound(Gdx.files.internal("success.mp3"));
         coin = Gdx.audio.newSound(Gdx.files.internal("coin.mp3"));
-        questcomplete = Gdx.audio.newMusic(Gdx.files.internal("questcomplete.mp3"));
+    /*    questcomplete = Gdx.audio.newMusic(Gdx.files.internal("questcomplete.mp3"));*/
         potion = Gdx.audio.newSound(Gdx.files.internal("potion.mp3"));
         banditswing = Gdx.audio.newSound(Gdx.files.internal("banditswing.mp3"));
         battle = Gdx.audio.newSound(Gdx.files.internal("battle.mp3"));
@@ -35,7 +40,7 @@ smallbite = Gdx.audio.newMusic(Gdx.files.internal("smallbite.mp3"));
         mob = Gdx.audio.newSound(Gdx.files.internal("monster.mp3"));
         thump = Gdx.audio.newSound(Gdx.files.internal("thump.mp3"));
         bite = Gdx.audio.newSound(Gdx.files.internal("bite.mp3"));
-questcomplete.setVolume(0.3F);
+/*questcomplete.setVolume(0.3F);*/
         steps = Gdx.audio.newSound(Gdx.files.internal("steps.mp3"));
         swing = Gdx.audio.newSound(Gdx.files.internal("hit1.wav"));
         door = Gdx.audio.newSound(Gdx.files.internal("door.mp3"));

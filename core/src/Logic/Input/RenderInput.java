@@ -8,6 +8,8 @@ import Logic.FightLogic.Fight;
 import Logic.Movement;
 import Mobs.Dungeon.Minotaur;
 import Mobs.Player;
+import Objects.Items.Chests.ChestArmor;
+import Objects.Items.Helmets.HeadPiece;
 import Objects.Items.Item;
 import Objects.ObjectCreator;
 import Objects.Shop.Shop;
@@ -296,7 +298,8 @@ playerSprite.setColor(originalColor);
                RusakovQuest.leaveDungeon();
             }
          if (Dawid.getX() == 17 && Dawid.getY() == 4 && Miscelanous.magicFlute){
-             Minotaur.FightMinotaur();
+             Dawid.setX(20);   Dawid.setY(2);
+             Backend.checker(Dawid, minotaur);
 
          }
             if (Dawid.getX() == 8 && Dawid.getY() == 3){
@@ -330,14 +333,7 @@ playerSprite.setColor(originalColor);
             Soundtrack.door.play();
 
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.O) && fightstart == 0 && (Dawid.getX() >2 && Dawid.getX() < 6) && (Dawid.getY() > 2 && Dawid.getY() < 6) && window2Open == false){
-            window2Open = true;
 
-        }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.O) && fightstart == 0 && (Dawid.getX() >2 && Dawid.getX() < 6) && (Dawid.getY() > 2 && Dawid.getY() < 6) && window2Open){
-            window2Open = false;
-
-        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             System.out.println("Rzeczy do zrobienia:");
             System.out.println("- 4 nowe questy");
@@ -372,15 +368,24 @@ playerSprite.setColor(originalColor);
 batch.end();
 
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)){
-            Dawid.setDMG(1000);
+        if (Gdx.input.isKeyPressed(Input.Keys.TAB) && Gdx.input.isKeyJustPressed(Input.Keys.O)){
+            Dawid.setDMG(150);
             Dawid.setGold(5000);
+            Item.gearPiece[Item.currentSlot] = new ChestArmor("Fishscale Armor [CHEST]", 50, 20, 3, 30, 1);
+            GameApp.eqList.add(Assets.fisharmorSPR);
+
+
+            Equipment.eqSlot++;
+            Item.currentSlot++;
             /*Dawid.setX(4);
             Dawid.setY(4);*/
             Miscelanous.gatheredWood = 30;
             Miscelanous.poisonSacks = 8;
-            Miscelanous.crayfishKilled = 10;
+            if (FlorekQuest.questActive) {
+                Miscelanous.crayfishKilled = 10;
+            }
             Miscelanous.banditsKilled = 25;
+            Miscelanous.magicFlute = true;
         }
 	/*	if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
 			Dawid.Attack(monsterBase[1], Dawid);

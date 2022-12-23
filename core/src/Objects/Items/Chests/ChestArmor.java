@@ -2,6 +2,7 @@ package Objects.Items.Chests;
 
 import Mobs.Player;
 import Objects.Items.Gear;
+import Objects.Items.Item;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import lombok.Getter;
@@ -12,13 +13,15 @@ import lombok.Setter;
 
 public class ChestArmor extends Gear {
 
+    public static Item equippedChest;
+
     public static Texture fishScaleTXT;
     public static Sprite fishScaleSPR;
 
     public static void create(){
         fishScaleTXT = new Texture("fishscalearmor.png");
         fishScaleSPR = new Sprite(fishScaleTXT);
-
+fishScaleSPR.setSize(50,50);
     }
 
 

@@ -158,7 +158,7 @@ sideQuestBMP = new BitmapFont();
         Fonts.enemyAttackText = " ";
 
         Fonts.leftText = "Controls: \n \n " +
-                "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: P \n \n Quest log: L ";
+                "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
         Fonts.topText = " ";
         Fonts.mobSpellText = " ";
         Fonts.bottomText = "Exit game: 0, Steering: WSAD     Inventory : B,       Attribute points : P                Map : TAB ";

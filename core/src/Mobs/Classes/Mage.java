@@ -92,7 +92,7 @@ public class Mage extends Player {
     public void Attack(Monster monster, Player player){
         Random random = new Random();
         double missRoll = (20 - (player.getLevel() * 3) + (monster.getLevel() * 3));
-        double roll = random.nextDouble(100);
+        int roll = random.nextInt(100);
         if ( roll > missRoll){
             monster.setHp(monster.getHp() - (player.getDMG() * 0.8));
         }

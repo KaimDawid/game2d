@@ -18,8 +18,8 @@ import com.mygdx.game.GameApp;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static Objects.Items.Item.edible;
-import static Objects.Items.Item.edibleslot2;
+import static Objects.Items.Item.*;
+import static com.mygdx.game.Assets.shopSPR;
 import static com.mygdx.game.Assets.usBagSPR;
 import static com.mygdx.game.GameApp.*;
 
@@ -82,6 +82,9 @@ usableBagSPR.setPosition(inventorySP.getX()-300, inventorySP.getY());
         }
         else if (i >= 20 && i < 24){
             usableList.get(i).setPosition((X - 335) + ((i - 20)*82), Y - 346);
+        }
+        else if (i>= 24 && i < 28){
+            usableList.get(i).setPosition((X - 335) + ((i - 24)*82), Y - 418);
         }
         usableList.get(i).setSize(50,50);
         usableList.get(i).draw(batch);
@@ -178,10 +181,16 @@ try {
     if (i < 10 && Item.gearPiece[i].getIsON() == 0) {
         GameApp.eqList.get(i).setPosition((X + (i * 56)), Y);
     } else if (i < 20 && Item.gearPiece[i].getIsON() == 0){
-        GameApp.eqList.get(i).setPosition(X + ((i - 11) * 56), Y);
+        GameApp.eqList.get(i).setPosition(X + ((i - 10) * 56), Y);
     }
     else if (i<30 && Item.gearPiece[i].getIsON() == 0){
-        GameApp.eqList.get(i).setPosition(X + ((i - 21) * 56), Y);
+        GameApp.eqList.get(i).setPosition(X + ((i - 20) * 56), Y);
+    }
+    else if (i<40 && Item.gearPiece[i].getIsON() == 0){
+        GameApp.eqList.get(i).setPosition(X + ((i - 30) * 56), Y);
+    }
+    else if (i<50 && Item.gearPiece[i].getIsON() == 0){
+        GameApp.eqList.get(i).setPosition(X + ((i - 40) * 56), Y);
     }
     else if (Item.gearPiece[i].getIsON() == 1){
         if (Item.gearPiece[i].getIsWeapon() == 1 && Item.gearPiece[i].getWeaponslot() == 1) {
@@ -199,10 +208,10 @@ try {
             eqList.get(i).setPosition(playerSprite.getX() - 260, playerSprite.getY() - 27);
         }
         else if (Item.gearPiece[i].getIsGloves() == 1){
-            eqList.get(i).setPosition(playerSprite.getX() - 370, playerSprite.getY() - 50);
+            eqList.get(i).setPosition(playerSprite.getX() - 370, playerSprite.getY() - 60);
         }
         else if (Item.gearPiece[i].getIsChest() == 1){
-            eqList.get(i).setPosition(playerSprite.getX() - 320, playerSprite.getY() - 50);
+            eqList.get(i).setPosition(playerSprite.getX() - 320, playerSprite.getY() - 60);
         }
     }
     GameApp.eqList.get(i).setSize(40, 40);
@@ -259,12 +268,16 @@ try {
 
                 }
                 if (clickCount == 2){
-                    Soundtrack.equip.play();
-                    Inventory.Slot(i, Dawid);
-                    if (Item.gearPiece[i].getIsON() == 1) {
-                        System.out.println(playerSprite.getX());
-                        System.out.println(playerSprite.getY());
-                    }
+
+
+
+                        Soundtrack.equip.play();
+                        Inventory.Slot(i, Dawid);
+                        if (Item.gearPiece[i].getIsON() == 1) {
+                            System.out.println(playerSprite.getX());
+                            System.out.println(playerSprite.getY());
+                        }
+
                     clickCount = 0;
                     itemDescription = " ";
 
@@ -296,7 +309,8 @@ catch (NullPointerException a){
 
 
 
-        if (i > 9 && Y > GameApp.playerSprite.getY() + 250 || i > 18 && Y > GameApp.playerSprite.getY() + 210){
+        if (i > 8 && Y > GameApp.playerSprite.getY() + 250 || i > 18 && Y > GameApp.playerSprite.getY() + 210 ||
+                i > 28 && Y > playerSprite.getY() + 170 || i > 38 && Y > playerSprite.getY() + 130){
        Y = Y - 55;
         }
 

@@ -23,11 +23,11 @@ public class DesktopLauncher {
 		config.setInitialBackgroundColor(Color.DARK_GRAY);
 
 		config.setWindowedMode(1460,840);
-		config.setWindowIcon("maptile.png");
+		config.setWindowIcon("raven.jpg");
 		config.setTitle("Ravens Guard This Kingdom");
 		new Lwjgl3Application(new GameApp(), config);
 
-		String gameVersion = "demo 0.85 ";
+		String gameVersion = "demo 1.0 ";
 		Batch batch = new SpriteBatch();
 		Texture mutant = new Texture("mutant.png");
 
@@ -42,7 +42,7 @@ public class DesktopLauncher {
 
 
 		GameLogic gameLogic = new GameLogic();
-		gameLogic.Game();
-
+		/*gameLogic.Game();
+*/
 	}
 }

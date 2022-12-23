@@ -16,6 +16,7 @@ import java.util.TimerTask;
 import static Data.Quests.Quests.questNumber;
 import static Data.Quests.Quests.spidersNumber;
 import static com.mygdx.game.GameApp.*;
+import static com.mygdx.game.GameApp.Dawid;
 
 public class SpidersQuest {
     public static boolean questActive;
@@ -142,7 +143,7 @@ else {
                             Quests.questCompletion1 = 1;
                             Quests.quest1Stage = 4;
                             Quests.blockscreen = true;
-                            Soundtrack.questcomplete.play();
+
                             QuestLog.activeQuest.get(spidersNumber).setColor(Color.DARK_GRAY);
                            /* QuestLog.questDescription.get(Quests.spidersNumber);*/
                             /*Decrement.questNumber();*/
@@ -197,7 +198,7 @@ windowOpen = false;
                     camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                     if (Assets.dialogueChoice1SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
                         Quests.quest1Stage = 5;
-
+                        Dawid.setXP(Dawid.getXP() + 100);
                         Soundtrack.ui.play();
                 }
             }

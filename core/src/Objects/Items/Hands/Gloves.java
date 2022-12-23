@@ -11,6 +11,8 @@ import lombok.Setter;
 @Setter
 public class Gloves extends Gear {
 
+    public static Item equippedGloves;
+
     int isGloves = 1;
 
     public int getIsGloves() {

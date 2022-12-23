@@ -2,16 +2,34 @@ package Logic;
 
 import Mobs.Monster;
 import Mobs.Player;
+import Objects.Items.Chests.ChestArmor;
+import Objects.Items.Hands.Gloves;
+import Objects.Items.Helmets.HeadPiece;
+import Objects.Items.Necklaces.Necklace;
 import Objects.Items.Weapons.Weapon;
 import com.mygdx.game.Frontend.Eq.Equipment;
+import jdk.javadoc.internal.doclets.formats.html.markup.Head;
 
 import java.util.Scanner;
 
 import static Objects.Items.Item.gearPiece;
+import static com.mygdx.game.GameApp.Dawid;
 
 public class Inventory {
 
     public static Weapon EQ[] = new Weapon[50];
+
+    public static boolean helmetON = false;
+    public static boolean chestON = false;
+    public static boolean weapon1ON = false;
+    public static boolean weapon2ON = false;
+    public static boolean glovesON = false;
+    public static boolean neckON = false;
+    public static Gloves emptyHands = new Gloves("empty", 0,0,0,0,1);
+    public static ChestArmor emptyChest = new ChestArmor("empty", 0,0,0,0,1);
+    public static HeadPiece emptyHead = new HeadPiece("empty", 0,0,0,0,1);
+    public static Necklace emptyNeck = new Necklace("empty",0,0,0,0,1);
+    public static Weapon emptyWeapon = new Weapon("empty",0,0,0,0,1,0,1);
     public static Weapon equippedweapon = new Weapon("test",1,1,1,1,1,1,1);
 static Scanner scanner = new Scanner(System.in);
 
@@ -165,16 +183,19 @@ static Scanner scanner = new Scanner(System.in);
         }
     }
 
+
+
     public static void Slot(int slotNumber, Player Dawid) {
 
         try {
             if (gearPiece[slotNumber].getHelmEquip() > 0 && Monster.helmEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
-                gearPiece[slotNumber].
+                HeadPiece.equippedHead = gearPiece[slotNumber];
                 gearPiece[slotNumber].eqON(Dawid);
                 Monster.helmEQ = 1;
                 gearPiece[slotNumber].setIsON(1);
             } else if (gearPiece[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && gearPiece[slotNumber].getIsON() < 1
              && Monster.weaponEQ == 0) {
+                Weapon.equippedWeapon1 = gearPiece[slotNumber];
                 equippedweapon = (Weapon) gearPiece[slotNumber];
                 Equipment.currentWeapon = gearPiece[slotNumber];
                 gearPiece[slotNumber].eqON(Dawid);
@@ -184,45 +205,60 @@ static Scanner scanner = new Scanner(System.in);
             }
                 else if (gearPiece[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ < Dawid.getWeaponCapacity() && gearPiece[slotNumber].getIsON() < 1
                 && Monster.weaponEQ == 1) {
+                    Weapon.equippedWeapon2 = gearPiece[slotNumber];
                     equippedweapon = (Weapon) gearPiece[slotNumber];
                     gearPiece[slotNumber].eqON(Dawid);
                     Monster.weaponEQ++;
                     gearPiece[slotNumber].setIsON(1);
                     gearPiece[slotNumber].setWeaponslot(2);
             } else if (gearPiece[slotNumber].getNeckEquip() > 0 && Monster.neckEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                    Necklace.equippedNeck = gearPiece[slotNumber];
                 gearPiece[slotNumber].eqON(Dawid);
                 Monster.neckEQ = 1;
                 gearPiece[slotNumber].setIsON(1);
-            } else if (gearPiece[slotNumber].getChestEquip() > 0 && Monster.chestEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+            } else if (gearPiece[slotNumber].getChestEquip() == 1 && Monster.chestEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                    ChestArmor.equippedChest = gearPiece[slotNumber];
                 gearPiece[slotNumber].eqON(Dawid);
                 Monster.chestEQ = 1;
                 gearPiece[slotNumber].setIsON(1);
+
             } else if (gearPiece[slotNumber].getHandsEquip() > 0 && Monster.handsEQ < 1 && gearPiece[slotNumber].getIsON() < 1) {
+                    Gloves.equippedGloves = gearPiece[slotNumber];
                 gearPiece[slotNumber].eqON(Dawid);
                 Monster.handsEQ = 1;
                 gearPiece[slotNumber].setIsON(1);
             } else if (gearPiece[slotNumber].getHelmEquip() > 0 && Monster.helmEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                HeadPiece.equippedHead = emptyHead;
                 gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.helmEQ = 0;
                 gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
             } else if (gearPiece[slotNumber].getWeaponEquip() > 0 && Monster.weaponEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                    if (gearPiece[slotNumber] == Weapon.equippedWeapon1) {
+                        Weapon.equippedWeapon1 = emptyWeapon;
+                    }
+                    else if (gearPiece[slotNumber] == Weapon.equippedWeapon2){
+                        Weapon.equippedWeapon2 = emptyWeapon;
+                    }
                 gearPiece[slotNumber].eqOFF(Dawid);
                 equippedweapon = null;
                 Monster.weaponEQ--;
                 gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
             } else if (gearPiece[slotNumber].getNeckEquip() > 0 && Monster.neckEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                    Necklace.equippedNeck = emptyNeck;
                 gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.neckEQ = 0;
                 gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
             } else if (gearPiece[slotNumber].getChestEquip() > 0 && Monster.chestEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                    ChestArmor.equippedChest = emptyChest;
                 gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.chestEQ = 0;
                 gearPiece[slotNumber].setIsON(0);
                 System.out.println("Zdjąłeś przedmiot");
             } else if (gearPiece[slotNumber].getHandsEquip() > 0 && Monster.handsEQ > 0 && gearPiece[slotNumber].getIsON() > 0) {
+                    Gloves.equippedGloves = emptyHands;
                 gearPiece[slotNumber].eqOFF(Dawid);
                 Monster.handsEQ = 0;
                 gearPiece[slotNumber].setIsON(0);
@@ -235,6 +271,19 @@ static Scanner scanner = new Scanner(System.in);
         }
     }
 
+
+    public static void addEmptyGear(){
+        ChestArmor.equippedChest = emptyChest;
+        HeadPiece.equippedHead = emptyHead;
+        Weapon.equippedWeapon2 = emptyWeapon;
+        Weapon.equippedWeapon1 = emptyWeapon;
+        Necklace.equippedNeck = emptyNeck;
+        Gloves.equippedGloves = emptyHands;
+    }
+
+    public static void addEquippedGear(){
+        Dawid.setHP(Dawid.getHP() + Weapon.equippedWeapon1.getHP() + Weapon.equippedWeapon2.getHP() + ChestArmor.equippedChest.getHP() + Gloves.equippedGloves.getHP() + Necklace.equippedNeck.getHP()  + HeadPiece.equippedHead.getHP());
+    }
 
     /*public static void InvPrint(int invSlots, Player player){
         for (int i = 1; i < invSlots ; i++) {

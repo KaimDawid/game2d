@@ -41,7 +41,7 @@ public class Ghoul extends Monster {
 
     public void Attack(Monster monster, Player player) {
         Random random = new Random();
-        double roll = random.nextDouble(100);
+        int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         int armorUP = 20;
         if (roll > 80) {

@@ -35,7 +35,7 @@ public class WhiteKnight extends Monster {
     public void Attack(Monster monster, Player player){
 
         Random random = new Random();
-        double roll = random.nextDouble(100);
+        int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
             Soundtrack.banditswing.play();

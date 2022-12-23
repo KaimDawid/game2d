@@ -72,7 +72,7 @@ public class FightLogic {
                 Fonts.topText = "1. zaatakuj, 2. Użyj czaru";
                 GameApp.sprite.setPosition(100000,100000);
                 Fonts.leftText = "Controls: \n \n " +
-                        "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                        "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
 
                 Assets.attackSpr.setSize(0,0);
                 Assets.iceSpr.setSize(0,0);
@@ -131,7 +131,7 @@ public class FightLogic {
                         Fonts.mobSpellText = " ";           Dawid.setFear(0);
                         Fonts.topText = "1. zaatakuj, 2. Użyj czaru";
                         Fonts.leftText = "Controls: \n \n " +
-                                "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                                "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
                         monster1.setDropable(0);
                         loaded = false;
                     }
@@ -153,7 +153,7 @@ public class FightLogic {
                     Fonts.mobSpellText = " ";
                     Fonts.topText = "1. zaatakuj, 2. Użyj czaru";
                     Fonts.leftText = "Controls: \n \n " +
-                            "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                            "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
                     PlayerStatusWearOff(player);
                     if (fightscreenSP.getHeight() > 1070){
                         transitionOut = true;
@@ -210,7 +210,7 @@ public class FightLogic {
             Fonts.mobSpellText = " ";
             Fonts.topText = "1. zaatakuj, 2. Użyj czaru";
             Fonts.leftText = "Controls: \n \n " +
-                    "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                    "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
             Assets.attackSpr.setSize(0,0);
             Assets.iceSpr.setSize(0,0);
             adrenalineSPR.setSize(0,0);
@@ -221,7 +221,7 @@ public class FightLogic {
             Fonts.mobSpellText = " ";
             Fonts.topText = "1. zaatakuj, 2. Użyj czaru";
             Fonts.leftText = "Controls: \n \n " +
-                    "Steering:  W, S, D, A \n \n Map: Tab \n \n Inventory: F2 \n \n Stats: P ";
+                    "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
             PlayerStatusWearOff(player);
             GameApp.fightscreenSP.setSize(1, 1);
             GameApp.fightstart = 0;
@@ -452,7 +452,7 @@ public class FightLogic {
         Fonts.playerAttackText = " ";
         Fonts.mobSpellText = " ";
         Fonts.leftText = "Controls: \n \n " +
-                "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: P \n \n Quest log: L ";
+                "Steering:  W, S, D, A \n \n Inventory: B \n \n Interact: Space \n \n Stats: C \n \n Quest log: L ";
         Fonts.topText = "1. Attack";
         Assets.attackSpr.setSize(0,0);
         Assets.iceSpr.setSize(0,0);

@@ -5,6 +5,7 @@ import Data.Quests.FlorekQuest;
 import Data.Quests.Quests;
 import Logic.FightLogic.Skills.*;
 import Logic.Inventory;
+import Mobs.Cemetery.CemeterySprites;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Assets;
@@ -19,6 +20,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.TimerTask;
 
+import static Mobs.Monster.minotaurSPR;
 import static com.mygdx.game.Backend.Soundtrack.*;
 import static com.mygdx.game.GameApp.*;
 
@@ -190,7 +192,7 @@ int GC;
         if (fearValue < 51) {
             if (mana > 69) {
                 ice.play();
-                Icebolt.cooldown = 5;
+                Icebolt.cooldown = 8;
                 if (magic >= 0) {
                     Fonts.playerAttackText = target.getName() + " Has been frozen for 2 turns and received " + iceDMG + " damage";
 
@@ -263,6 +265,7 @@ int GC;
             if (mana >= 50) {
                 Soundtrack.fire.play();
                 mana = mana - 50;
+                Fireball.cooldown = 2;
                 if (magic >= 0) {
                     monster.setHp(monster.getHp() - fireDMG);
                     setRedScreen();
@@ -344,7 +347,7 @@ int GC;
     public void Attack(Monster monster, Player player) {
         Random random = new Random();
         double missRoll = (20 - (player.getLevel() * 3) + (monster.getLevel() * 3));
-        double roll = random.nextDouble(100);
+        int roll = random.nextInt(100);
         double critRoll = (80 - player.getCritChance());
 
         int fearValue = random.nextInt(100)*fear;
@@ -442,6 +445,12 @@ private void setRedScreen(){
     Monster.whiteKnightSPR.setColor(Color.RED);
     Quests.gabiSPR.setColor(Color.RED);
     FlorekQuest.crayfishSPR.setColor(Color.RED);
+    CemeterySprites.ghoulSPR.setColor(Color.RED);
+    CemeterySprites.skeletonSPR.setColor(Color.RED);
+    CemeterySprites.ghostSPR.setColor(Color.RED);
+    CemeterySprites.lumpOfFleshSPR.setColor(Color.RED);
+    CemeterySprites.headlessHorsemanSPR.setColor(Color.RED);
+    minotaurSPR.setColor(Color.RED);
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -455,6 +464,12 @@ private void setRedScreen(){
                 Assets.werewolfSPR.setColor(originalColor);
                 Monster.whiteKnightSPR.setColor(originalColor);
                 Quests.gabiSPR.setColor(originalColor);
+                CemeterySprites.ghoulSPR.setColor(originalColor);
+                CemeterySprites.skeletonSPR.setColor(originalColor);
+                CemeterySprites.ghostSPR.setColor(originalColor);
+                CemeterySprites.lumpOfFleshSPR.setColor(originalColor);
+                CemeterySprites.headlessHorsemanSPR.setColor(originalColor);
+                minotaurSPR.setColor(originalColor);
             }
         },1500);
 }

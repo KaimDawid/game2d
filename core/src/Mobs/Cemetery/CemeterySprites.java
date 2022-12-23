@@ -10,8 +10,8 @@ public class CemeterySprites {
     public static Texture lumpOfFleshTXT;
     public static Texture headlessHorsemanTXT;
     public static Texture ghostTXT;
-    public static Texture ghoulTXT;
-    public static Sprite skeletonSPR;
+    public static Texture ghoulTXT, fishScaleArmorTXT;
+    public static Sprite skeletonSPR, fishScaleArmorSPR;
     public static Sprite lumpOfFleshSPR;
     public static Sprite headlessHorsemanSPR;
     public static Sprite ghostSPR;
@@ -22,6 +22,8 @@ public class CemeterySprites {
         skeletonTXT = new Texture("skeleton.png");
         lumpOfFleshTXT = new Texture("lumpofflesh.png");
         headlessHorsemanTXT = new Texture("headlesshorseman.png");
+        fishScaleArmorTXT = new Texture("fishscalearmor.png");
+        fishScaleArmorSPR = new Sprite(fishScaleArmorTXT);
         ghostTXT = new Texture("ghost.png");
         ghoulTXT = new Texture("ghoul.png");
 

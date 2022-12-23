@@ -14,7 +14,9 @@ public abstract class Item {
     public static int twojastara;
 
     public static Item[] gearPiece = new Item[100];
+
     public static int currentSlot = 0;
+    public static ArrayList<Item> gear = new ArrayList<>();
     public static ArrayList<Item> edible = new ArrayList<>();
     public static int edibleSlot;
 

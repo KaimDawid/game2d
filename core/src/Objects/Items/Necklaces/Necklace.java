@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter @Setter
 
 public class Necklace extends Gear {
-
+    public static Item equippedNeck;
     int isNeck = 1;
 
     public int getIsNeck() {

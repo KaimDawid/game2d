@@ -276,6 +276,7 @@ crayBug = true;
                     checker(Dawid, Spawner.monsterBase4[icheck]);
                     checker(Dawid, Spawner.monsterBase5[icheck]);
                     checker(Dawid, Spawner.monsterBase6[icheck]);
+                    checker(Dawid, minotaur);
                     if (Dawid.getY() > 8) {
                         checker(Dawid, Spawner.forestBase[icheck]);
                     }

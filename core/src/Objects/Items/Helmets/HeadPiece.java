@@ -10,6 +10,8 @@ import lombok.Setter;
 @Getter @Setter
 public class HeadPiece extends Gear {
 
+    public static Item equippedHead;
+
     int isHelmet = 1;
 
 

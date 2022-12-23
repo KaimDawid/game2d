@@ -12,8 +12,8 @@ import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Eq.Equipment;
 import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.GameApp;
-import sun.jvm.hotspot.opto.Block;
 
+import java.util.Date;
 import java.util.TimerTask;
 
 import static Data.Quests.Quests.BlockUnblock;
@@ -44,8 +44,7 @@ public class FlorekQuest {
         florekQuestSPR = new Sprite(florekQuestTXT);
         florekDescription = new String("Kill 6 crayfish, then return to Florchan to pick up your reward \n" +
                 "Crayfish killed: " + Miscelanous.crayfishKilled +"/" + Miscelanous.crayFishRequirement);
-        crayfishTXT = new Texture("crayfish.png");
-        crayfishSPR = new Sprite(crayfishTXT);
+
         unblockScreen = new TimerTask() {
             @Override
             public void run() {
@@ -62,10 +61,10 @@ florekSmallDescription = "Crayfish killed: " + Miscelanous.crayfishKilled + "/" 
             dialogueChoice1SPR.setPosition(playerSprite.getX(), playerSprite.getY());
             dialogueChoice1SPR.draw(batch);*/
             Quests.questStory = "I am a cray-fisherman and I need the help of a brave adventurer \n" +
-                    "This season there is a huge overpopulation of crayfish at the beach \n" +
-                    "moreover, they seem to have evolved! I need you to kill 6 of them";
-            Quests.diaChoice1 = "Seems like a minor errand, I'll be back before you say CRAYFISH CRAZY";
-            Quests.diaChoice2 = "I'm not interested, I'm far too powerful to play around with crayfish";
+                    "This season there is a huge overpopulation of \n crayfish at the beach " +
+                    "moreover, they seem to have evolved! \n I need you to kill 6 of them";
+            Quests.diaChoice1 = "Sounds easy, I'll be back before you say CRAYFISH CRAZY";
+            Quests.diaChoice2 = "I'm far too powerful to play around with crayfish";
             if (Gdx.input.justTouched() && Quests.blockscreen == false) {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (dialogueChoice31SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
@@ -136,7 +135,7 @@ quest3Stage = 2;
             if (Gdx.input.justTouched() && Quests.blockscreen == false) {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (dialogueChoice31SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Miscelanous.crayfishKilled >= Miscelanous.crayFishRequirement) {
-                    quest3Stage = 3; Soundtrack.questcomplete.play();
+                    quest3Stage = 3;
                     quest3SPR.setSize(0, 0);
                     dialogueChoice31SPR.setSize(0, 0);
                     dialogueChoice32SPR.setSize(0, 0);
@@ -177,11 +176,12 @@ quest3Stage = 2;
                 if (dialogueChoice31SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
 
                     Item.gearPiece[Item.currentSlot] = new ChestArmor("Fish scale Armor [CHEST]", 180, 20, 4, 25, 1);
+                    GameApp.eqList.add(Assets.fisharmorSPR);
 
-                    GameApp.eqList.add(ChestArmor.fishScaleSPR);
                     Equipment.eqSlot++;
                     Item.currentSlot++;
-                    Dawid.setGold(Dawid.getGold()+1000);
+                    Dawid.setGold(Dawid.getGold()+400);
+                    Dawid.setXP(Dawid.getXP() + 100);
                     quest3SPR.setSize(0, 0);
                     dialogueChoice31SPR.setSize(0, 0);
                     dialogueChoice32SPR.setSize(0, 0);

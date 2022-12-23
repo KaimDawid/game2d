@@ -169,9 +169,10 @@ Quests.blockscreen = true;
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (Quests.dialogueChoice21SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
 Dawid.setGold(Dawid.getGold()+1000);
+                    Dawid.setXP(Dawid.getXP() + 180);
                     Quests.quest2SPR.setSize(0, 0);
                     Quests.dialogueChoice21SPR.setSize(0, 0);
-                    Quests.dialogueChoice22SPR.setSize(0, 0); Soundtrack.questcomplete.play();
+                    Quests.dialogueChoice22SPR.setSize(0, 0);
                     QuestLog.activeQuest.get(Quests.rysiuNumber).setColor(Color.DARK_GRAY);
                     Soundtrack.ui.play();
                   /* Decrement.questNumber();*/

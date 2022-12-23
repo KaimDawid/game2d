@@ -89,8 +89,8 @@ public static Sprite leatherglovesSPR;
     public static Texture dragonglovesTXT;
     public static Sprite dragonglovesSPR;
 
-    public static Texture dragonhelmetTXT;
-    public static Sprite dragonhemletSPR;
+    public static Texture dragonhelmetTXT, fisharmorTXT;
+    public static Sprite dragonhemletSPR, fisharmorSPR;
 
     public static Texture leatherarmorTXT;
     public static Sprite leatherarmorSPR;
@@ -268,22 +268,7 @@ interactSPR = new Sprite(interactTXT);
         platearmorSPR = new SpriteTouchable(platearmorTXT);
         charstandingTXT = new Texture("charstanding.png");
         charstandingSPR = new Sprite(charstandingTXT);
-        faceDown1TXT = new Texture("facedown1.png");
-        faceDown1SPR = new Sprite(faceDown1TXT);
-        faceDown2TXT = new Texture("facedown2.png");
-        faceDown2SPR = new Sprite(faceDown2TXT);
-        faceLeft1TXT = new Texture("faceleft1.png");
-        faceLeft1SPR = new Sprite(faceLeft1TXT);
-        faceLeft2TXT = new Texture("faceleft2.png");
-        faceLeft2SPR = new Sprite(faceLeft2TXT);
-        faceUp1TXT = new Texture("faceup1.png");
-        faceUp1SPR = new Sprite(faceUp1TXT);
-        faceUp2TXT = new Texture("faceup2.png");
-        faceUp2SPR = new Sprite(faceUp2TXT);
-        faceRight1TXT = new Texture("faceright1.png");
-        faceRight1SPR = new Sprite(faceRight1TXT);
-        faceRight2TXT = new Texture("faceright2.png");
-        faceRight2SPR = new Sprite(faceRight2TXT);
+
 csTXT = new Texture("cursescreen.png");
 csBMP = new Sprite(csTXT);
 poisonTXT = new Texture("poisonstatus.png");
@@ -308,10 +293,12 @@ leatherhelmetSPR = new SpriteTouchable(leatherhelmetTXT);
         dragonarmorTXT = new Texture("dragonarmor.png");
         dragonarmorSPR = new SpriteTouchable(dragonarmorTXT);
         dragonglovesTXT = new Texture("dragongloves.png");
-        dragonarmorSPR = new SpriteTouchable(dragonglovesTXT);
+        dragonarmorSPR = new SpriteTouchable(dragonarmorTXT);
 
         dragonhelmetTXT = new Texture("dragonhelmet.png");
         dragonhemletSPR = new SpriteTouchable(dragonhelmetTXT);
+        fisharmorTXT = new Texture("fishscalearmor.png");
+        fisharmorSPR = new SpriteTouchable(fisharmorTXT);
         leatherarmorTXT = new Texture("leatherarmor.png");
         leatherarmorSPR = new SpriteTouchable(leatherarmorTXT);
         mailglovesTXT = new Texture("mailgloves.png");
@@ -359,14 +346,7 @@ levelupSPR = new Sprite(levelupTXT);
 invbarTXT = new Texture("inventorybar.png");
 invbarSPR = new Sprite(invbarTXT);
 
-        faceDown1SPR.setSize(120,140);
-        faceDown2SPR.setSize(120,140);
-        faceLeft1SPR.setSize(120,140);
-        faceLeft2SPR.setSize(120,140);
-        faceUp1SPR.setSize(120,140);
-        faceUp2SPR.setSize(120,140);
-        faceRight1SPR.setSize(120,140);
-        faceRight2SPR.setSize(120,140);
+
         charstandingSPR.setSize(120,140);
        dialogueChoice1SPR.setSize(0,0);
        dialogueChoice2SPR.setSize(0,0);
@@ -405,15 +385,7 @@ invbarSPR = new Sprite(invbarTXT);
 
         /*   playerSprite.set(faceDown1SPR);*/
         /*inventorySP.setPosition(playerSprite.getX(), playerSprite.getY()+100);*/
-        faceLeft2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceLeft1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceRight2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceRight1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceUp1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceUp2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceDown1SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        faceDown2SPR.setPosition(playerSprite.getX(),playerSprite.getY());
-        charstandingSPR.setPosition(playerSprite.getX(),playerSprite.getY());
+
 /*if (GameApp.moveDOWN == false && GameApp.moveUP == false && GameApp.moveLEFT == false && GameApp.moveRIGHT == false) {
 	timer.schedule(new TimerTask() {
 		@Override

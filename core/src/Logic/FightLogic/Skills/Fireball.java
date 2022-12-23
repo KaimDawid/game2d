@@ -71,7 +71,7 @@ public class Fireball extends Spells {
                             movedFrames = 0;
                            Fight.inputBlocked = false;
                             System.out.println("koniec animaji");
-                        
+
                         }
                         if (movedFrames < finalframes*0.2){
                             fireballSPR.setPosition(playerSprite.getX(), playerSprite.getY());
