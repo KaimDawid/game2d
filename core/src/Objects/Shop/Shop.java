@@ -188,7 +188,7 @@ do {
             if (gold > player.getGold()) {
                 Fonts.topText = "Not enough gold";
             } else {
-                item = Item.gearPiece[Item.currentSlot];
+                Item.gear.add(item);
                 Equipment.eqSlot++;
                 Item.currentSlot++;
             }

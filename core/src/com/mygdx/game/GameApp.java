@@ -1,4 +1,5 @@
 package com.mygdx.game;
+
 import Data.Quests.*;
 import Logic.Drop.Miscelanous;
 import Logic.Drop.Wood;
@@ -51,6 +52,7 @@ import com.mygdx.game.Frontend.Eq.Equipment;
 import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.Frontend.Interfejs.TownMenu;
 import com.mygdx.game.Frontend.Statistics;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,11 +64,12 @@ import static Data.Quests.FlorekQuest.*;
 import static Data.Quests.Quests.*;
 import static Logic.Experience.*;
 import static Objects.Shop.Shop.*;
+import static com.badlogic.gdx.graphics.Color.ORANGE;
+import static com.badlogic.gdx.graphics.Color.YELLOW;
 import static com.mygdx.game.Assets.*;
 import static com.mygdx.game.Frontend.Eq.Equipment.itemDescription;
 import static com.mygdx.game.Frontend.Eq.Equipment.itemDescriptionBMP;
-import static com.mygdx.game.Frontend.Fonts.bottomBitMapFont;
-import static com.mygdx.game.Frontend.Fonts.fontParameter;
+import static com.mygdx.game.Frontend.Fonts.*;
 import static com.mygdx.game.Frontend.Statistics.*;
 
 public class GameApp extends ApplicationAdapter {
@@ -117,13 +120,14 @@ public class GameApp extends ApplicationAdapter {
     public static Color originalColor2;
     public static Camera camera;
     public static Sprite inventorySP;
-    public static Texture spiderTexture, goblinTxt, ironskinTXT, adrenalineTXT,fightscreenTX, fireBallTXT, iceBoltTXT, skeletonTxt, cursorTXT, playerTexture, forestTexture, inventoryTX, mapTexture, hpbargreenTXT;
-    public static Sprite spiderSprite, goblinSprite, skeletonSprite, cursorSPR, enemybar, enemybargreen, testScreenSP,fightscreenSP, mapSprite, OGColor2, OGColor, DawidSprite, playerSprite, forestSprite;
+    public static Texture spiderTexture, goblinTxt, ironskinTXT, adrenalineTXT, fightscreenTX, fireBallTXT, iceBoltTXT, skeletonTxt, cursorTXT, playerTexture, forestTexture, inventoryTX, mapTexture, hpbargreenTXT;
+    public static Sprite spiderSprite, goblinSprite, skeletonSprite, cursorSPR, enemybar, enemybargreen, testScreenSP, fightscreenSP, mapSprite, OGColor2, OGColor, DawidSprite, playerSprite, forestSprite;
     public static Pixmap cursorPixmap;
     public static Spider spider;
     public static Mutant mutant;
     public static Rectangle buttonBounds;
     public static Cursor cursorTwo;
+    public static SpriteBatch spellsBatch;
     public static SpriteTouchable iceBoltSPR, fireBallSPR2, getIceBoltSPR2, getAdrenalineSPR2, ironskinSPR2, ironskinSPR, cleaveSPR2, healSPR2, fireBallSPR, adrenalineSPR;
     public static ClickListener hover;
     public static List<Sprite> eqList;
@@ -141,25 +145,26 @@ public class GameApp extends ApplicationAdapter {
     private boolean freezeScreen = false;
 
     public Pixmap pm;
-public static HealthPotion healthPotion;
+    public static HealthPotion healthPotion;
     public static ManaPotion manaPotion;
     public static ArmorPotion armorPotion;
     public static GrindingWheel grindingWheel;
     public static Bomb bomb;
-public static Crayfish crayfish;
+    public static Crayfish crayfish;
     public static boolean penis = false;
 
     public static Monster werevolf;
     public static int currentXP;
-public static Music musicBG;
+    public static Music musicBG;
     public static TimerTask mobAttack;
+
     @Override
     public void create() {
         mobAttack = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    Fight.EnemyAttack(Dawid,currentTarget);
+                    Fight.EnemyAttack(Dawid, currentTarget);
 
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -173,25 +178,25 @@ public static Music musicBG;
         cursorTwo = Gdx.graphics.newCursor(cursorPixmap, xHotspot, yHotspot);
         cursorPixmap.dispose();
         fireball = new Fireball();
-spriteBatch = new SpriteBatch();
+        spriteBatch = new SpriteBatch();
         dupa dupa = new dupa();
         dupa.setCipajas(1);
         usableList = new ArrayList<Sprite>();
         Item.edible = new ArrayList<Item>();
         Item.gear = new ArrayList<Item>();
-    /*  shop.makeAShopList();*/
- healthPotion = new HealthPotion(0,"Health potion + 300 HP",false,false,false,false,true,80,40,0,200,0,0, 0, 0, 0);
-        manaPotion = new ManaPotion(0,"Mana potion + 100 mana",false,false,false,false,true,50,25,160,0,0,0, 0, 0, 0);
-        armorPotion = new ArmorPotion(0,"Armor potion + 20 armor",false,false,false,false,true,800,400,0,0,0,0, 25, 0, 0);
-        grindingWheel = new GrindingWheel(0,"Grinding wheel + 50 dmg to weapon",false,false,false,false,true,180,90,0,0,0,0, 0, 0, 20);
-        bomb = new Bomb(0,"Small bomb",false,false,false,false,true,80,40,0,0,0,0, 0, 0, 150);
-grindingWheel.setAddDmg(50);
+        /*  shop.makeAShopList();*/
+        healthPotion = new HealthPotion(0, "Health potion + 300 HP", false, false, false, false, true, 80, 40, 0, 200, 0, 0, 0, 0, 0);
+        manaPotion = new ManaPotion(0, "Mana potion + 100 mana", false, false, false, false, true, 50, 25, 160, 0, 0, 0, 0, 0, 0);
+        armorPotion = new ArmorPotion(0, "Armor potion + 20 armor", false, false, false, false, true, 800, 400, 0, 0, 0, 0, 25, 0, 0);
+        grindingWheel = new GrindingWheel(0, "Grinding wheel + 50 dmg to weapon", false, false, false, false, true, 180, 90, 0, 0, 0, 0, 0, 0, 20);
+        bomb = new Bomb(0, "Small bomb", false, false, false, false, true, 80, 40, 0, 0, 0, 0, 0, 0, 150);
+        grindingWheel.setAddDmg(50);
         armorPotion.setMaxStock(1);
         grindingWheel.setMaxStock(3);
         color = new Color();
         color2 = new Color();
         fps = new String();
-fpsBMP = new BitmapFont();
+        fpsBMP = new BitmapFont();
         Quests.questStory = " ";
         Quests.diaChoice1 = " ";
         Quests.diaChoice2 = " ";
@@ -200,20 +205,20 @@ fpsBMP = new BitmapFont();
         playerAttackText2 = new String();
         playerAttackBMP2 = new BitmapFont();
         playerAttackText2 = " ";
-
+        spellsBatch = new SpriteBatch();
         timer = new Timer();
         Assets.createAssets();
         texture = new Texture(Gdx.files.internal("mutant.png"));
         sprite = new Sprite(texture);
         playerTexture = new Texture(Gdx.files.internal("charanim.png"));
         battleStance = new Sprite(playerTexture);
-        battleStance.setSize(0,0);
+        battleStance.setSize(0, 0);
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         playerSprite = new Sprite(playerTexture);
 
         playerSprite.setPosition((w / 2 - sprite.getWidth() / 2) + 6000, (h / 2 - sprite.getHeight() / 2) + 2736);
-Movement.createMovement();
+        Movement.createMovement();
         Statistics.create();
         Wood.Spawn();
         cursorTXT = new Texture("cursor.png");
@@ -248,7 +253,7 @@ Movement.createMovement();
         int helmEQ = 0;
 
         Backend.createBackEnd();
-Fonts.createFonts();
+        Fonts.createFonts();
         Fonts.levelUpScreen = new Texture("skillscreen.png");
         Assets.addAttributeSPR = new SpriteTouchable(Fonts.levelUpScreen);
         Fonts.levelUpSprite = new SpriteTouchable(Fonts.levelUpScreen);
@@ -261,7 +266,7 @@ Fonts.createFonts();
         healSPR2 = new SpriteTouchable(healTXT);
         getIceBoltSPR2 = new SpriteTouchable(iceBoltTXT);
         fireBallSPR2 = new SpriteTouchable(fireBallTXT);
-        fireBallSPR2.setSize(0,0);
+        fireBallSPR2.setSize(0, 0);
 
 
         Fonts.attackText = new TextField();
@@ -273,9 +278,9 @@ Fonts.createFonts();
         Shop.shopTxt = new Texture("shopframe.png");
         Shop.shopSprite = new Sprite(Shop.shopTxt);
         Shop.shopSprite.setSize(360, 600);
-        usBagSPR.setSize(480,800);
-      Monster.create1();
-        inventoryTX = new Texture("inventory.png");
+        usBagSPR.setSize(480, 800);
+        Monster.create1();
+        inventoryTX = new Texture("inventory2.png");
         inventorySP = new Sprite(inventoryTX);
         /*inventorySP.setPosition((w / 2 - sprite.getWidth() / 2) - 300, h / 2 - sprite.getHeight() / 2);*/
         mapTexture = new Texture("mymap2.png");
@@ -293,8 +298,8 @@ Fonts.createFonts();
         sprite.setPosition(sprite.getX(), sprite.getY() - 200);
         inventorySP.setSize(0, 0);
 
-playerSprite.setRegion(0,0,40,100);
-minotaur = new Minotaur(5000,120,20,2,"Minotaur", 1000, 10,1);
+        playerSprite.setRegion(0, 0, 40, 100);
+        minotaur = new Minotaur(5000, 120, 20, 2, "Minotaur", 1000, 10, 1);
         sprite.setPosition(playerSprite.getX() + 100, playerSprite.getY());
         Fonts.attackText.setLocation((int) (playerSprite.getX() - 100), (int) (playerSprite.getY() + 200));
         stats = new TextField("Zadałeś 100 obrażeń!");
@@ -321,7 +326,7 @@ minotaur = new Minotaur(5000,120,20,2,"Minotaur", 1000, 10,1);
         /*	testScreenSP.setSize(1920,1080);*/
         testScreenSP.setPosition(playerSprite.getX(), playerSprite.getY());
         /*	testScreenSP.setPosition(playerSprite.getX() - 960, playerSprite.getY() - 540);*/
-        gabbie  = new Gabbie(2000,50,110,122,"Gabbie Flowers", 500, 8, 1);
+        gabbie = new Gabbie(2000, 50, 110, 122, "Gabbie Flowers", 500, 8, 1);
         Fonts.levelUpSprite.setPosition(playerSprite.getX() - 300, playerSprite.getY() - 200);
         Fonts.levelUpSprite.setSize(0, 0);
         camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
@@ -329,12 +334,16 @@ minotaur = new Minotaur(5000,120,20,2,"Minotaur", 1000, 10,1);
         OGColor2 = new Sprite(fightscreenSP);
         originalColor = OGColor.getColor();
         originalColor2 = OGColor2.getColor();
-Equipment.create();
-        Fonts.mobSpellBitmap = Fonts.fontGenerator.generateFont(fontParameter);
+        Equipment.create();
+
+
+        mobSpellBitmap.setColor(ORANGE);
+
+        Fonts.mobSpellBitmap = Fonts.Impact.generateFont(impactFont);
 
         Array<TextureRegion> textureRegion = new Array<TextureRegion>();
         Spells.create();
-
+        FightLogic.create();
         Shop.create();
         AllAssets.Create();
         Usables.setAllImages();
@@ -346,7 +355,7 @@ Equipment.create();
         FlorekQuest.create();
         CysiuQuest.create();
 
-        playerSprite.setPosition(7856,3798);
+        playerSprite.setPosition(7856, 3798);
         camera.update();
         Soundtrack.create();
         Weapon.giveStartingWeapon();
@@ -366,14 +375,14 @@ Equipment.create();
         Soundtrack.render();
 
         camera.position.set(playerSprite.getX(), playerSprite.getY(), 10);
-camera.update();
+        camera.update();
         //
         //
         // playerSprite.setPosition((Gdx.graphics.getWidth() / 2 - sprite.getWidth() / 2) + 7130, (Gdx.graphics.getHeight() / 2 - sprite.getHeight() / 2) + 3385);
         // STARTOWA LOKACJA!!!!
         //
 
-  /*      Movement.updatePostion();*/
+        /*      Movement.updatePostion();*/
         Movement.goUP(Dawid);
         Movement.goRIGHT(Dawid);
         Movement.goDOWN(Dawid);
@@ -403,7 +412,6 @@ camera.update();
         batch.setProjectionMatrix(camera.combined);
 
 
-
         try {
             Backend.MoveConclude();
         } catch (InterruptedException e) {
@@ -411,10 +419,10 @@ camera.update();
         }
 
         cursor.setBounds(Gdx.input.getX(), Gdx.input.getY(), 10, 10);
-        if (gabbie.getHp() < 1){
+        if (gabbie.getHp() < 1) {
 
-            Quests.gabiOverworldSPR.setRegion(100,0,200,180);
-            Quests.gabiOverworldSPR.setSize(600,300);
+            Quests.gabiOverworldSPR.setRegion(100, 0, 200, 180);
+            Quests.gabiOverworldSPR.setSize(600, 300);
             mapSprite.setColor(originalColor);
         }
 
@@ -423,12 +431,12 @@ camera.update();
             fightscreenSP.setPosition(playerSprite.getX(), playerSprite.getY());
             attackSpr.setPosition(playerSprite.getX(), playerSprite.getY());
             runSpr.setPosition(playerSprite.getX(), playerSprite.getY());
-            playerSprite.setSize(120,140);
+            playerSprite.setSize(120, 140);
         }
         if (fightstart == 0) {
             sprite.setSize(0, 0);
         }
-        if (fightstart == 1){
+        if (fightstart == 1) {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -436,183 +444,81 @@ camera.update();
                     playerSprite.setSize(0, 0);
 
                 }
-            },500);
+            }, 500);
+
+        } else if (fightstart == 0) {
 
         }
-        else if (fightstart == 0){
 
-        }
-
-      /*  Gdx.gl.glClearColor(1, 1, 1, 1);*/
+        /*  Gdx.gl.glClearColor(1, 1, 1, 1);*/
         if (fightstart == 0) {
             enemybar.setSize(0, 0);
         }
-batch.enableBlending();
+        batch.enableBlending();
         batch.begin();
 
-
-        quest1SPR.setPosition(GameApp.playerSprite.getX() - 900, GameApp.playerSprite.getY() - 400);
-        quest2SPR.setPosition(GameApp.playerSprite.getX() - 900, GameApp.playerSprite.getY() - 400);
-        quest3SPR.setPosition(GameApp.playerSprite.getX()-900, GameApp.playerSprite.getY()-400);
-        CysiuQuest.quest4SPR.setPosition(GameApp.playerSprite.getX()-900, GameApp.playerSprite.getY()-400);
-        dialogueChoice1SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() + 32);
-        dialogueChoice2SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() - 75);
-        dialogueChoice31SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() + 32);
-        dialogueChoice32SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() - 75);
-        dialogueChoice1SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() + 32);
-        dialogueChoice2SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() - 75);
-        dialogueChoice1SPR.draw(batch);
-        dialogueChoice2SPR.draw(batch);
-
-        mapSprite.draw(batch);
-        if (quest2Stage == 5) {
-            quest2mapSPR.draw(batch);
-        }
-        if (RenderInput.drawDungeon = true) {
-            RusakovQuest.dungeonMapSPR.draw(batch);
-        }
-        RusakovQuest.dungeonMapSPR.draw(batch);
-        gabiOverworldSPR.setSize(100,200);
-        Quests.gabiOverworldSPR.setPosition(Quests.quest2mapSPR.getX()+3750, Quests.quest2mapSPR.getY()+2780);
-        gabiOverworldSPR.draw(batch);
+Quests.preRender();
         RenderInput.renderInteract();
         buttonBounds.setBounds((int) (playerSprite.getX() + 300), (int) (playerSprite.getY() - 250), 6000, 6000);
         Equipment.X = GameApp.playerSprite.getX() - 400;
         Equipment.Y = GameApp.playerSprite.getY() + 300;
-        playerInfoSPR.setPosition(playerSprite.getX()+500,playerSprite.getY()+330);
+        playerInfoSPR.setPosition(playerSprite.getX() + 500, playerSprite.getY() + 330);
         playerInfoSPR.draw(batch);
 
         bottomBitMapFont.draw(batch, Fonts.bottomText, playerSprite.getX() + 520, playerSprite.getY() + 480);
         playerSprite.draw(batch);
-        CysiuQuest.cysiuSPR.draw(batch);
+
         Monster.minotaurSPR.draw(batch);
         if (fightstart == 0) {
+            CysiuQuest.cysiuSPR.draw(batch);
             Monster.minotaurSPR.setSize(300, 300);
             Monster.minotaurSPR.setPosition(cysiuSPR.getX() + 1890, cysiuSPR.getY() + 160);
         }
-        fightscreenSP.draw(batch);
-        battleStance.draw(batch);
 
+        fightscreenSP.draw(batch);
+        if (fightstart == 1) {
+            battleStance.draw(batch);
+            sprite.draw(batch);
+        }
         Fonts.levelUpSprite.setPosition(playerSprite.getX() - 400, playerSprite.getY() - 200);
-        sprite.draw(batch);
         Fonts.renderFonts();
         TownMenu.render();
-        if (Logic.Camera.X > 0){
-            fightscreenSP.setAlpha(Logic.Camera.X--);
-        }
-        iceBoltSPR.draw(batch);
-        fireBallSPR.draw(batch);
-        adrenalineSPR.draw(batch);
-        ironskinSPR.draw(batch);
-
-        /*Equipment.displayEQ();*/
-
-        Assets.healSPR.draw(batch);
-        cleaveSPR.draw(batch);
-        Assets.dualWieldSPR.draw(batch);
-        Assets.iceSpr.draw(batch);
-
-        Assets.runSpr.draw(batch);
-fps = String.valueOf(Gdx.graphics.getFramesPerSecond());
-
-        batch.end();
-        Spells.render();
-        batch.begin();
         Gdx.graphics.setCursor(cursorTwo);
-
-        enemybar.setPosition(sprite.getX(), sprite.getY());
-        enemybargreen.setPosition(sprite.getX(), sprite.getY());
-        enemybar.draw(batch);
-        enemybargreen.draw(batch);
-        Assets.stunBMP.setPosition(playerSprite.getX() + 450, playerSprite.getY() + 350);
-        stunBMP.draw(batch);
-
-
-        Assets.poisonBMP.setPosition(playerSprite.getX() + 300, playerSprite.getY() + 350);
-        Assets.critBMP.setPosition(playerSprite.getX() - 250, playerSprite.getY() - 30);
-        Assets.critBMP.draw(batch);
-        Assets.critBMP.draw(batch);
-        Assets.poisonBMP.draw(batch);
-        playerAttackBMP2.draw(batch, playerAttackText2, playerSprite.getX(), playerSprite.getY() + 50);
-        Assets.levelupSPR.setPosition(playerSprite.getX() - 300, playerSprite.getY() + 250);
-        levelupSPR.draw(batch);
-        csBMP.draw(batch);
-        Fonts.curseBMP.draw(batch, Fonts.curseTEXT, playerSprite.getX() - 400, playerSprite.getY() + 150);
-
-
-        fpsBMP.draw(batch,fps,playerSprite.getX()-700,playerSprite.getY() + 450);
-battleStance.setPosition(playerSprite.getX()-800,playerSprite.getY());
-Fonts.sideQuestBMP.setColor(Color.GREEN);
-        Fonts.sideQuestBMP.draw(batch, sideDescription, playerSprite.getX() + 100, playerSprite.getY()-100);
+        FightLogic.render();
+        Fonts.sideQuestBMP.setColor(Color.GREEN);
+        Fonts.sideQuestBMP.draw(batch, sideDescription, playerSprite.getX() + 100, playerSprite.getY() - 100);
         RenderInput.loadShop();
-Statistics.render();
-        quest1SPR.draw(batch);
-        dialogueChoice1SPR.draw(batch);
-        dialogueChoice2SPR.draw(batch);
-        RusakovQuest.quest5SPR.draw(batch);
-        RusakovQuest.dialogueChoice51SPR.draw(batch);
-        RusakovQuest.dialogueChoice52SPR.draw(batch);
-        Quests.questStoryBitMap.draw(batch, Quests.questStory, playerSprite.getX() - 750, playerSprite.getY() + 420);
-        Quests.diaChoice1BitMap.draw(batch, Quests.diaChoice1, playerSprite.getX() - 700, playerSprite.getY() + 90);
-        Quests.diaChoice2BitmMap.draw(batch, Quests.diaChoice2, playerSprite.getX() - 700, playerSprite.getY() - 10);
+        Statistics.render();
+      Quests.render1();
 
         RysiuQuest.Quest2Convo();
         FlorekQuest.Quest3Convo();
         CysiuQuest.Quest4Convo();
         RusakovQuest.QuestConvo();
 
-        dialogueChoice1SPR.draw(batch);
-        dialogueChoice2SPR.draw(batch);
-        Quests.questStoryBitMap.draw(batch, Quests.questStory, playerSprite.getX() - 750, playerSprite.getY() + 420);
-        Quests.diaChoice1BitMap.draw(batch, Quests.diaChoice1, playerSprite.getX() - 700, playerSprite.getY() + 90);
-        Quests.diaChoice2BitmMap.draw(batch, Quests.diaChoice2, playerSprite.getX() - 700, playerSprite.getY() - 10);
-	/*	cursorSPR.draw(batch);
-		cursorSPR.setSize(50,50);
-cursorSPR.setPosition(playerSprite.getX(),playerSprite.getY());*/
-        if (QuestLog.showLog == true) {
-            QuestLog.showLog();
-        }
-        if (Miscelanous.poisonSacks >= 6) {
-
-            try {
-                QuestLog.activeQuest.set(spidersNumber, QuestLog.spiderQuestCompleteSPR);
-            }
-            catch (IndexOutOfBoundsException a){
-
-            }
-        }
+        Quests.render2();
         Quests.updateDescription();
-AllAssets.Draw();
-Fonts.missOrCritBMP.draw(batch, Fonts.missOrCritText, battleStance.getX()+700, battleStance.getY()+100);
+        AllAssets.Draw();
+        Fonts.missOrCritBMP.draw(batch, Fonts.missOrCritText, battleStance.getX() + 700, battleStance.getY() + 100);
         FightLogic.blockInput();
 
-        if (penis){
-            /*TextureRegion currentFrame = fireAnimation.getKeyFrame(stateTime, true);
-            spriteBatch.begin();
-            spriteBatch.draw(currentFrame, playerSprite.getX()+50, playerSprite.getY()+50); // Draw current frame at (50, 50)
-            spriteBatch.end();*/
 
-        }
         if (showequip == 1) {
             Equipment.displayEQ();
         }
         itemDescriptionBMP.draw(batch, itemDescription, Equipment.descriptionX, Equipment.descriptionY);
-       /* Player.XPCap = levelCap;
-        currentXP = Dawid.getXP();
-        expBarSPR.setPosition(playerSprite.getX()-800,playerSprite.getY()-500);
-        expBarGreenSPR.setPosition(playerSprite.getX()-750,playerSprite.getY()-450);
-        expBarGreenSPR.setSize((float)(800*(currentXP/Player.XPCap)), 60);*/
+        batch.end();
+       batch.begin();
+        Spells.render();
+        batch.end();
 
-
+        batch.begin();
+        FightLogic.gameOverRender();
         batch.end();
         spriteBatch.begin();
-batch.disableBlending();
-        spriteBatch.draw(fireBallTXT, playerSprite.getX(),playerSprite.getY(),800,800);
+        batch.disableBlending();
+        spriteBatch.draw(fireBallTXT, playerSprite.getX(), playerSprite.getY(), 800, 800);
         spriteBatch.end();
-
-        stateTime += Gdx.graphics.getDeltaTime(); // Accumulate elapsed animation time
-
-        // Get current frame of animation for the current stateTime
 
 
 

@@ -1,6 +1,7 @@
 package Mobs.StartingZone;
 
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -72,14 +73,18 @@ int glb = 1;
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80) {Soundtrack.thump.play();
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             Fonts.enemyAttackText = ("The goblin stabbed you critically for " + monster.getDmg() * 1.2 + " damage!");
         } else if (roll < 81 && roll > missRoll) { Soundtrack.thump.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
             System.out.println("Goblin uderzył Cię za " + (dmgRoll - player.getArmor())  + " obrażeń");
             Fonts.enemyAttackText = "The goblin hit you for" + (dmgRoll - player.getArmor()) + " damage";
         } else if (roll < missRoll) {
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = ("The goblin missed!");
         }
     }

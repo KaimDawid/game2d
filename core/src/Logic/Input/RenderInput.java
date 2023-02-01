@@ -5,6 +5,7 @@ import Logic.Camera;
 import Logic.Drop.Miscelanous;
 import Logic.Experience;
 import Logic.FightLogic.Fight;
+import Logic.FightLogic.Skills.*;
 import Logic.Movement;
 import Mobs.Dungeon.Minotaur;
 import Mobs.Player;
@@ -29,7 +30,9 @@ import java.util.TimerTask;
 
 import static Data.Quests.Quests.quest2Stage;
 import static Data.Quests.Quests.window2Open;
+import static Logic.FightLogic.Skills.Fireball.animFire;
 import static Objects.Shop.Shop.*;
+import static com.mygdx.game.Backend.Backend.bridgeTXT;
 import static com.mygdx.game.Frontend.Interfejs.TownMenu.townMenuOpen;
 import static com.mygdx.game.GameApp.*;
 import static com.mygdx.game.GameApp.Dawid;
@@ -77,7 +80,7 @@ public class RenderInput {
             Assets.interactSPR.setSize(200,100);
             Assets.interactSPR.draw(batch);
         }
-        else if (Dawid.getX() == 17 && Dawid.getY() == 4){
+        else if (Dawid.getX() == 17 && Dawid.getY() == 4 && minotaur.getHp() > 0){
             Assets.interactSPR.setPosition(playerSprite.getX()-50, playerSprite.getY()-200);
             Assets.interactSPR.setSize(200,100);
             Assets.interactSPR.draw(batch);
@@ -85,7 +88,7 @@ public class RenderInput {
         else {
             Assets.interactSPR.setSize(0,0);
             Assets.interactSPR.setPosition(-2000,-2000);
-            Assets.interactSPR.draw(batch);
+
         }
 
     }
@@ -243,35 +246,8 @@ public class RenderInput {
 
 
 
-playerSprite.setColor(originalColor);
 
-
-
-/*
-
-         timer.schedule(new TimerTask() {
-             @Override
-             public void run() {
-                 playerSprite.setSize(600,600);
-             }
-         },5000);
-
-            batch.begin();
-
-            mapSprite.setColor(color.b, color.r, color.g ,0.05f);
-            fightscreenSP.setColor(originalColor2.b, originalColor2.r, originalColor2.g, 0.05f);
-
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    mapSprite.setColor(color.b,color.r,color.g, 5);
-                    fightscreenSP.setColor(originalColor2.b, originalColor2.r, originalColor2.g, 5);
-                }
-            },2000);
-
-
-            batch.end();
-*/
+            Stun.animStun = true;
 
 
 
@@ -280,9 +256,12 @@ playerSprite.setColor(originalColor);
         }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.H)) {
-            playerSprite.rotate(1f);
+            Icebolt.animIce = true;
 
 
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.J)){
+         MobSkills.animPoison = true;
 
         }
 
@@ -297,10 +276,11 @@ playerSprite.setColor(originalColor);
             if (Dawid.getX() == 200 && Dawid.getY() == 202 && !enterBlocked){
                RusakovQuest.leaveDungeon();
             }
-         if (Dawid.getX() == 17 && Dawid.getY() == 4 && Miscelanous.magicFlute){
+         if (Dawid.getX() == 17 && Dawid.getY() == 4 && Miscelanous.magicFlute && minotaur.getHp() > 0){
+             fightscreenSP.setTexture(bridgeTXT);
              Dawid.setX(20);   Dawid.setY(2);
              Backend.checker(Dawid, minotaur);
-
+             fightscreenSP.setTexture(bridgeTXT);
          }
             if (Dawid.getX() == 8 && Dawid.getY() == 3){
                 Soundtrack.door.play();
@@ -310,7 +290,7 @@ playerSprite.setColor(originalColor);
             }
 
 
-            if (gabbie.getHp() < 10 && Dawid.getY() > 123 && Dawid.getX() > 111) {
+            if (gabbie.getHp() < 10 && Dawid.getY() > 123 && Dawid.getX() > 111 && Dawid.getX() < 115) {
 
 
                 quest2Stage = 6;
@@ -336,9 +316,6 @@ playerSprite.setColor(originalColor);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
             System.out.println("Rzeczy do zrobienia:");
-            System.out.println("- 4 nowe questy");
-            System.out.println("- Naprawić sklep i ekwipunek");
-            System.out.println("- Poprawić transition, spiderSprite się buguje");
             System.out.println("- UI : Menu główne, okno z questami, okno z posiadanymi skillami, INFO");
 
         }
@@ -371,7 +348,16 @@ batch.end();
         if (Gdx.input.isKeyPressed(Input.Keys.TAB) && Gdx.input.isKeyJustPressed(Input.Keys.O)){
             Dawid.setDMG(150);
             Dawid.setGold(5000);
-            Item.gearPiece[Item.currentSlot] = new ChestArmor("Fishscale Armor [CHEST]", 50, 20, 3, 30, 1);
+            Fireball.learned = true;
+            Icebolt.learned = true;
+            DualWield.learned = true;
+            Heal.learned = true;
+            Ironskin.learned = true;
+            Adrenaline.learned = true;
+            Cleave.learned = true;
+            Dawid.setHP(10000);
+            Dawid.setMaxHP(10000);
+            Item.gear.add(new ChestArmor("Fishscale Armor [CHEST]", 50, 20, 3, 30, 1));
             GameApp.eqList.add(Assets.fisharmorSPR);
 
 
@@ -453,11 +439,12 @@ batch.end();
             Shop.shopList.add(sellGW);
             Shop.shopList.add(sellAP);
 
-            Shop.shopList.get(0).draw(batch);
-            Shop.shopList.get(1).draw(batch);
-            Shop.shopList.get(2).draw(batch);
-            Shop.shopList.get(3).draw(batch);
-            Shop.shopList.get(4).draw(batch);
+
+            for (int i = 0; i < shopList.size(); i++) {
+                shopList.get(i).draw(batch);
+            }
+
+
 
             Assets.sellBMP.draw(batch,Assets.sellText, playerSprite.getX()+ 520, playerSprite.getY()- 250);
             Assets.sellBMP.getData().setScale(0.9F);

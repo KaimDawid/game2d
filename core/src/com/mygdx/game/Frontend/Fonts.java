@@ -183,8 +183,15 @@ sideQuestBMP = new BitmapFont();
     }
 
     public static void renderFonts(){
+
+        if (fightstart==0){
+            playerAttackText = " ";
+            enemyAttackText = " ";
+            mobSpellText = " ";
+        }
+
         playerAttackFont.draw(batch, playerAttackText, playerSprite.getX() - 700, playerSprite.getY());
-        Fonts.enemyAttackFont.draw(batch, Fonts.enemyAttackText, playerSprite.getX()-100, playerSprite.getY() + 250);
+        Fonts.enemyAttackFont.draw(batch, Fonts.enemyAttackText, playerSprite.getX()-250, playerSprite.getY() + 250);
         Fonts.topTextBitmap.draw(batch, Fonts.topText, playerSprite.getX() - 300, playerSprite.getY() + 420);
         Quests.questInfoBitMap.draw(batch, Quests.questInfo, playerSprite.getX() - 300, playerSprite.getY() + 320);
         Fonts.mobSpellBitmap.draw(batch, Fonts.mobSpellText, playerSprite.getX(), playerSprite.getY() + 150);

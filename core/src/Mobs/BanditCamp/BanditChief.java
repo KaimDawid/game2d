@@ -1,6 +1,7 @@
 package Mobs.BanditCamp;
 
 import Logic.Drop.Miscelanous;
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -80,17 +81,20 @@ public class BanditChief extends Monster {
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80) {
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             Soundtrack.banditswing.play();
             double critHit = (random.nextInt(20) + monster.getDmg()*1.2);
             player.setHP(player.getHP() - critHit + player.getArmor());
             Fonts.enemyAttackText = ("The bandit chief sliced you critically for " + critHit + " damage!");
         } else if (roll < 81 && roll > missRoll) {
+            Autoattack.animMobAttack = true;
             Soundtrack.banditswing.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() -dmgRoll + player.getArmor());
             System.out.println("The bandit chief hit you for " + (dmgRoll - player.getArmor())  + " damage");
             Fonts.enemyAttackText = "The bandit chief hit you for " + (dmgRoll - player.getArmor()) + " damage";
-        } else if (roll < missRoll) {
+        } else if (roll < missRoll) { Autoattack.mobMiss = true;
             Fonts.enemyAttackText = ("The thug missed!");
         }
     }

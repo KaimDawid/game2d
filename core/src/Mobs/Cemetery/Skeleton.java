@@ -1,7 +1,9 @@
 package Mobs.Cemetery;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
+import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Fonts;
 import lombok.Getter;
 import lombok.Setter;
@@ -80,17 +82,21 @@ public class Skeleton extends Monster {
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         int armorUP = 20;
         if (roll > 80) {
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             Fonts.enemyAttackText = "Przeciwnik zadał cios krytyczny za " + monster.getDmg() * 1.2 + " punktów obrażeń!";
             Fonts.mobSpellText = "Szkielet podniósł wartość swojej zbroi o " + armorUP + " punktów.";
-
+            Soundtrack.banditswing.play();
         } else if (roll < 81 && roll > missRoll) {
+            Autoattack.animMobAttack = true;
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("Szkielet uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
             Fonts.enemyAttackText = "Szkielet uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
-
+            Soundtrack.banditswing.play();
         } else if (roll < missRoll) {
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "Szkielet chybił!";
             System.out.println("Szkielet chybił!");
         }

@@ -1,7 +1,9 @@
 package Mobs.Cemetery;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
+import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Fonts;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,18 +49,21 @@ public class Ghost extends Monster {
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         int armorUP = 20;
         if (roll > 80) {
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             Fonts.enemyAttackText = "The Ghost has struck you critically for " + monster.getDmg() * 1.2 + " damage!";
-         /*   GameApp.mobSpellText = "Szkielet podniósł wartość swojej zbroi o " + armorUP + " punktów.";*/
+            Soundtrack.thump.play();
 
         } else if (roll < 81 && roll > missRoll) {
+            Autoattack.animMobAttack = true;
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("Szkielet uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
             Fonts.enemyAttackText = "The ghost has struck you for " + (dmgRoll - player.getArmor()) + " damage";
             Fonts.mobSpellText = "The ghost is translucent, making it far more difficult to hit him. ";
-
-        } else if (roll < missRoll) {
+            Soundtrack.thump.play();
+        } else if (roll < missRoll) { Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The ghost missed!";
             System.out.println("The ghost missed!");
         }

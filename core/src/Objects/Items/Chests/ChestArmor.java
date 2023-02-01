@@ -12,7 +12,8 @@ import lombok.Setter;
 @Setter
 
 public class ChestArmor extends Gear {
-
+    int sellPrice = 50;
+    int buyPrice = 50;
     public static Item equippedChest;
 
     public static Texture fishScaleTXT;

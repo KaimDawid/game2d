@@ -11,13 +11,16 @@ import lombok.Setter;
 
 @Getter @Setter
 public class Weapon extends Gear {
+    int sellPrice = 50;
+    int buyPrice = 50;
     public static Item equippedWeapon1;
     public static Item equippedWeapon2;
     public static void giveStartingWeapon(){
-        Item.gearPiece[Item.currentSlot] = new Weapon("Sztylet [WEAPON]", 0, 20, 7, 0, 1, 1, 1);
         GameApp.eqList.add(Assets.daggerSPR);
-        Equipment.eqSlot++;
-        Item.currentSlot++;
+        Item.gear.add(new Weapon("Sztylet [WEAPON]", 0, 20, 7, 0, 1, 1, 1));
+
+
+
     }
 
     int hands;

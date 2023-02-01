@@ -1,7 +1,9 @@
 package Mobs.Cemetery;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
+import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Fonts;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,17 +48,21 @@ public class HeadlessHorseman extends Monster {
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         int armorUP = 20;
         if (roll > 80) {
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             player.setFear(1);
             Fonts.enemyAttackText = "The headless horseman slashed you critically for " + monster.getDmg() * 1.2 + " damage and applied fear!";
-
+            Autoattack.criticalMobAttack = true;
+            Soundtrack.banditswing.play();
         } else if (roll < 81 && roll > missRoll) {
+            Autoattack.animMobAttack = true;
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("Szkielet uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
             Fonts.enemyAttackText = "The headless horseman trampled you you for " + (dmgRoll - player.getArmor()) + " obrażeń";
-
+            Soundtrack.banditswing.play();
         } else if (roll < missRoll) {
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The headless horseman missed!";
             System.out.println("The headless horseman missed!");
         }

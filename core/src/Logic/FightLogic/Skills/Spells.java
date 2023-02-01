@@ -15,6 +15,7 @@ public abstract class Spells {
 
     public static void create(){
         Adrenaline.create();
+        Stun.create();
         Autoattack.create();
         Cleave.create();
         DualWield.create();
@@ -22,17 +23,21 @@ public abstract class Spells {
         Heal.create();
         Icebolt.create();
         Ironskin.create();
+        MobSkills.create();
     }
 
 
     public static void render(){
+
         Adrenaline.render();
         Autoattack.render();
+       /* MobSkills.animateThunder();*/
         Cleave.render();
         DualWield.render();
         Fireball.render();
         Heal.render();
         Icebolt.render();
+       /* MobSkills.animatePoison();*/
         Ironskin.render();
     }
 

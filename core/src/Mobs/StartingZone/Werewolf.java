@@ -1,6 +1,7 @@
 package Mobs.StartingZone;
 
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -64,17 +65,22 @@ public class Werewolf extends Monster{
         Random random = new Random();
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
+
         if (roll > 80){  Soundtrack.bite.play();
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             Fonts.enemyAttackText = "The werewolf hit you critically for "+ (monster.getDmg()*1.2 - player.getArmor()) + " damage!";
         }
         else if (roll < 81 && roll > missRoll){  Soundtrack.bite.play();
+            Autoattack.animMobAttack = true;
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             Fonts.enemyAttackText = "The werewolf bit you for " + (dmgRoll - player.getArmor()) + " damage";
 
         }
         else if (roll < missRoll){
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The werewolf missed!";
         }
     }

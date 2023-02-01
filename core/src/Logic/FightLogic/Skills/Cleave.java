@@ -32,13 +32,13 @@ public static BitmapFont cooldownBMP;
     public static void render(){
 
         sprite.setPosition(playerSprite.getX()-200, playerSprite.getY()-400);
-        if (fightstart == 1 && learned && fightscreenSP.getHeight()>1070){
-            batch.begin();
+        if (fightstart == 1 && learned && fightscreenSP.getHeight()>800){
+
             sprite.draw(batch);
             if (cooldown > 0) {
                 cooldownBMP.draw(batch, cooldown + "", sprite.getX(), sprite.getY());
             }
-            batch.end();
+
         }
 
     }

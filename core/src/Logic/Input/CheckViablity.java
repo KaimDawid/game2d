@@ -1,10 +1,8 @@
 package Logic.Input;
-
 import Data.Quests.RusakovQuest;
 import com.mygdx.game.GameApp;
 
 import java.util.Date;
-
 public class CheckViablity {
     public static boolean viable = false;
     public static void Check(int X, int Y){
@@ -13,7 +11,9 @@ public class CheckViablity {
         }
         else if (X == 199 || Y == 199 || X ==209 || Y == 209){
             viable = false;
-
+        }
+        else if (Y==17){
+            viable = false;
         }
         else if (X == 18 && RusakovQuest.questStage < 3){
             viable = false;
@@ -63,7 +63,4 @@ public class CheckViablity {
             viable = true;
         }
     }
-
-
-
 }

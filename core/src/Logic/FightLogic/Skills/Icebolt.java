@@ -31,7 +31,7 @@ public class Icebolt  extends Spells {
     public static int movedFrames;
     public static int iceValue;
     public static int cooldown;
-    public static int finalframes = 60;
+    public static int finalframes = 50;
     public static Stage stage;
     public static Actor fireActor;
     public static Texture texture;
@@ -40,7 +40,7 @@ public class Icebolt  extends Spells {
 
         iceBoltTXT = new Texture("iceboltanim.png");
         iceBoltSPR = new Sprite(iceBoltTXT);
-        iceBoltSPR.setSize(300,300);
+        iceBoltSPR.setSize(400,400);
         iceBoltSPR.setPosition(playerSprite.getX(),playerSprite.getY());
 
     }
@@ -64,51 +64,56 @@ public class Icebolt  extends Spells {
                         if (movedFrames < finalframes) {
                             System.out.println("dodaję wartość");
                             movedFrames++;
+                            iceBoltSPR.setX(iceBoltSPR.getX()+15);
                         }  else if (movedFrames ==finalframes) {
                             animIce = false;
                             movedFrames = 0;
                             Fight.inputBlocked = false;
                             System.out.println("koniec animaji");
-
+                        iceBoltSPR.setPosition(battleStance.getX()+300, battleStance.getY()-100);
+                        }
+                        if (movedFrames<2){
+                            iceBoltSPR.setPosition(battleStance.getX()+300, battleStance.getY()-100);
                         }
                         if (movedFrames < finalframes*0.1){
-                            iceBoltSPR.setPosition(playerSprite.getX()-100, playerSprite.getY());
+                            iceBoltSPR.setRegion(0,0,100,60);
+
                         }
                         if (movedFrames > finalframes*0.1 && movedFrames < finalframes*0.2){
                             iceBoltSPR.setRegion(100,0,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()-50, playerSprite.getY());
+
                         }
                         if (movedFrames > finalframes*0.2 && Movement.movedTiles < finalframes*0.3){
                             iceBoltSPR.setRegion(200,0,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX(), playerSprite.getY());
+
                         }
                         if (movedFrames > finalframes*0.3 && Movement.movedTiles < finalframes*0.4){
                             iceBoltSPR.setRegion(300,0,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+50, playerSprite.getY());
+
                         }
                         if (movedFrames > finalframes*0.4 && movedFrames < finalframes *0.5){
                             iceBoltSPR.setRegion(400,0,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+100, playerSprite.getY());
+
                         }
                         if (movedFrames > finalframes*0.5 && movedFrames < finalframes*0.6){
-                            iceBoltSPR.setRegion(0,65,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+150, playerSprite.getY());
+                            iceBoltSPR.setRegion(0,65,100,62);
+
                         }
                         if (movedFrames > finalframes*0.6 && movedFrames < finalframes*0.7){
-                            iceBoltSPR.setRegion(100,65,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+200, playerSprite.getY());
+                            iceBoltSPR.setRegion(100,65,100,62);
+
                         }
                         if (movedFrames > finalframes*0.7 && Movement.movedTiles < finalframes*0.8){
-                            iceBoltSPR.setRegion(200,65,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+250, playerSprite.getY());
+                            iceBoltSPR.setRegion(200,65,100,62);
+
                         }
                         if (movedFrames > finalframes*0.8 && Movement.movedTiles < finalframes*0.9){
-                            iceBoltSPR.setRegion(300,65,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+300, playerSprite.getY());
+                            iceBoltSPR.setRegion(300,65,100,62);
+
                         }
                         if (movedFrames > finalframes*0.9){
-                            iceBoltSPR.setRegion(400,65,100,60);
-                            iceBoltSPR.setPosition(playerSprite.getX()+300, playerSprite.getY());
+                            iceBoltSPR.setRegion(400,65,100,62);
+
                         }
                         camera.update();
                         iceValue = 1;
@@ -137,14 +142,14 @@ public static BitmapFont cooldownBMP;
     public static void render(){
 
         sprite.setPosition(playerSprite.getX()+50, playerSprite.getY()-250);
-        if (fightstart == 1 && learned && fightscreenSP.getHeight()>1070){
-            batch.begin();
+        if (fightstart == 1 && learned && fightscreenSP.getHeight()>800) {
+
             sprite.draw(batch);
             if (cooldown > 0) {
                 cooldownBMP.draw(batch, cooldown + "", sprite.getX(), sprite.getY());
             }
-            batch.end();
         }
+
 
     }
 

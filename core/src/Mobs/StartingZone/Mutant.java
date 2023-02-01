@@ -1,5 +1,8 @@
 package Mobs.StartingZone;
 
+import Logic.FightLogic.Skills.Autoattack;
+import Logic.FightLogic.Skills.Fireball;
+import Logic.FightLogic.Skills.Icebolt;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -8,6 +11,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Random;
+import java.util.TimerTask;
+
+import static com.mygdx.game.GameApp.timer;
+
 @Getter@Setter
 public class Mutant extends Monster {
     int gold;
@@ -114,7 +121,7 @@ public class Mutant extends Monster {
         }
     }
 
-    public void Attack(Monster monster, Player player){
+    public void Attack(final Monster monster, final Player player){
 
         Random random = new Random();
         int roll = random.nextInt(100);
@@ -123,44 +130,72 @@ public class Mutant extends Monster {
             int skillSteal = random.nextInt(30);
 
             if (skillSteal < 11) {
-                activeSkill = player.getChosenSkill1();
-            }
-            else if (skillSteal > 10 && skillSteal < 21){
-                if (player.getChosenSkill2() != 0) {
-                    activeSkill = player.getChosenSkill2();
+                if (Fireball.learned){
+                    Fireball(monster,player);
+                    Fireball.animMobFire = true;
+                    Soundtrack.fire.play();
                 }
                 else {
-                    activeSkill = player.getChosenSkill1();
+                    Autoattack.criticalMobAttack = true;
+                    int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
+                    System.out.println("Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń!");
+                    player.setHP(player.getHP() - dmgRoll + player.getArmor());
+                    Fonts.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
                 }
+
+
+            }
+            else if (skillSteal > 10 && skillSteal < 21){
+             if (Icebolt.learned){
+                 Freeze(player);
+             }
+             else if (Icebolt.learned == false && Fireball.learned){
+                 Fireball(monster,player);
+                 Fireball.animMobFire = true;
+                 Soundtrack.fire.play();
+             }
+             else {
+                 int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
+                 System.out.println("Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń!");
+                 player.setHP(player.getHP() - dmgRoll + player.getArmor());
+                 Fonts.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
+             }
+
             }
             else if (skillSteal > 20) {
-                SkillSteal(monster, player);
+                if (Fireball.learned && Icebolt.learned) {
+                    Freeze(player);
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            Fireball(monster, player);
+                            Fireball.animMobFire = true;
+                            Soundtrack.fire.play();
+                        }
+                    }, 500);
+                }
+                else {
+                    Autoattack.criticalMobAttack = true;
+                    int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
+                    System.out.println("Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń!");
+                    player.setHP(player.getHP() - dmgRoll + player.getArmor());
+                    Fonts.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
+                }
+            }
 
-            }
-            if (activeSkill == Player.ICE){
-                Freeze(player);
-            }
-
-            else if (activeSkill == Player.FIREBALL){
-                Fireball(monster, player);
-            }
-            else if (activeSkill == Player.TP){
-                player.setHP(player.getHP() - (monster.getDmg() * 1.4));
-                Fonts.mobSpellText =   "Mutant ukradł Twoją umiejętność teleportu, przeniósł się za Ciebie i zadał " +
-                        (monster.getDmg() * 1.4) + " obrażeń!";
-            }
-            else {
-                Fonts.mobSpellText =  "Mutant próbował ukraść Twoją umiejętność, ale mu się nie udało";
-            }
 
         }
-        else if (roll < 81 && roll > missRoll){ Soundtrack.thump.play();
+        else if (roll < 81 && roll > missRoll){
+            Autoattack.animMobAttack = true;
+
+            Soundtrack.thump.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             System.out.println("Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń!");
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             Fonts.enemyAttackText = "Mutant uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
         }
         else if (roll < missRoll){
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "Mutant chybił!";
         }
 

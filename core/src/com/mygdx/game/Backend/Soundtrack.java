@@ -15,19 +15,21 @@ public class Soundtrack {
     public static Sound ui, steps, success, coin, potion, battle, equip, mob, thump, bite, banditswing;
 
 public static Music slon;
-    public static Music fire, minotaursound;
-    public static Music smallbite;
-    public static Music heal;
-    public static Music ice;
+    public static Sound fire, minotaursound, questcomplete, heal, ice;
+    public static Sound smallbite, thunder;
+
+
 
 public static Music music;
 
     public static void create(){
-        minotaursound = Gdx.audio.newMusic(Gdx.files.internal("minotaur.mp3"));
-        ice = Gdx.audio.newMusic(Gdx.files.internal("ice.mp3"));
-        heal = Gdx.audio.newMusic(Gdx.files.internal("heal.mp3"));
-        fire = Gdx.audio.newMusic(Gdx.files.internal("fire.mp3"));
-smallbite = Gdx.audio.newMusic(Gdx.files.internal("smallbite.mp3"));
+        thunder = Gdx.audio.newSound(Gdx.files.internal("thunder.mp3"));
+        questcomplete = Gdx.audio.newSound(Gdx.files.internal("complete.mp3"));
+        minotaursound = Gdx.audio.newSound(Gdx.files.internal("minotaur.mp3"));
+        ice = Gdx.audio.newSound(Gdx.files.internal("ice.mp3"));
+        heal = Gdx.audio.newSound(Gdx.files.internal("heal.mp3"));
+        fire = Gdx.audio.newSound(Gdx.files.internal("fire.mp3"));
+smallbite = Gdx.audio.newSound(Gdx.files.internal("smallbite.mp3"));
         slon = Gdx.audio.newMusic(Gdx.files.internal("slon.mp3"));
         steps = Gdx.audio.newSound(Gdx.files.internal("steps.mp3"));
         success = Gdx.audio.newSound(Gdx.files.internal("success.mp3"));
@@ -63,13 +65,6 @@ if (fightstart == 1){
 else {
     music.setVolume(0.2f);
 }
-        if (Quests.quest2Stage!=5){
-            slon.pause();
 
-            music.play();
-        } else if (Quests.quest2Stage == 5) {
-            music.stop();
-            slon.play();
-        }
     }
 }

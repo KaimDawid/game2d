@@ -3,6 +3,7 @@ package Mobs.Beach;
 import Data.Quests.FlorekQuest;
 import Data.Quests.Quests;
 import Logic.Drop.Miscelanous;
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -84,19 +85,33 @@ public class Crayfish extends Monster {
             int roll = random.nextInt(100);
             double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
             if (roll > 80){
-                player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
-                Fonts.enemyAttackText = "The crayfish wounded you deeply for "+ (monster.getDmg()*1.2 - player.getArmor()) + " damage!";
+                Autoattack.criticalMobAttack = true;
+                Autoattack.animMobAttack = true;
+                if (player.getArmor()> monster.getDmg()){
+                    player.setHP(player.getHP() - 10);
+                }
+                else {
+                    player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
+                    Fonts.enemyAttackText = "The crayfish wounded you deeply for " + (monster.getDmg() * 1.2 - player.getArmor()) + " damage!";
+                }
                 Soundtrack.smallbite.play();
             }
             else if (roll < 81 && roll > missRoll){
-                int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
-                player.setHP(player.getHP() - dmgRoll + player.getArmor());
-                System.out.println("The crayfish hit you for " + (dmgRoll - player.getArmor()) + " damage");
-                Fonts.enemyAttackText = "The crayfish bit you for " + (dmgRoll - player.getArmor()) + " damage";
+                Autoattack.animMobAttack = true;
+                if (player.getArmor()> monster.getDmg()){
+                    player.setHP(player.getHP() - 10);
+                    Fonts.enemyAttackText = "The crayfish bit you for 10 damage";
+                }
+                else {
+                    int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
+                    player.setHP(player.getHP() - dmgRoll + player.getArmor());
+                    System.out.println("The crayfish hit you for " + (dmgRoll - player.getArmor()) + " damage");
+                    Fonts.enemyAttackText = "The crayfish bit you for " + (dmgRoll - player.getArmor()) + " damage";
+                }
                 Soundtrack.smallbite.play();
 
             }
-            else if (roll < missRoll){
+            else if (roll < missRoll){ Autoattack.mobMiss = true;
                 Fonts.enemyAttackText =  "The crayfish missed!";
             }
         }

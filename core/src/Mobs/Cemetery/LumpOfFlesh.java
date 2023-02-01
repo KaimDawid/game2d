@@ -1,8 +1,10 @@
 package Mobs.Cemetery;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Assets;
+import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.GameApp;
 import lombok.Getter;
@@ -51,9 +53,12 @@ public class LumpOfFlesh extends Monster {
         double G = monster.getHp();
         double F = player.getHP();
         if (roll > 80) {
+            Soundtrack.bite.play();
+            Autoattack.criticalMobAttack = true;
+
             double difference = monster.getHp() - player.getMaxHP();
 
-
+            Autoattack.animMobAttack = true;
             player.setHP(G);
             monster.setHp(F);
             monster.setArmor(50);
@@ -73,13 +78,14 @@ public class LumpOfFlesh extends Monster {
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             monster.setHp(monster.getHp() + player.getArmor());
-
+            Autoattack.animMobAttack = true;
             Fonts.enemyAttackText = "The lump of flesh licked you for " + (dmgRoll - player.getArmor()) + " damage \n and healed for " + player.getArmor() + " equivalent to your armor";
-
+            Soundtrack.bite.play();
         } else if (roll < missRoll) {
-
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The lump of flesh missed!";
             System.out.println("The lump of flesh missed!");
+
         }
     }
 }

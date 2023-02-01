@@ -153,28 +153,10 @@ public static Sprite leatherglovesSPR;
     public static Sprite csBMP;
     public static Texture poisonTXT;
     public static Sprite poisonBMP;
-    public static Texture critTXT;
-    public static Sprite critBMP;
-    public static Texture stunTXT;
-    public static Sprite stunBMP;
+
+
     public static Texture charstandingTXT;
     public static Sprite charstandingSPR;
-    public static Texture faceDown1TXT;
-    public static Sprite faceDown1SPR;
-    public static Texture faceDown2TXT;
-    public static Sprite faceDown2SPR;
-    public static Texture faceUp1TXT;
-    public static Sprite faceUp1SPR;
-    public static Texture faceUp2TXT;
-    public static Sprite faceUp2SPR;
-    public static Texture faceLeft1TXT;
-    public static Sprite faceLeft1SPR;
-    public static Texture faceLeft2TXT;
-    public static Sprite faceLeft2SPR;
-    public static Texture faceRight1TXT;
-    public static Sprite faceRight1SPR;
-    public static Texture faceRight2TXT;
-    public static Sprite faceRight2SPR;
     public static Texture quest1TXT;
     public static Sprite quest1SPR;
     public static Texture dialogueChoiceTXT;
@@ -273,10 +255,8 @@ csTXT = new Texture("cursescreen.png");
 csBMP = new Sprite(csTXT);
 poisonTXT = new Texture("poisonstatus.png");
 poisonBMP = new Sprite(poisonTXT);
-critTXT = new Texture("critstatus.png");
-critBMP = new Sprite(critTXT);
-stunTXT = new Texture("stunstatus.png");
-stunBMP = new Sprite(stunTXT);
+
+
         coppernecklaceTXT = new Texture("coppernecklace.png");
         coppernecklaceSPR = new SpriteTouchable(coppernecklaceTXT);
 leatherhelmetTXT = new Texture("leatherhelmet.png");
@@ -404,7 +384,7 @@ invbarSPR = new Sprite(invbarTXT);
         Fonts.levelUpSprite.setPosition(playerSprite.getX()-400,playerSprite.getY()-200);
         sprite.draw(batch);
         Fonts.playerAttackFont.draw(batch, Fonts.playerAttackText, playerSprite.getX()- 600, playerSprite.getY() );
-        Fonts.enemyAttackFont.draw(batch, Fonts.enemyAttackText, playerSprite.getX(), playerSprite.getY() + 250);
+        Fonts.enemyAttackFont.draw(batch, Fonts.enemyAttackText, playerSprite.getX()- 250, playerSprite.getY() + 250);
         Fonts.topTextBitmap.draw(batch, Fonts.topText, playerSprite.getX()- 300, playerSprite.getY() + 420);
         Quests.questInfoBitMap.draw(batch, Quests.questInfo, playerSprite.getX()- 300, playerSprite.getY() + 320);
         Fonts.mobSpellBitmap.draw(batch, Fonts.mobSpellText, playerSprite.getX(), playerSprite.getY() + 150);
@@ -492,20 +472,18 @@ invbarSPR = new Sprite(invbarTXT);
         enemybar.draw(batch);
         enemybargreen.draw(batch);
 
-        Assets.stunBMP.setPosition(playerSprite.getX()+ 450, playerSprite.getY() + 350);
-        stunBMP.draw(batch);
+
 
         Assets.poisonBMP.setPosition(playerSprite.getX()+ 300, playerSprite.getY() + 350);
 
 
-        Assets.critBMP.setPosition(playerSprite.getX()- 250, playerSprite.getY() - 30);
-        Assets.critBMP.draw(batch);
 
 
 
-        Assets.critBMP.draw(batch);
+
+
         Assets.poisonBMP.draw(batch);
-        playerAttackBMP2.draw(batch, playerAttackText2, playerSprite.getX(), playerSprite.getY() + 50);
+        playerAttackBMP2.draw(batch, playerAttackText2, playerSprite.getX(), playerSprite.getY() - 100);
         Assets.levelupSPR.setPosition(playerSprite.getX() - 300,playerSprite.getY()+ 250);
         levelupSPR.draw(batch);
         csBMP.draw(batch);

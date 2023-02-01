@@ -168,6 +168,7 @@ Quests.blockscreen = true;
             if (Gdx.input.justTouched() && Quests.window2Open) {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (Quests.dialogueChoice21SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+                    Soundtrack.questcomplete.play();
 Dawid.setGold(Dawid.getGold()+1000);
                     Dawid.setXP(Dawid.getXP() + 180);
                     Quests.quest2SPR.setSize(0, 0);

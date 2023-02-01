@@ -10,7 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Gloves extends Gear {
-
+    int sellPrice = 50;
+    int buyPrice = 50;
     public static Item equippedGloves;
 
     int isGloves = 1;

@@ -168,8 +168,14 @@ public static int skillSlot  = 1;
 
     public static void experienceCheck(){
         if (lvlupPoints > 0 && fightstart == 0){
-            Fonts.levelUpSprite.setSize(300,600);
-            Fonts.levelUpSprite.setPosition(playerSprite.getX()-300,playerSprite.getY() -200);
+            if (Fireball.learned && Icebolt.learned && DualWield.learned && Heal.learned && Cleave.learned
+            && Adrenaline.learned && Ironskin.learned){
+                Fonts.levelUpSprite.setSize(0,0);
+            }
+            else {
+                Fonts.levelUpSprite.setSize(300, 600);
+                Fonts.levelUpSprite.setPosition(playerSprite.getX() - 300, playerSprite.getY() - 200);
+            }
             if (!Icebolt.learned) {
                 iceBoltSPR.setSize(200, 60);
             }
@@ -202,7 +208,7 @@ public static int skillSlot  = 1;
             else {
                 Assets.healSPR.setSize(0,0);
             }
-            if (Dawid.getWeaponCapacity() < 2) {
+            if (!DualWield.learned) {
                 Assets.dualWieldSPR.setSize(200, 60);
             }
             else {

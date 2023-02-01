@@ -1,5 +1,6 @@
 package Mobs;
 
+import Logic.FightLogic.Skills.Autoattack;
 import com.mygdx.game.Backend.Soundtrack;
 import com.mygdx.game.Frontend.Fonts;
 import lombok.Getter;
@@ -61,9 +62,12 @@ int wolv = 1;
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
+
+            Autoattack.criticalMobAttack = true;
             Soundtrack.bite.play();
             Fonts.enemyAttackText = "The wolf wounded you deeply for "+ (monster.getDmg()*1.2 - player.getArmor()) + " damage!";
         player.setHP(player.getHP() - (monster.getDmg()*1.2 - player.getArmor()));
+            Autoattack.animMobAttack = true;
         }
         else if (roll < 81 && roll > missRoll){
             Soundtrack.bite.play();
@@ -71,10 +75,11 @@ int wolv = 1;
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("Wilołak ugryzł Cię za " + (dmgRoll - player.getArmor()) + " damage");
             Fonts.enemyAttackText = "The wolf bit you for " + (dmgRoll - player.getArmor()) + " damage";
-
+            Autoattack.animMobAttack = true;
 
         }
         else if (roll < missRoll){
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText =  "The wolf missed!";
         }
     }

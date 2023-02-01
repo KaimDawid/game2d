@@ -36,7 +36,8 @@ import java.util.Scanner;
 //                - więcej sklepów i przedmiotów do kupienia!
 //
 
-import static Objects.Items.Item.gearPiece;
+import static Objects.Items.Item.gear;
+
 
 public class GameLogic {
     static int checkSuccesful = 0;
@@ -214,9 +215,7 @@ public class GameLogic {
         Spider spider2 = new Spider(10, 20, 5, 5, "pająk", 30, 1,1);
         Spider spider3 = new Spider(10, 20, 5, 5, "pająk", 30, 1,1);
         Spider spider4 = new Spider(10, 20, 5, 5, "pająk", 30, 1,1);
-        equipment[2] = new Weapon("Sztylet", 0, 20, 5, 0, 1, 1, 1);
-        gearPiece[30] = new Weapon("Zardzewiały miecz", 0, 60, 5, 0, 1,1,1);
-        gearPiece[31] = new Weapon("Laska nowicjusza", 0, 10, 10, 60, 2, 0, 1);
+
 
        /* Werewolf werewolf = new Werewolf(150, 40, 0,2,"wilkołak", 100, 100, 4);
         Vampire vampire = new Vampire(160, 50, 4,2,"wampir",120,80, 3);*/
@@ -259,11 +258,7 @@ public class GameLogic {
         Dawid.setEscapeInvulnerability(0);
         int reminder = 0;
 
-        Inventory.equippedweapon = (Weapon) gearPiece[30];
-        gearPiece[30].eqON(Dawid);
 
-        Monster.weaponEQ++;
-        gearPiece[30].setIsON(1);
         int discoverForest = 0;
         int discoverCamp = 0;
         int discoverLadder = 0;
@@ -464,10 +459,10 @@ public class GameLogic {
                             " przedmioty lub 0 aby wyjść z ekwipunku");
                     for (int i = 0; i < 50; i++) {
                         try {
-                            System.out.println((i) + ". " + gearPiece[i].getShortName() + " (" + gearPiece[i].getHP() + " HP, "
-                            + gearPiece[i].getDMG() + " DMG, " + gearPiece[i].getCrit() + "Crit, " + gearPiece[i].getMagic()
+                            System.out.println((i) + ". " +gear.get(i).getShortName() + " (" +gear.get(i).getHP() + " HP, "
+                            +gear.get(i).getDMG() + " DMG, " +gear.get(i).getCrit() + "Crit, " +gear.get(i).getMagic()
                             + " Mocy zaklęć) ");
-                            if (gearPiece[i].getEqValue() > 0) {
+                            if (gear.get(i).getEqValue() > 0) {
                                 System.out.println("(Założony)");
                             }
                         } catch (NullPointerException a) {

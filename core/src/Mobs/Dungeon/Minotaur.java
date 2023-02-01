@@ -3,6 +3,10 @@ package Mobs.Dungeon;
 import Data.Quests.RusakovQuest;
 import Logic.Camera;
 import Logic.FightLogic.Fight;
+import Logic.FightLogic.Skills.Autoattack;
+import Logic.FightLogic.Skills.Fireball;
+import Logic.FightLogic.Skills.MobSkills;
+import Logic.FightLogic.Skills.Stun;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -67,25 +71,75 @@ public class Minotaur extends Monster {
         if (RusakovQuest.questStage!=4){
             RusakovQuest.questStage = 3;
         }
+        Dawid.setX(17);
+        Dawid.setY(4);
     }
     public void Attack(Monster monster, Player player){
         Random random = new Random();
         int roll = random.nextInt(100);
-        double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
-        if (roll > 80){
-            Soundtrack.minotaursound.play();
-            player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
-            Fonts.enemyAttackText = "Minotaur zadał cios krytyczny za "+ monster.getDmg()*1.2 + " punktów obrażeń!";
+        double missRoll = 10;
+        if (roll >= 75){
+            if (player.getStun() == -4) {
+                player.setStun(3);
+
+                Stun.animStun = true;
+                MobSkills.animThunder = true;
+                Soundtrack.thunder.play();
+                player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
+                Fonts.enemyAttackText = "The minotaur has tossed a thunder bolt at you \n for" + monster.getDmg() * 1.2 + " points " +
+                        "of damage and stunned you for 3 turns!";
+
+            }
+            else {
+                Soundtrack.minotaursound.play();
+                Autoattack.criticalMobAttack = true;
+                int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
+                Autoattack.animMobAttack = true;
+                player.setHP(player.getHP() - dmgRoll+ player.getArmor());
+                System.out.println("Minotaur uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
+                Fonts.enemyAttackText = "The Minotaur striked you for " + (dmgRoll - player.getArmor()) + " points of damage!";
+            }
         }
-        else if (roll < 81 && roll > missRoll){
+        else if (roll < 75 && roll >= 50){
+            player.setBurn(3);
+            player.setHP(player.getHP() - (monster.getDmg()));
+            Fireball.animMobFire = true;
+            Soundtrack.fire.play();
+            Fonts.enemyAttackText = "The minotaur hurled a fireball at you for " + (monster.getDmg() * 0.8) + "\n" +
+                    "points of damage and set you ablaze!";
+            Soundtrack.minotaursound.play();
+
+
+        }
+        else if (roll < 50 && roll >= 41){
+            if (Dawid.getDecay() == 0) {
+                Soundtrack.minotaursound.play();
+
+                player.setDecay(1);
+                Fonts.enemyAttackText = "The minotaur placed a lethal curse on you, draining \n" +
+                        "your health quickly!";
+                MobSkills.animPoison = true;
+            }
+            else {
+                player.setBurn(3);
+                player.setHP(player.getHP() - (monster.getDmg()));
+                Fireball.animMobFire = true;
+                Soundtrack.fire.play();
+                Fonts.enemyAttackText = "The minotaur hurled a fireball at you for " + (monster.getDmg() * 0.8) + "\n" +
+                        "points of damage and set you ablaze!";
+                Soundtrack.minotaursound.play();
+            }
+        }
+        else if (roll < 41 && roll >= 10){
             Soundtrack.minotaursound.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll+ player.getArmor());
-            System.out.println("Minotaur uderzył Cię za " + (dmgRoll - player.getArmor()) + " obrażeń");
-            Fonts.enemyAttackText = "Minotaur Cię za " + (dmgRoll - player.getArmor()) + " obrażeń";
+            Autoattack.animMobAttack = true;
+            Fonts.enemyAttackText = "The Minotaur striked you for " + (dmgRoll - player.getArmor()) + " points of damage!";
         }
-        else if (roll < missRoll){
-            Fonts.enemyAttackText = "Minotaur chybił!";
+        else if (roll < 10){
+            Autoattack.mobMiss = true;
+            Fonts.enemyAttackText = "The minotaur missed!";
         }
     }
 public static void FightMinotaur(){

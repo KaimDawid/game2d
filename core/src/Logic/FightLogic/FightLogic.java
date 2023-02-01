@@ -1,9 +1,6 @@
 package Logic.FightLogic;
 
-import Data.Quests.FlorekQuest;
-import Data.Quests.Quests;
-import Data.Quests.RusakovQuest;
-import Data.Quests.RysiuQuest;
+import Data.Quests.*;
 import Logic.Camera;
 import Logic.Drop.Miscelanous;
 import Logic.FightLogic.Skills.Heal;
@@ -16,6 +13,8 @@ import Mobs.Monster;
 import Mobs.Player;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Assets;
 import com.mygdx.game.Frontend.Fonts;
 import com.mygdx.game.GameApp;
@@ -28,22 +27,49 @@ import static Data.Quests.Quests.quest2Stage;
 import static Data.Quests.Quests.quest2mapSPR;
 import static Logic.FightLogic.Fight.*;
 import static Mobs.Monster.minotaurSPR;
-import static com.mygdx.game.Assets.runSpr;
+import static com.mygdx.game.Assets.*;
+import static com.mygdx.game.Assets.csBMP;
 import static com.mygdx.game.GameApp.*;
 
 public class FightLogic {
 
     public static int movedFrames;
+    public static Texture gameOverTXT;
+    public static Sprite gameOverSPR;
     public static int finalframes = 50;
+
+    public static void create(){
+
+        gameOverTXT = new Texture("gameover.png");
+        gameOverSPR = new Sprite(gameOverTXT);
+        gameOverSPR.setSize(0,0);
+    }
+
+    public static void gameOverRender(){
+        gameOverSPR.setPosition(playerSprite.getX()-960, playerSprite.getY()-540);
+        gameOverSPR.draw(batch);
+    }
+    public static void showGameOverScreen(){
+
+        gameOverSPR.setSize(1920,1080);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                gameOverSPR.setSize(0,0);
+            }
+        },4000);
+
+    }
 
     public static void ConcludeBattle(final Player player, final Monster monster1, int joined) throws InterruptedException {
         if (Fight.doubleStrike == 1) {
             if (monster1.getHp() <= 0 && GameLogic.monsterBase[joined].getHp() <= 0) {
+                player.setDecay(0);
                 Spells.resetCooldown();
                 Dawid.setMana(Dawid.getMaxMana());
-                Assets.stunBMP.setSize(0,0);
+
                 Assets.poisonBMP.setSize(0,0);
-                Assets.critBMP.setSize(0,0);
+
                 Fonts.topText = "Pokonałeś obu wrogów!";
                 monster1.setFreeze(0);
                 System.out.println("Pokonałeś obu wrogów!");
@@ -84,11 +110,12 @@ public class FightLogic {
         } else if (Fight.doubleStrike == 0) {
 
             if (monster1.getHp() <= 0 && monster1.getDropable() == 1) {
+                player.setDecay(0);
                 Spells.resetCooldown();
                 Dawid.setMana(Dawid.getMaxMana());
-                Assets.stunBMP.setSize(0,0);
+
                 Assets.poisonBMP.setSize(0,0);
-                Assets.critBMP.setSize(0,0);
+
                 RenderInput.moveBlocked = true;
                 timer.schedule(new TimerTask() {
                     @Override
@@ -167,6 +194,8 @@ public class FightLogic {
         }
 
         if (player.getHP() < 1) {
+            showGameOverScreen();
+            player.setDecay(0);
             Spells.resetCooldown();
             Dawid.setMana(Dawid.getMaxMana());
             GameApp.fightON = 0;
@@ -234,26 +263,31 @@ public class FightLogic {
       Spells.lowerCooldown();
         FightLogic.RestoreMana(player);
         int burnDMG = 40;
+        if (player.getStun() > -4){
+            player.setStun(player.getStun() - 1);
+        }
         if (player.getBurn() > 0) {
-            System.out.println("Otrzymałeś " + burnDMG + " obrażeń od ognia!");
+
+            playerAttackText2 = " You've received " + burnDMG +" burn damage";
             player.setHP(player.getHP() - burnDMG);
             player.setBurn(player.getBurn() - 1);
         }
         if (player.getPoison() > 0 && player.getDecay() == 0) {
             int poisonDMG = 20;
             player.setHP(player.getHP() - poisonDMG);
-            System.out.println("Otrzymałeś " + poisonDMG + " obrażeń od trucizny");
+
+            playerAttackText2 = " You've received " + poisonDMG +"  poison damage";
             player.setPoison(player.getPoison() - 1);
         }
         else if (player.getDecay() == 1){
             int decayDMG = 50;
             player.setHP(player.getHP() - 50);
-            playerAttackText2 = " You've received " + decayDMG + " damage from decay!";
+            playerAttackText2 = " You've received " + decayDMG + " decay damage!";
         }
         if (monster.getPoison() > 0){
             int poisonDMG = 20;
             monster.setHp(monster.getHp() - poisonDMG);
-            System.out.println("Przeciwnik otrzymał " + poisonDMG + " obrażeń od trucizny!");
+            System.out.println("Your enemy has received " + poisonDMG + " poison damage!");
             monster.setPoison(monster.getPoison() - 1);
         }
         if (monster.getFreeze() > 0){
@@ -313,6 +347,7 @@ public class FightLogic {
     }
 
     public static void hideAssets(){
+        minotaurSPR.setSize(0,0);
         Fonts.missOrCritText = " ";
         timer.schedule(new TimerTask() {
             @Override
@@ -348,8 +383,8 @@ public class FightLogic {
         CemeterySprites.skeletonSPR.setSize(0,0);
         CemeterySprites.lumpOfFleshSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
         CemeterySprites.lumpOfFleshSPR.setSize(0,0);
-        minotaurSPR.setSize(0,0);
-        minotaurSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
+
+
         enemybargreen.setSize(0,0);
         enemybar.setSize(0,0);
         getIceBoltSPR2.setSize(0, 0);
@@ -400,8 +435,10 @@ public class FightLogic {
                 CemeterySprites.lumpOfFleshSPR.setSize(600,500);
                 Assets.mutantSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
                 Assets.mutantSPR.setSize(600,500);
-                minotaurSPR.setSize(600,500);
-                minotaurSPR.setPosition(playerSprite.getX()+ 300, playerSprite.getY());
+                if (Dawid.getX()>16 && Dawid.getX() < 100) {
+                    minotaurSPR.setSize(600, 500);
+                    minotaurSPR.setPosition(playerSprite.getX() + 300, playerSprite.getY());
+                }
             }
         },1000);
 
@@ -409,6 +446,8 @@ public class FightLogic {
     }
 
     public static void Die(Player player){
+        showGameOverScreen();
+        player.setDecay(0);
         Fight.fightON = 0;
         GameApp.fightON = 0;
         fightstart = 0;
@@ -501,5 +540,99 @@ public class FightLogic {
         }
     }
 
+public static void render(){
+    if (Logic.Camera.X > 0) {
+        fightscreenSP.setAlpha(Logic.Camera.X--);
+    }
+    iceBoltSPR.draw(batch);
+    fireBallSPR.draw(batch);
+    adrenalineSPR.draw(batch);
+    ironskinSPR.draw(batch);
+    Assets.healSPR.draw(batch);
+    cleaveSPR.draw(batch);
+    Assets.dualWieldSPR.draw(batch);
+    Assets.iceSpr.draw(batch);
+    fps = String.valueOf(Gdx.graphics.getFramesPerSecond());
+
+
+
+
+    if (fightstart == 1) {
+        enemybar.setPosition(sprite.getX(), sprite.getY());
+        enemybargreen.setPosition(sprite.getX(), sprite.getY());
+        enemybar.draw(batch);
+        enemybargreen.draw(batch);
+        Assets.poisonBMP.setPosition(playerSprite.getX() + 300, playerSprite.getY() + 350);
+        Assets.poisonBMP.draw(batch);
+    }
+    playerAttackBMP2.draw(batch, playerAttackText2, playerSprite.getX(), playerSprite.getY() - 100);
+    Assets.levelupSPR.setPosition(playerSprite.getX() - 300, playerSprite.getY() + 250);
+    levelupSPR.draw(batch);
+    csBMP.draw(batch);
+    Fonts.curseBMP.draw(batch, Fonts.curseTEXT, playerSprite.getX() - 400, playerSprite.getY() + 150);
+
+
+    fpsBMP.draw(batch, fps, playerSprite.getX() - 700, playerSprite.getY() + 250);
+    battleStance.setPosition(playerSprite.getX() - 800, playerSprite.getY());
+
+}
+
+public static void preRender(){
+
+    if (fightstart == 0) {
+        CysiuQuest.cysiuSPR.draw(batch);
+        Monster.minotaurSPR.setSize(300, 300);
+        Monster.minotaurSPR.setPosition(cysiuSPR.getX() + 1890, cysiuSPR.getY() + 160);
+    }
+
+    fightscreenSP.draw(batch);
+    if (fightstart == 1) {
+        battleStance.draw(batch);
+        sprite.draw(batch);
+    }
+    Fonts.levelUpSprite.setPosition(playerSprite.getX() - 400, playerSprite.getY() - 200);
+}
+
+
+public static void renderTransitions(){
+
+
+
+    if (gabbie.getHp() < 1) {
+
+        Quests.gabiOverworldSPR.setRegion(100, 0, 200, 180);
+        Quests.gabiOverworldSPR.setSize(600, 300);
+        mapSprite.setColor(originalColor);
+    }
+
+
+    if (fightscreenSP.getHeight() < 10) {
+        fightscreenSP.setPosition(playerSprite.getX(), playerSprite.getY());
+        attackSpr.setPosition(playerSprite.getX(), playerSprite.getY());
+        runSpr.setPosition(playerSprite.getX(), playerSprite.getY());
+        playerSprite.setSize(120, 140);
+    }
+    if (fightstart == 0) {
+        sprite.setSize(0, 0);
+    }
+    if (fightstart == 1) {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                playerSprite.setSize(0, 0);
+
+            }
+        }, 500);
+
+    } else if (fightstart == 0) {
+
+    }
+
+    /*  Gdx.gl.glClearColor(1, 1, 1, 1);*/
+    if (fightstart == 0) {
+        enemybar.setSize(0, 0);
+    }
+}
 
 }

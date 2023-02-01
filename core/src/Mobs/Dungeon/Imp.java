@@ -1,6 +1,7 @@
 package Mobs.Dungeon;
 
 
+import Logic.FightLogic.Skills.Autoattack;
 import Logic.Status.Status;
 import Mobs.Monster;
 import Mobs.Player;
@@ -60,17 +61,21 @@ public class Imp extends Monster {
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             Status.BURN(player);
 Fonts.mobSpellText = "The imp has set you ablaze!";
 
         }
         else if (roll < 81 && roll > missRoll){
+            Autoattack.animMobAttack = true;
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage");
             Fonts.enemyAttackText = "The imp tossed a fireball at you for " + (dmgRoll - player.getArmor()) + " damage";
         }
         else if (roll < missRoll){
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The imp missed!";
         }
     }

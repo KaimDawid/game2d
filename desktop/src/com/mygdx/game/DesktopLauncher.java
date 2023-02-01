@@ -28,7 +28,7 @@ public class DesktopLauncher {
 		new Lwjgl3Application(new GameApp(), config);
 
 		String gameVersion = "demo 1.0 ";
-		Batch batch = new SpriteBatch();
+		SpriteBatch batch = new SpriteBatch();
 		Texture mutant = new Texture("mutant.png");
 
 		Sprite mutant2 = new Sprite(mutant);

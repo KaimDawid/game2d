@@ -103,9 +103,8 @@ fireBallSPR.setSize(0,0);
         GameApp.adrenalineSPR.setSize(0, 0);
         Assets.runSpr.setSize(0, 0);
         Assets.attackSpr.setSize(0, 0);
-        critBMP.setSize(0, 0);
+
         poisonBMP.setSize(0, 0);
-        stunBMP.setSize(0, 0);
 
 
         int weaponEQ = 0;
@@ -127,8 +126,8 @@ fireBallSPR.setSize(0,0);
 
 
         /*	eqNumber[31] = new Weapon("Laska nowicjusza", 0, 10, 10, 60, 2, 0, 1);*/
-        Shop shop = new Shop(3, 4);
-        shop.setFloor(1);
+       /* Shop shop = new Shop(3, 4);
+        shop.setFloor(1);*/
 	/*	try {
 			createLadder(1);
 		}
@@ -140,13 +139,13 @@ fireBallSPR.setSize(0,0);
 		createLadder(4);
 		createLadder(5);
 		createLadder(6);*/
-        CastleSpawner.spawn(24, Spawner.castleBase);
+        CastleSpawner.spawn(14, Spawner.castleBase);
         Spawner.spawn(22, Spawner.monsterBase);
-        SpawnFloor2.SPAWN(27, Spawner.monsterBase2);
+       /* SpawnFloor2.SPAWN(27, Spawner.monsterBase2);
         SpawnFloor3.SPAWN(27, Spawner.monsterBase3);
         SpawnFloor4.SPAWN(27, Spawner.monsterBase3);
         SpawnFloor5.SPAWN(27, Spawner.monsterBase3);
-        SpawnFloor6.SPAWN(27, Spawner.monsterBase3);
+        SpawnFloor6.SPAWN(27, Spawner.monsterBase3);*/
         Forest.SPAWN(27, Spawner.forestBase);
         BanditCamp.SPAWN(27, Spawner.monsterBase3);
         Cemetery.SPAWN(27, Cemetery.cemeteryBase);
@@ -169,7 +168,7 @@ else if (Dawid.getX() > 110 & Dawid.getX()<140){
 else if (Dawid.getX() > 8 && Dawid.getY() > 8){
     fightscreenSP.setTexture(cemeteryTXT);
 }
-else if (Dawid.getX() == 17 && Dawid.getY() == 4){
+else if (Dawid.getX() >16  && Dawid.getX() < 30){
     fightscreenSP.setTexture(bridgeTXT);
 }
 else if (Dawid.getX()>= 200 && Dawid.getY() >= 200 && Dawid.getX() < 210 && Dawid.getY() < 210){
@@ -503,6 +502,30 @@ crayBug = true;
             FightLogic.RestoreMana(player);
 
 
+        }
+    }
+
+    public static void updateFightScreen(){
+        if (Dawid.getX() < 9 && Dawid.getY() < 9){
+            fightscreenSP.setTexture(fieldsTXT);
+        }
+        else if (Dawid.getX() > 8 && Dawid.getY() < 9){
+            fightscreenSP.setTexture(banditcampTXT);
+        }
+        else if (Dawid.getX() < 9 && Dawid.getY() > 8){
+            fightscreenSP.setTexture(forestTXT);
+        }
+        else if (Dawid.getX() > 110 & Dawid.getX()<140){
+            fightscreenSP.setTexture(GameApp.castleTXT);
+        }
+        else if (Dawid.getX() > 8 && Dawid.getY() > 8){
+            fightscreenSP.setTexture(cemeteryTXT);
+        }
+        else if (Dawid.getX() == 20 && Dawid.getY() == 2){
+            fightscreenSP.setTexture(bridgeTXT);
+        }
+        else if (Dawid.getX()>= 200 && Dawid.getY() >= 200 && Dawid.getX() < 210 && Dawid.getY() < 210){
+            fightscreenSP.setTexture(dungeonTXT);
         }
     }
 

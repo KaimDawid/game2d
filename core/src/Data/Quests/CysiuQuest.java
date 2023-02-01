@@ -104,6 +104,7 @@ quest4Stage = 1;
             if (Gdx.input.justTouched() && window4Open && !Quests.blockscreen) {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (dialogueChoice41SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Miscelanous.gatheredWood >= 20) {
+                    Soundtrack.questcomplete.play();
                     Dawid.setXP(Dawid.getXP() + 100);
                     quest4Stage = 2;
                     quest4SPR.setSize(0, 0);

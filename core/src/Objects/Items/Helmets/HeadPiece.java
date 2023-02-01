@@ -11,7 +11,8 @@ import lombok.Setter;
 public class HeadPiece extends Gear {
 
     public static Item equippedHead;
-
+    int sellPrice = 50;
+    int buyPrice = 50;
     int isHelmet = 1;
 
 

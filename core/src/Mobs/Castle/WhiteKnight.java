@@ -1,5 +1,6 @@
 package Mobs.Castle;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -38,19 +39,21 @@ public class WhiteKnight extends Monster {
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){
+            Autoattack.criticalMobAttack = true;
             Soundtrack.banditswing.play();
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             Fonts.enemyAttackText = ("The White Knight bashed you critically for " + monster.getDmg() * 1.2 + " points of damage!");
-
+            Autoattack.animMobAttack = true;
         }
         else if (roll < 81 && roll > missRoll){
+            Autoattack.animMobAttack = true;
             Soundtrack.banditswing.play();
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             System.out.println("The White Knight slashed you for " + (dmgRoll - player.getArmor()) + " points of damage!");
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             Fonts.enemyAttackText = "The White Knight slashed you for " + (dmgRoll - player.getArmor()) + " points of damage!";
         }
-        else if (roll < missRoll){
+        else if (roll < missRoll){ Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The White Knight missed!";
         }
 

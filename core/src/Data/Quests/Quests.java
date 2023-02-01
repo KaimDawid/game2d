@@ -22,8 +22,8 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static Data.Quests.FlorekQuest.florekNumber;
-import static Data.Quests.FlorekQuest.unblockScreen;
+import static Data.Quests.FlorekQuest.*;
+import static Objects.Items.Item.gear;
 import static com.badlogic.gdx.graphics.Color.YELLOW;
 import static com.mygdx.game.Assets.*;
 import static com.mygdx.game.GameApp.*;
@@ -206,7 +206,7 @@ if (Miscelanous.crayfishKilled > 0){
                     System.out.println("Dziękuję ci! Tak jak obiecałem, moja broń należy do Ciebie");
 
                     Item.currentSlot++;
-                    Item.gearPiece[Item.currentSlot] = new Weapon("Obsydianowy miecz dwuręczny", 30, 80, 7, 0, 2, 1, 1);
+                    gear.add(new Weapon("Obsydianowy miecz dwuręczny", 30, 80, 7, 0, 2, 1, 1));
                     System.out.println("Korzystaj z niej mądrze i zawsze w dobrej sprawie");
 
                     System.out.println("Odwiedź naszego kowala a zatruje on ją dla ciebie. Dzięki ci raz jeszcze, bywaj! ");
@@ -279,6 +279,65 @@ if (Miscelanous.crayfishKilled > 0){
             }
         }
 */
+
+    public static void render1(){
+        quest1SPR.draw(batch);
+        dialogueChoice1SPR.draw(batch);
+        dialogueChoice2SPR.draw(batch);
+        RusakovQuest.quest5SPR.draw(batch);
+        RusakovQuest.dialogueChoice51SPR.draw(batch);
+        RusakovQuest.dialogueChoice52SPR.draw(batch);
+        Quests.questStoryBitMap.draw(batch, Quests.questStory, playerSprite.getX() - 750, playerSprite.getY() + 420);
+        Quests.diaChoice1BitMap.draw(batch, Quests.diaChoice1, playerSprite.getX() - 700, playerSprite.getY() + 90);
+        Quests.diaChoice2BitmMap.draw(batch, Quests.diaChoice2, playerSprite.getX() - 700, playerSprite.getY() - 10);
+
+    }
+
+    public static void render2(){
+
+        dialogueChoice1SPR.draw(batch);
+        dialogueChoice2SPR.draw(batch);
+        Quests.questStoryBitMap.draw(batch, Quests.questStory, playerSprite.getX() - 750, playerSprite.getY() + 420);
+        Quests.diaChoice1BitMap.draw(batch, Quests.diaChoice1, playerSprite.getX() - 700, playerSprite.getY() + 90);
+        Quests.diaChoice2BitmMap.draw(batch, Quests.diaChoice2, playerSprite.getX() - 700, playerSprite.getY() - 10);
+        if (QuestLog.showLog == true) {
+            QuestLog.showLog();
+        }
+        if (Miscelanous.poisonSacks >= 6) {
+
+            try {
+                QuestLog.activeQuest.set(spidersNumber, QuestLog.spiderQuestCompleteSPR);
+            } catch (IndexOutOfBoundsException a) {
+
+            }
+        }
+    }
+
+    public static void preRender(){
+
+        quest1SPR.setPosition(GameApp.playerSprite.getX() - 900, GameApp.playerSprite.getY() - 400);
+        quest2SPR.setPosition(GameApp.playerSprite.getX() - 900, GameApp.playerSprite.getY() - 400);
+        quest3SPR.setPosition(GameApp.playerSprite.getX() - 900, GameApp.playerSprite.getY() - 400);
+        CysiuQuest.quest4SPR.setPosition(GameApp.playerSprite.getX() - 900, GameApp.playerSprite.getY() - 400);
+        dialogueChoice1SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() + 32);
+        dialogueChoice2SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() - 75);
+        dialogueChoice31SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() + 32);
+        dialogueChoice32SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() - 75);
+        dialogueChoice1SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() + 32);
+        dialogueChoice2SPR.setPosition(GameApp.playerSprite.getX() - 750, GameApp.playerSprite.getY() - 75);
+        dialogueChoice1SPR.draw(batch);
+        dialogueChoice2SPR.draw(batch);
+
+        mapSprite.draw(batch);
+        if (quest2Stage == 5) {
+            quest2mapSPR.draw(batch);
+            gabiOverworldSPR.setSize(100, 200);
+            Quests.gabiOverworldSPR.setPosition(Quests.quest2mapSPR.getX() + 3750, Quests.quest2mapSPR.getY() + 2780);
+            gabiOverworldSPR.draw(batch);
+        }
+
+        RusakovQuest.dungeonMapSPR.draw(batch);
+    }
         public static int rewardViable;
     public static int yourMom = 1;
     public static void closeDialogue(){
@@ -291,7 +350,8 @@ if (Miscelanous.crayfishKilled > 0){
         if (Dawid.getX() == X && Dawid.getY() == Y && rewardViable == 1){
             Dawid.setGold(Dawid.getGold() + goldReward);
             Dawid.setXP(Dawid.getXP() + expReward);
-            Item.gearPiece[Item.currentSlot] = item;
+
+            gear.add(item);
             GameApp.eqList.add(sprite);
             Item.currentSlot++;
             System.out.println("penis");
@@ -312,7 +372,7 @@ if (Miscelanous.crayfishKilled > 0){
                             Fonts.leftText = " ";
 
                             Assets.attackSpr.setSize(200, 80);
-                            Assets.runSpr.setSize(200, 80);
+                            Assets.runSpr.setSize(0, 0);
                             fightscreenSP.setPosition(playerSprite.getX() - 960, playerSprite.getY() - 540);
                             fightscreenSP.setSize(1920, 1080);
                           /*  sprite.setPosition(fightscreenSP.getX() + 1000, fightscreenSP.getY() + 360);

@@ -141,7 +141,7 @@ quest3Stage = 2;
                     dialogueChoice32SPR.setSize(0, 0);
                     Soundtrack.ui.play();
                     BlockUnblock();
-
+                    Soundtrack.questcomplete.play();
 
 
                     Quests.questInfo = " ";
@@ -174,8 +174,8 @@ quest3Stage = 2;
             if (Gdx.input.justTouched() && Quests.blockscreen == false) {
                 camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                 if (dialogueChoice31SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
+                    Item.gear.add(new ChestArmor("Fish scale Armor [CHEST]", 180, 20, 4, 25, 1));
 
-                    Item.gearPiece[Item.currentSlot] = new ChestArmor("Fish scale Armor [CHEST]", 180, 20, 4, 25, 1);
                     GameApp.eqList.add(Assets.fisharmorSPR);
 
                     Equipment.eqSlot++;

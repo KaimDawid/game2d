@@ -117,7 +117,7 @@ else {
             } else if (Quests.questActive1 == 1 && Quests.questCompletion1 == 0 && windowOpen) {
                 Quests.questStory = "What are you doing here, I've asked you to bring me something";
                 Quests.diaChoice1 = "Sorry boss ";
-                Quests.diaChoice2 = "Choke on a big one, nigger";
+                Quests.diaChoice2 = "I'm not your errand boy";
                 if (Gdx.input.justTouched()) {
                     camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                     if (Assets.dialogueChoice1SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)
@@ -198,6 +198,7 @@ windowOpen = false;
                     camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
                     if (Assets.dialogueChoice1SPR.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)) {
                         Quests.quest1Stage = 5;
+                        Soundtrack.questcomplete.play();
                         Dawid.setXP(Dawid.getXP() + 100);
                         Soundtrack.ui.play();
                 }

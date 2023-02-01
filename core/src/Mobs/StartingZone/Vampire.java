@@ -1,5 +1,6 @@
 package Mobs.StartingZone;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Backend.Soundtrack;
@@ -74,12 +75,15 @@ public class Vampire extends Monster {
         int roll = random.nextInt(100);
         double missRoll = (20 - (monster.getLevel() * 3) + (player.getLevel() * 3));
         if (roll > 80){  Soundtrack.bite.play();
+            Autoattack.criticalMobAttack = true;
+            Autoattack.animMobAttack = true;
             player.setHP(player.getHP() - monster.getDmg());
             monster.setHp(monster.getHp() + (monster.getDmg() * 0.4));
-            Fonts.enemyAttackText = "The vampire bit you for " + (monster.getDmg() - player.getArmor()) + " points of damage thus healing himself for "
+            Fonts.enemyAttackText = "The vampire bit you for " + (monster.getDmg() - player.getArmor()) + " points of damage thus \n healing himself for "
                     + (monster.getDmg()*0.4) + " damage";
         }
         else if (roll < 81 && roll > missRoll){  Soundtrack.bite.play();
+            Autoattack.animMobAttack = true;
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             System.out.println("The vampire hit you for " + (dmgRoll - player.getArmor()) + " obrazen");
@@ -87,6 +91,7 @@ public class Vampire extends Monster {
 
         }
         else if (roll < missRoll){
+            Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "The vampire missed!";
         }
     }

@@ -1,5 +1,6 @@
 package Mobs.Castle;
 
+import Logic.FightLogic.Skills.Autoattack;
 import Mobs.Monster;
 import Mobs.Player;
 import com.mygdx.game.Frontend.Fonts;
@@ -39,15 +40,17 @@ public class Gabbie extends Monster {
         if (roll > 80){
             player.setHP(player.getHP() - (monster.getDmg() * 1.2) + player.getArmor());
             Fonts.enemyAttackText = ("Gabbie bashed you critically for " + monster.getDmg() * 1.2 + " points of damage!");
-
+            Autoattack.animMobAttack = true;
+            Autoattack.criticalMobAttack = true;
         }
         else if (roll < 81 && roll > missRoll){
             int dmgRoll = (random.nextInt(20) + monster.getDmg() - 10);
             System.out.println("Gabbie slashed you for " + (dmgRoll - player.getArmor()) + " points of damage!");
             player.setHP(player.getHP() - dmgRoll + player.getArmor());
             Fonts.enemyAttackText = "Gabbie slashed you for " + (dmgRoll - player.getArmor()) + " points of damage!";
+            Autoattack.animMobAttack = true;
         }
-        else if (roll < missRoll){
+        else if (roll < missRoll){ Autoattack.mobMiss = true;
             Fonts.enemyAttackText = "Gabbie missed!";
         }
 

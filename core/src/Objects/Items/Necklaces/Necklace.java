@@ -11,7 +11,8 @@ import lombok.Setter;
 public class Necklace extends Gear {
     public static Item equippedNeck;
     int isNeck = 1;
-
+    int sellPrice = 50;
+    int buyPrice = 50;
     public int getIsNeck() {
         return isNeck;
     }

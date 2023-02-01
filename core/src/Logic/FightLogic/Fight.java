@@ -102,12 +102,7 @@ if (monster.getPoison() > 0){
 else {
     Assets.poisonBMP.setSize(0,0);
 }
-if (monster.getFreeze() > 0){
-    Assets.stunBMP.setSize(150,150);
-}
-else {
-    Assets.stunBMP.setSize(0,0);
-}
+
 fightstart = 1;
 
 if (fightscreenSP.getHeight() < 1070){
@@ -166,7 +161,7 @@ if (Dawid.getHP() <=0){
                     if (Fireball.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Fireball.cooldown == 0 && Fireball.learned){
                         player.Fireball(monster,player);
                         attackConclude(Dawid, monster);
-                        Fireball.animFire = true;
+
                     }
                     if (Heal.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Heal.cooldown < 1 && Heal.learned){
                         player.Heal(Dawid);
@@ -176,17 +171,13 @@ if (Dawid.getHP() <=0){
                     if (Icebolt.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Icebolt.cooldown == 0 && Icebolt.learned){
                         player.Freeze(monster);
                         attackConclude(Dawid, monster);
-                        Icebolt.animIce = true;
+
                     }
                     if (Adrenaline.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Adrenaline.cooldown == 0 && Adrenaline.learned){
                         player.Adrenaline(Dawid);
                         attackConclude(Dawid, monster);
                     }
-                    if (Ironskin.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Ironskin.cooldown == 0 && Ironskin.learned){
-                        player.IronSkin(Dawid);
-                        attackConclude(Dawid, monster);
 
-                    }
                     if (Autoattack.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Autoattack.cooldown == 0 && Autoattack.learned){
                         player.Attack(monster,Dawid);
 
@@ -201,7 +192,11 @@ if (Dawid.getHP() <=0){
                     if (runSpr.getBoundingRectangle().contains(touchPoint.x, touchPoint.y)){
                          Spells.runAway(Dawid,monster);
                     }
+                    if (Ironskin.sprite.getBoundingRectangle().contains(touchPoint.x, touchPoint.y) && Ironskin.cooldown == 0 && Ironskin.learned){
+                        player.IronSkin(Dawid);
+                        attackConclude(Dawid, monster);
 
+                    }
 
                 }
 

@@ -6,6 +6,8 @@ import Logic.Inventory;
 import Objects.Items.Item;
 import Objects.Items.Usables.HealthPotion;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,6 +20,7 @@ import com.mygdx.game.GameApp;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static Logic.Input.RenderInput.shopOpen;
 import static Objects.Items.Item.*;
 import static com.mygdx.game.Assets.shopSPR;
 import static com.mygdx.game.Assets.usBagSPR;
@@ -47,6 +50,7 @@ public class Equipment {
     public static  float Y = GameApp.playerSprite.getY() + 300;
 public static int eqSlot = 0;
     public static Item currentWeapon;
+    public static boolean sellConfirm;
 
 
     public static void displayUsables(){
@@ -56,6 +60,13 @@ public static int eqSlot = 0;
     
 }
 public static void displayEQ() throws IndexOutOfBoundsException, NullPointerException {
+
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F)){
+        if (clickCount == 1){
+            sellConfirm = true;
+        }
+
+    }
 
 usableBagSPR.setSize(360,600);
 usableBagSPR.setPosition(inventorySP.getX()-300, inventorySP.getY());
@@ -121,6 +132,7 @@ usableBagSPR.setPosition(inventorySP.getX()-300, inventorySP.getY());
                                 clickCount = 0;
                             }
                         }, 500);
+                        itemDescriptionBMP.setColor(Color.CYAN);
                         itemDescription = edible.get(i).getName();
                         batch.end();
                         batch.begin();
@@ -129,7 +141,7 @@ usableBagSPR.setPosition(inventorySP.getX()-300, inventorySP.getY());
                    /* itemDescriptionBMP.draw(batch, itemDescription, eqList.get(i).getX()+20, eqList.get(i).getY());
                     Assets.invbarSPR.setPosition(eqList.get(i).getX(), eqList.get(i).getY()- 300);
                     Assets.invbarSPR.setSize(350,300);*/
-                        itemDescriptionBMP.getData().setScale((float) 1.5);
+                        itemDescriptionBMP.getData().setScale((float) 2);
                         descriptionX = usableList.get(i).getX()+30;
                         descriptionY = usableList.get(i).getY();
 
@@ -174,43 +186,43 @@ usableBagSPR.setPosition(inventorySP.getX()-300, inventorySP.getY());
 
     }
 
-    for (int i = 0; i <= eqSlot - 1; i++) {
+    for (int i = 0; i < eqList.size(); i++) {
 
 
 try {
-    if (i < 10 && Item.gearPiece[i].getIsON() == 0) {
+    if (i < 10 && Item.gear.get(i).getIsON() == 0) {
         GameApp.eqList.get(i).setPosition((X + (i * 56)), Y);
-    } else if (i < 20 && Item.gearPiece[i].getIsON() == 0){
+    } else if (i < 20 && Item.gear.get(i).getIsON() == 0){
         GameApp.eqList.get(i).setPosition(X + ((i - 10) * 56), Y);
     }
-    else if (i<30 && Item.gearPiece[i].getIsON() == 0){
+    else if (i<30 && Item.gear.get(i).getIsON() == 0){
         GameApp.eqList.get(i).setPosition(X + ((i - 20) * 56), Y);
     }
-    else if (i<40 && Item.gearPiece[i].getIsON() == 0){
+    else if (i<40 && Item.gear.get(i).getIsON() == 0){
         GameApp.eqList.get(i).setPosition(X + ((i - 30) * 56), Y);
     }
-    else if (i<50 && Item.gearPiece[i].getIsON() == 0){
+    else if (i<50 && Item.gear.get(i).getIsON() == 0){
         GameApp.eqList.get(i).setPosition(X + ((i - 40) * 56), Y);
     }
-    else if (Item.gearPiece[i].getIsON() == 1){
-        if (Item.gearPiece[i].getIsWeapon() == 1 && Item.gearPiece[i].getWeaponslot() == 1) {
-             currentWeapon = Item.gearPiece[i];
+    else if (Item.gear.get(i).getIsON() == 1){
+        if (Item.gear.get(i).getIsWeapon() == 1 && Item.gear.get(i).getWeaponslot() == 1) {
+             currentWeapon = Item.gear.get(i);
             eqList.get(i).setPosition(playerSprite.getX() - 390, playerSprite.getY() - 170);
         }
-        else if (Item.gearPiece[i].getIsWeapon() == 1 && Item.gearPiece[i].getWeaponslot() == 2) {
+        else if (Item.gear.get(i).getIsWeapon() == 1 && Item.gear.get(i).getWeaponslot() == 2) {
 
             eqList.get(i).setPosition(playerSprite.getX() - 260, playerSprite.getY() - 170);
         }
-        else if (Item.gearPiece[i].getIsHelmet() == 1){
+        else if (Item.gear.get(i).getIsHelmet() == 1){
             eqList.get(i).setPosition(playerSprite.getX() - 320, playerSprite.getY());
         }
-        else if (Item.gearPiece[i].getIsNeck() == 1){
+        else if (Item.gear.get(i).getIsNeck() == 1){
             eqList.get(i).setPosition(playerSprite.getX() - 260, playerSprite.getY() - 27);
         }
-        else if (Item.gearPiece[i].getIsGloves() == 1){
+        else if (Item.gear.get(i).getIsGloves() == 1){
             eqList.get(i).setPosition(playerSprite.getX() - 370, playerSprite.getY() - 60);
         }
-        else if (Item.gearPiece[i].getIsChest() == 1){
+        else if (Item.gear.get(i).getIsChest() == 1){
             eqList.get(i).setPosition(playerSprite.getX() - 320, playerSprite.getY() - 60);
         }
     }
@@ -236,6 +248,7 @@ try {
                         @Override
                         public void run() {
                             itemDescription = " ";
+                            sellConfirm = false;
                         }
                     },5000);
                     timer1.schedule(new TimerTask() {
@@ -250,8 +263,19 @@ try {
                             clickCount = 0;
                         }
                     }, 500);
-                    itemDescription = Item.gearPiece[i].getShortName() + "\n \n HP: " + Item.gearPiece[i].getHP() + "\n \n DMG: " + Item.gearPiece[i].getDMG() +
-                            "\n \n Magia: " + Item.gearPiece[i].getMagic() + "\n \n Crit: " + Item.gearPiece[i].getCrit() +"%";
+
+                    if (shopOpen && gear.get(i).getIsON()==0){
+                        itemDescriptionBMP.setColor(Color.RED);
+                        itemDescription = "Sell item?   " + gear.get(i).getSellPrice() + " gold\n" +
+                                "Click 3 times to sell";
+                    }
+
+
+                    else {
+                        itemDescriptionBMP.setColor(Color.WHITE);
+                        itemDescription = Item.gear.get(i).getShortName() + "\n \n HP: " + Item.gear.get(i).getHP() + "\n \n DMG: " + Item.gear.get(i).getDMG() +
+                                "\n \n Magia: " + Item.gear.get(i).getMagic() + "\n \n Crit: " + Item.gear.get(i).getCrit() + "%";
+                    }
                     batch.end();
                     batch.begin();
                     ix = eqList.get(i).getX() + 30;
@@ -259,7 +283,7 @@ try {
                    /* itemDescriptionBMP.draw(batch, itemDescription, eqList.get(i).getX()+20, eqList.get(i).getY());
                     Assets.invbarSPR.setPosition(eqList.get(i).getX(), eqList.get(i).getY()- 300);
                     Assets.invbarSPR.setSize(350,300);*/
-                    itemDescriptionBMP.getData().setScale((float) 1.5);
+                    itemDescriptionBMP.getData().setScale((float) 2);
                     descriptionX = eqList.get(i).getX()+30;
                     descriptionY = eqList.get(i).getY();
 
@@ -267,13 +291,14 @@ try {
                     batch.begin();
 
                 }
-                if (clickCount == 2){
+                if (clickCount == 2 && (shopOpen == false || gear.get(i).getIsON() == 1) ){
+
 
 
 
                         Soundtrack.equip.play();
                         Inventory.Slot(i, Dawid);
-                        if (Item.gearPiece[i].getIsON() == 1) {
+                        if (Item.gear.get(i).getIsON() == 1) {
                             System.out.println(playerSprite.getX());
                             System.out.println(playerSprite.getY());
                         }
@@ -291,6 +316,18 @@ try {
                     batch1.end();*/
 
 
+                }
+                if (clickCount == 3 && shopOpen && gear.get(i).getIsON() == 0){
+                    gear.remove(i);
+                    eqList.remove(i);
+                    Soundtrack.coin.play();
+                    try {
+                        Dawid.setGold(Dawid.getGold() + gear.get(i).getSellPrice());
+                    }
+                    catch (IndexOutOfBoundsException a){
+                        Dawid.setGold(Dawid.getGold() + 50);
+                    }
+                    clickCount = 0;
                 }
             }
         }
@@ -322,7 +359,7 @@ catch (NullPointerException a){
 
 public static void equipME()  throws IndexOutOfBoundsException, NullPointerException {
 
-    for (int i = 0; i <= eqSlot - 1; i++) {
+    for (int i = 0; i <= eqSlot; i++) {
         Batch batch1 = new SpriteBatch();
 
 
