@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.1" orientation="orthogonal" renderorder="right-down" width="8" height="8" tilewidth="64" tileheight="64" infinite="0" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" source="tileset2.tsx"/>
+ <layer id="1" name="Warstwa Kafelków 1" width="8" height="8">
+  <data encoding="csv">
+19,19,19,19,19,19,19,19,
+17,17,17,17,17,17,17,17,
+19,19,19,19,19,19,19,19,
+17,17,17,17,17,17,17,17,
+19,19,19,19,19,19,19,19,
+17,17,17,17,17,17,17,17,
+19,19,19,19,19,19,19,19,
+17,17,17,17,17,17,17,17
+</data>
+ </layer>
+ <layer id="2" name="Warstwa Kafelków 2" width="8" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,
+21,21,21,21,21,21,21,21,
+0,0,0,0,0,0,0,0,
+21,21,21,21,21,21,21,21,
+0,0,0,0,0,0,0,0,
+21,21,21,21,21,21,21,21,
+0,0,0,0,0,0,0,0,
+21,21,21,21,21,21,21,21
+</data>
+ </layer>
+</map>
